@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<gbx version="6" unknown="R" class="CFuncShaderLayerUV" complvl="1" md5="04bdbff7a1bda9a5439e9e5320af5d98">
+
+    <body>
+        <chunk class="CFuncPlug" id="003">
+            <float>113</float>
+            <uint32>0</uint32>
+            <uint32>1</uint32>
+        </chunk>
+        <chunk class="CFuncShaderLayerUV" id="005">
+            <str>EnvMap</str>
+            <uint32>4</uint32>
+        </chunk>
+        <chunk class="CFuncShaderLayerUV" id="00D">
+            <float>0</float>
+            <float>0</float>
+            <float>1</float>
+            <float>1</float>
+            <float>0.00499999989</float>
+            <float>0.00499999989</float>
+        </chunk>
+    </body>
+</gbx>

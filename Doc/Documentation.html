@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>GBX Compiler Documentation</title>
+		<meta charset="utf-8" />
+		<style>
+			* {
+				margin: 0;
+			}
+            body {
+                background-color: #fffff8;
+            }
+			ul li {
+				padding-top: 10px;
+			}
+			.banner {
+				width: 35%;
+			}
+			.chapter {
+				margin: 10px;
+			}
+            .code {
+                background-color: #333333;
+                color: white;
+                margin: 5px;
+                padding: 5px;
+            }
+		</style>
+	</head>
+	<body>
+		<img class="banner" src="res/gbxc_banner.png" alt="gbxc banner" />
+		<p>Version Alpha 1.1</p>
+		<br />
+		<h1 style="margin: 10px">User Manual</h1>
+		<h4 style="margin-left: 14px">GreffMASTER, 2023</h4>
+		<br />
+		<h1 style="margin: 10px">Table of contents</h1>
+		<ol>
+			<li><a href="#intro">Introduction</a></li>
+			<li><a href="#cmd">Command Line Arguments</a></li>
+			<li><a href="#syntax">Syntax</a></li>
+			<li><a href="#data_t">Data Types</a></li>
+		</ol>
+		<br />
+		<div id="intro" class="chapter">
+			<h1>Introduction</h1>
+			<br />
+			<p>GBX Compiler is a tool that will let you compile GameBox files (*.Gbx) from specially formatted xml files.</p>
+			<p>It was created to replace the manual labor of hex editing the Gbx files.</p>
+            <p>The compiler saves Gbx files in uncompressed form (LZO not implemented due to licensing).</p>
+			<p>GBX Compiler is licensed under the MIT License, see the LICENSE file for details.</p>
+		</div>
+		<br />
+		<div id="cmd" class="chapter">
+			<h1>Command Line Arguments</h1>
+			<br />
+			<p><b>Usage:</b> gbxc [-h] [-d DIR] file.xml</p>
+
+			<p>positional arguments:</p>
+			<p>file.xml - xml input file that will be "compiled" to gbx</p>
+			<p></p>
+			<p>options:</p>
+			<p>-h, --help - show this help message and exit</p>
+			<p>-d DIR, --dir DIR - the directory where the output file will be saved</p>
+			<br />
+			<p><b>Example:</b> gbxc -d out Alpine.TMCollection.xml</p>
+			<br />
+			<p>Will produce "Alpine.TMCollection.Gbx" in the "out" directory. (out/Alpine.TMCollection.Gbx)</p>
+		</div>
+		<br />
+		<div id="syntax" class="chapter">
+			<h1>Syntax</h1>
+			<br />
+            <p>In order to compile XML files to GBX, the XML document needs to be correctly formatted.</p>
+            <br />
+            <h3><tag>gbx</tag></h3>
+            <br />
+            <p>The root tag shoud be <tag>gbx</tag> with these attributes:</p>
+            <p>"version" - GBX version, usually "6"</p>
+            <p>"unknown" - the unknown byte, usually "R"</p>
+            <p>"class" - the main container class, can be either a class name, like "CGameCtnChallenge" or as a byte value, like "03043000".</p>
+            <p>"complvl" - compatibility level, "0" for TMF+, "1" for earlier games.</p>
+            <p>"md5" - optional md5 checksum, the compiler informs if the compiled GBX file has that exact sum.</p>
+            <br />
+            <p>Inside the <tag>gbx</tag> tag, there are 3 main tags: <tag>reference_table</tag>, <tag>head</tag> and <tag>body</tag>.</p>
+            <p>The <tag>reference_table</tag> and <tag>head</tag> tags are not required.</p>
+            <br/>
+            <p>Example empty XML file:</p>
+            <div class="code">
+                <tag>?xml version="1.0" encoding="UTF-8" ?</tag><br/>
+                <tag>gbx version="6" unknown="R" class="CGameCtnCollection" complvl="1" md5="e5a6a0a9b438d6c3b0f99c283dfc2afb"</tag><br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;<tag>reference_table ancestor="1"</tag><br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;<tag>/reference_table</tag><br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;<tag>head</tag><br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;<tag>/head</tag><br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;<tag>body</tag><br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;<tag>/body</tag><br/>
+                <tag>/gbx</tag>
+            </div>
+		</div>
+		<br/>
+        <h3><tag>reference_table</tag></h3>
+        <br/>
+        <p>The <tag>reference_table</tag> tag uses one attribute:</p>
+        <p>"ancestor" - ancestor level, how back does it go in the directory tree from the current file.</p>
+        <br/>
+        <h2>TODO finish documentation</h2>
+		<div id="data_t" class="chapter">
+			<h1>Data Types</h1>
+			<br />
+			<p>The compiler supports many data types that can be used in a Gbx file.</p>
+			<p>Here is the list of supported data types as well as a short description of each one.</p>
+			<br />
+			<ul>
+				<li>
+					<b><tag>bool</tag></b> - a 32 bit unsigned integer that can either be a 0 or a 1. <br /><b>Example: <tag>bool</tag>1<tag>/bool</tag></b>
+				</li>
+				<li>
+					<b><tag>uint8</tag>/<tag>byte</tag></b> - an 8 bit unsigned integer. <br /><b>Example: <tag>uint8</tag>196<tag>/uint8</tag></b>
+				</li>
+				<li>
+					<b><tag>uint16</tag></b> - a 16 bit unsigned integer. <br /><b>Example: <tag>uint16</tag>1337<tag>/uint16</tag></b>
+				</li>
+				<li>
+					<b><tag>uint32</tag></b> - a 32 bit unsigned integer. <br /><b>Example: <tag>uint32</tag>3043010<tag>/uint32</tag></b>
+				</li>
+				<li>
+					<b><tag>float</tag></b> - a 32 bit floating point number. <br /><b>Example: <tag>float</tag>3.14<tag>/float</tag></b>
+				</li>
+				<li>
+					<b><tag>vec2</tag></b> - two 32 bit floating point numbers separated by a space. <br /><b>Example: <tag>vec2</tag>3.14 -2.52<tag>/vec</tag></b>
+				</li>
+				<li>
+					<b><tag>vec3</tag></b> - three 32 bit floating point numbers separated by a space. <br /><b>Example: <tag>vec3</tag>3.14 -2.52 1.0<tag>/vec3</tag></b>
+				</li>
+				<li>
+					<b><tag>str</tag></b> - a regular string of characters, adds the string length. <br /><b>Example: <tag>str</tag>Test<tag>/str</tag></b>
+				</li>
+				<li>
+					<b><tag>lookbackstr</tag></b> - a lookback string. A special type of string that can remember previously used strings. <br />
+					<b>Required attributes: "type"</b> - a type of the lookback string, can either be "40" or "80". <br />
+					<b>Example: <tag>str</tag>Test<tag>/str</tag></b>
+				</li>
+				<li>
+					<b><tag>raw</tag></b> - raw bytes in utf-8 form. <br /><b>Example: <tag>raw</tag>RawTest<tag>/raw</tag></b>
+				</li>
+				<li>
+					<b><tag>b64</tag></b> - a Base64 encoded data. <br /><b
+						>Example: <tag>b64</tag>iVBORw0KGgoAAAANSUhEUgAAAAUA AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO 9TXL0Y4OHwAAAABJRU5ErkJggg==<tag>/b64</tag></b
+					>
+				</li>
+			</ul>
+		</div>
+		<script type="text/javascript">
+			// add '<' '>' characters to tag displays
+			var tags = document.getElementsByTagName("tag");
+			for (var i = 0, max = tags.length; i < max; i++) {
+				tags[i].innerHTML = "&lt;" + tags[i].innerHTML + "&gt;";
+			}
+		</script>
+	</body>
+</html>

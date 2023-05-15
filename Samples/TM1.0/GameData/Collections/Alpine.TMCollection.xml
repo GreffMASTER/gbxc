@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<gbx version="6" unknown="R" class="CGameCtnCollection" complvl="1" md5="e5a6a0a9b438d6c3b0f99c283dfc2afb">
+    <head>
+        <chunk class="CGameCtnCollection" id="001">
+            <byte>2</byte> <!-- Version -->
+            <lookbackstr type="40">Alpine</lookbackstr>
+            <bool>0</bool> <!-- Need unlock -->
+            <str>Alpine\Media\Texture\IconEnvSnow.Texture.gbx</str> <!-- Env icon path -->
+            <str></str> <!-- Collection icon path -->
+            <uint32>1</uint32> <!-- Index -->
+        </chunk>
+    </head>
+    <reference_table ancestor="1">
+        <dir name="Collections"></dir>
+        <dir name="Alpine">
+            <dir name="ConstructionDecoration">
+                <file flags="1" name="AlpineBase32x32.TMDecoration.Gbx" usefile="0" refname="alpine_base"/>
+            </dir>
+            <dir name="Media">
+                <dir name="Texture">
+                    <file flags="1" name="IconEnvSnow.Texture.gbx" usefile="1" refname="icon_env_snow"/>
+                </dir>
+            </dir>
+            <dir name="ConstructionBlockInfo">
+                <dir name="ConstructionBlockInfoFlat">
+                    <file flags="1" name="Snow.TMEDFlat.Gbx" usefile="0" refname="snow_flat"/>
+                    <file flags="1" name="Ice.TMEDFlat.Gbx" usefile="0" refname="ice_flat"/>
+                    <file flags="1" name="Snow1.TMEDFlat.Gbx" usefile="0" refname="snow1_flat"/>
+                    <file flags="1" name="Snow2.TMEDFlat.Gbx" usefile="0" refname="snow2_flat"/>
+                    <file flags="1" name="Snow3.TMEDFlat.Gbx" usefile="0" refname="snow3_flat"/>
+                    <file flags="1" name="Ice0.TMEDFlat.Gbx" usefile="0" refname="ice0_flat"/>
+                </dir>
+                <dir name="ConstructionBlockInfoClip">
+                    <file flags="1" name="AlpineSnowClip.TMEDClip.Gbx" usefile="0" refname="snow_clip"/>
+                </dir>
+                <dir name="ConstructionBlockInfoRoad">
+                    <file flags="1" name="AlpineRoadWood.TMEDRoad.Gbx" usefile="0" refname="road_wood"/>
+                </dir>
+                <dir name="ConstructionBlockInfoPylon">
+                    <file flags="1" name="AlpinePylonWood.TMEDPylon.Gbx" usefile="0" refname="pylon_wood"/>
+                </dir>
+                <dir name="ConstructionBlockInfoFrontier">
+                    <file flags="1" name="SnowToIce.TMEDFrontier.Gbx" usefile="0" refname="snowtoice_frontier"/>
+                    <file flags="1" name="SnowToSnow1.TMEDFrontier.Gbx" usefile="0" refname="snowtosnow1_frontier"/>
+                    <file flags="1" name="Snow1ToSnow2.TMEDFrontier.Gbx" usefile="0" refname="snow1tosnow2_frontier"/>
+                    <file flags="1" name="Snow2ToSnow3.TMEDFrontier.Gbx" usefile="0" refname="snow2tosnow3_frontier"/>
+                    <file flags="1" name="Ice0ToIce.TMEDFrontier.Gbx" usefile="0" refname="ice0toice_frontier"/>
+                </dir>
+            </dir>
+        </dir>
+    </reference_table>
+    <body>
+        <chunk class="CGameCtnCollection" id="008">
+            <node ref="alpine_base"/>
+        </chunk>
+        <chunk class="CGameCtnCollection" id="009">
+            <lookbackstr type="40">Alpine</lookbackstr> <!-- LBS 1 -->
+            <uint32>10</uint32>
+            <node_list>
+                <node class="CGameCtnZoneFlat"> <!-- EL1 -->
+                    <chunk class="CGameCtnZone" id="003">
+                        <uint32>0</uint32>
+                        <lookbackstr type="40">Snow</lookbackstr> <!-- LBS 2 -->
+                        <lookbackstr type="40">Snow</lookbackstr>
+                        <uint32>0</uint32>
+                    </chunk>
+                    <chunk class="CGameCtnZoneFlat" id="001">
+                        <node ref="snow_flat"/>
+                        <node ref="snow_clip"/>
+                        <node ref="road_wood"/>
+                        <node ref="pylon_wood"/>
+                    </chunk>
+                </node> <!-- EO EL1 -->
+                <node class="CGameCtnZoneFlat"> <!-- EL2 -->
+                    <chunk class="CGameCtnZone" id="003">
+                        <uint32>0</uint32>
+                        <lookbackstr type="40">Ice</lookbackstr> <!-- LBS 3 -->
+                        <lookbackstr type="40">Ice</lookbackstr>
+                        <uint32>0</uint32>
+                    </chunk>
+                    <chunk class="CGameCtnZoneFlat" id="001">
+                        <node ref="ice_flat"/>
+                        <node/>
+                        <node/>
+                        <node/>
+                    </chunk>
+                </node> <!-- EO EL2 -->
+                <node class="CGameCtnZoneFrontier"> <!-- EL3 -->
+                    <chunk class="CGameCtnZone" id="003">
+                        <uint32>0</uint32>
+                        <lookbackstr type="40">SnowToIce</lookbackstr> <!-- LBS 4 -->
+                        <lookbackstr type="40">SnowToIce</lookbackstr>
+                        <uint32>1</uint32>
+                    </chunk>
+                    <chunk class="CGameCtnZoneFrontier" id="001">
+                        <node ref="snowtoice_frontier"/>
+                        <lookbackstr type="40">Snow</lookbackstr>
+                        <lookbackstr type="40">Ice</lookbackstr>
+                    </chunk>
+                </node> <!-- EO EL3 -->
+                <node class="CGameCtnZoneFlat"> <!-- EL4 -->
+                    <chunk class="CGameCtnZone" id="003">
+                        <uint32>3</uint32>
+                        <lookbackstr type="40">Snow1</lookbackstr> <!-- LBS 5 -->
+                        <lookbackstr type="40">Snow</lookbackstr>
+                        <uint32>0</uint32>
+                    </chunk>
+                    <chunk class="CGameCtnZoneFlat" id="001">
+                        <node ref="snow1_flat"/>
+                        <node ref="snow_clip"/>
+                        <node ref="road_wood"/>
+                        <node ref="pylon_wood"/>
+                    </chunk>
+                </node> <!-- EO EL4 -->
+                <node class="CGameCtnZoneFrontier"> <!-- EL5 -->
+                    <chunk class="CGameCtnZone" id="003">
+                        <uint32>3</uint32>
+                        <lookbackstr type="40">SnowToSnow1</lookbackstr> <!-- LBS 6 -->
+                        <lookbackstr type="40">Cliff</lookbackstr> <!-- LBS 7 -->
+                        <uint32>1</uint32>
+                    </chunk>
+                    <chunk class="CGameCtnZoneFrontier" id="001">
+                        <node ref="snowtosnow1_frontier"/>
+                        <lookbackstr type="40">Snow</lookbackstr>
+                        <lookbackstr type="40">Snow1</lookbackstr>
+                    </chunk>
+                </node> <!-- EO EL5 -->
+                <node class="CGameCtnZoneFlat"> <!-- EL6 -->
+                    <chunk class="CGameCtnZone" id="003">
+                        <uint32>6</uint32>
+                        <lookbackstr type="40">Snow2</lookbackstr> <!-- LBS 8 -->
+                        <lookbackstr type="40">Snow</lookbackstr>
+                        <uint32>0</uint32>
+                    </chunk>
+                    <chunk class="CGameCtnZoneFlat" id="001">
+                        <node ref="snow2_flat"/>
+                        <node ref="snow_clip"/>
+                        <node ref="road_wood"/>
+                        <node ref="pylon_wood"/>
+                    </chunk>
+                </node> <!-- EO EL6 -->
+                <node class="CGameCtnZoneFrontier"> <!-- EL7 -->
+                    <chunk class="CGameCtnZone" id="003">
+                        <uint32>6</uint32>
+                        <lookbackstr type="40">Snow1ToSnow2</lookbackstr> <!-- LBS 9 -->
+                        <lookbackstr type="40">Cliff</lookbackstr>
+                        <uint32>1</uint32>
+                    </chunk>
+                    <chunk class="CGameCtnZoneFrontier" id="001">
+                        <node ref="snow1tosnow2_frontier"/>
+                        <lookbackstr type="40">Snow1</lookbackstr>
+                        <lookbackstr type="40">Snow2</lookbackstr>
+                    </chunk>
+                </node> <!-- EO EL7 -->
+                <node class="CGameCtnZoneFlat"> <!-- EL8 -->
+                    <chunk class="CGameCtnZone" id="003">
+                        <uint32>9</uint32>
+                        <lookbackstr type="40">Snow3</lookbackstr> <!-- LBS 10 -->
+                        <lookbackstr type="40">Snow</lookbackstr>
+                        <uint32>0</uint32>
+                    </chunk>
+                    <chunk class="CGameCtnZoneFlat" id="001">
+                        <node ref="snow3_flat"/>
+                        <node ref="snow_clip"/>
+                        <node ref="road_wood"/>
+                        <node ref="pylon_wood"/>
+                    </chunk>
+                </node> <!-- EO EL8 -->
+                <node class="CGameCtnZoneFrontier"> <!-- EL9 -->
+                    <chunk class="CGameCtnZone" id="003">
+                        <uint32>9</uint32>
+                        <lookbackstr type="40">Snow2ToSnow3</lookbackstr> <!-- LBS 11 -->
+                        <lookbackstr type="40">Cliff</lookbackstr>
+                        <uint32>1</uint32>
+                    </chunk>
+                    <chunk class="CGameCtnZoneFrontier" id="001">
+                        <node ref="snow2tosnow3_frontier"/>
+                        <lookbackstr type="40">Snow2</lookbackstr>
+                        <lookbackstr type="40">Snow3</lookbackstr>
+                    </chunk>
+                </node> <!-- EO EL9 -->
+                <node class="CGameCtnZoneFlat"> <!-- EL10 -->
+                    <chunk class="CGameCtnZone" id="003">
+                        <uint32>0</uint32>
+                        <lookbackstr type="40">Ice0</lookbackstr> <!-- LBS 12 -->
+                        <lookbackstr type="40">Ice0</lookbackstr>
+                        <uint32>0</uint32>
+                    </chunk>
+                    <chunk class="CGameCtnZoneFlat" id="001">
+                        <node ref="ice0_flat"/>
+                        <node/>
+                        <node/>
+                        <node/>
+                    </chunk>
+                </node> <!-- EO EL10 -->
+                <node class="CGameCtnZoneFrontier"> <!-- EL11 -->
+                    <chunk class="CGameCtnZone" id="003">
+                        <uint32>0</uint32>
+                        <lookbackstr type="40">Ice0ToIce</lookbackstr> <!-- LBS 13 -->
+                        <lookbackstr type="40">Terraforming</lookbackstr> <!-- LBS 14 -->
+                        <uint32>1</uint32>
+                    </chunk>
+                    <chunk class="CGameCtnZoneFrontier" id="001">
+                        <node ref="ice0toice_frontier"/>
+                        <lookbackstr type="40">Ice</lookbackstr>
+                        <lookbackstr type="40">Ice0</lookbackstr>
+                    </chunk>
+                </node> <!-- EO EL11 -->
+            </node_list>
+            <uint32>2</uint32>
+            <uint32>0</uint32>
+            <float>32</float> <!-- Cell size -->
+            <float>16</float> <!-- Cell height -->
+            <!-- Vehicle meta -->
+            <lookbackstr type="40">SnowCar</lookbackstr>
+            <lookbackstr type="40">Vehicles</lookbackstr>
+            <lookbackstr type="40">Nadeo</lookbackstr>
+        </chunk>
+        <chunk class="CGameCtnCollection" id="00B">
+            <uint32>2</uint32>
+        </chunk>
+        <chunk class="CGameCtnCollection" id="00C">
+            <uint32>1</uint32>
+            <uint32>0</uint32>
+        </chunk>
+        <chunk class="CGameCtnCollection" id="00D">
+            <bool>1</bool> <!-- Has env icon -->
+            <node ref="icon_env_snow"/>
+            <bool>0</bool> <!-- Has collection icon -->
+        </chunk>
+        <chunk class="CGameCtnCollection" id="00E">
+            <uint32>1</uint32> <!-- Index -->
+        </chunk>
+    </body>
+</gbx>
