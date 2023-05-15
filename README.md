@@ -7,3 +7,6 @@ Check the documentation [here](https://github.com/GreffMASTER/gbxc/tree/main/Doc
 
 ## License
 GBX Compiler is licensed under the MIT License, see [LICENSE](https://github.com/GreffMASTER/gbxc/blob/main/LICENSE) for details.
+
+## Additional notes
+This is the last project under the "GreffMASTER" name. I realized that this is not what i want to do anymore and will distance myself from my previous work.
