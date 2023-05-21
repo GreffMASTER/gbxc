@@ -56,157 +56,179 @@
         <chunk class="CGameCtnCollection" id="009">
             <lookbackstr type="40">Alpine</lookbackstr> <!-- LBS 1 -->
             <uint32>10</uint32>
-            <node_list>
-                <node class="CGameCtnZoneFlat"> <!-- EL1 -->
-                    <chunk class="CGameCtnZone" id="003">
-                        <uint32>0</uint32>
-                        <lookbackstr type="40">Snow</lookbackstr> <!-- LBS 2 -->
-                        <lookbackstr type="40">Snow</lookbackstr>
-                        <uint32>0</uint32>
-                    </chunk>
-                    <chunk class="CGameCtnZoneFlat" id="001">
-                        <node ref="snow_flat"/>
-                        <node ref="snow_clip"/>
-                        <node ref="road_wood"/>
-                        <node ref="pylon_wood"/>
-                    </chunk>
-                </node> <!-- EO EL1 -->
-                <node class="CGameCtnZoneFlat"> <!-- EL2 -->
-                    <chunk class="CGameCtnZone" id="003">
-                        <uint32>0</uint32>
-                        <lookbackstr type="40">Ice</lookbackstr> <!-- LBS 3 -->
-                        <lookbackstr type="40">Ice</lookbackstr>
-                        <uint32>0</uint32>
-                    </chunk>
-                    <chunk class="CGameCtnZoneFlat" id="001">
-                        <node ref="ice_flat"/>
-                        <node/>
-                        <node/>
-                        <node/>
-                    </chunk>
-                </node> <!-- EO EL2 -->
-                <node class="CGameCtnZoneFrontier"> <!-- EL3 -->
-                    <chunk class="CGameCtnZone" id="003">
-                        <uint32>0</uint32>
-                        <lookbackstr type="40">SnowToIce</lookbackstr> <!-- LBS 4 -->
-                        <lookbackstr type="40">SnowToIce</lookbackstr>
-                        <uint32>1</uint32>
-                    </chunk>
-                    <chunk class="CGameCtnZoneFrontier" id="001">
-                        <node ref="snowtoice_frontier"/>
-                        <lookbackstr type="40">Snow</lookbackstr>
-                        <lookbackstr type="40">Ice</lookbackstr>
-                    </chunk>
-                </node> <!-- EO EL3 -->
-                <node class="CGameCtnZoneFlat"> <!-- EL4 -->
-                    <chunk class="CGameCtnZone" id="003">
-                        <uint32>3</uint32>
-                        <lookbackstr type="40">Snow1</lookbackstr> <!-- LBS 5 -->
-                        <lookbackstr type="40">Snow</lookbackstr>
-                        <uint32>0</uint32>
-                    </chunk>
-                    <chunk class="CGameCtnZoneFlat" id="001">
-                        <node ref="snow1_flat"/>
-                        <node ref="snow_clip"/>
-                        <node ref="road_wood"/>
-                        <node ref="pylon_wood"/>
-                    </chunk>
-                </node> <!-- EO EL4 -->
-                <node class="CGameCtnZoneFrontier"> <!-- EL5 -->
-                    <chunk class="CGameCtnZone" id="003">
-                        <uint32>3</uint32>
-                        <lookbackstr type="40">SnowToSnow1</lookbackstr> <!-- LBS 6 -->
-                        <lookbackstr type="40">Cliff</lookbackstr> <!-- LBS 7 -->
-                        <uint32>1</uint32>
-                    </chunk>
-                    <chunk class="CGameCtnZoneFrontier" id="001">
-                        <node ref="snowtosnow1_frontier"/>
-                        <lookbackstr type="40">Snow</lookbackstr>
-                        <lookbackstr type="40">Snow1</lookbackstr>
-                    </chunk>
-                </node> <!-- EO EL5 -->
-                <node class="CGameCtnZoneFlat"> <!-- EL6 -->
-                    <chunk class="CGameCtnZone" id="003">
-                        <uint32>6</uint32>
-                        <lookbackstr type="40">Snow2</lookbackstr> <!-- LBS 8 -->
-                        <lookbackstr type="40">Snow</lookbackstr>
-                        <uint32>0</uint32>
-                    </chunk>
-                    <chunk class="CGameCtnZoneFlat" id="001">
-                        <node ref="snow2_flat"/>
-                        <node ref="snow_clip"/>
-                        <node ref="road_wood"/>
-                        <node ref="pylon_wood"/>
-                    </chunk>
-                </node> <!-- EO EL6 -->
-                <node class="CGameCtnZoneFrontier"> <!-- EL7 -->
-                    <chunk class="CGameCtnZone" id="003">
-                        <uint32>6</uint32>
-                        <lookbackstr type="40">Snow1ToSnow2</lookbackstr> <!-- LBS 9 -->
-                        <lookbackstr type="40">Cliff</lookbackstr>
-                        <uint32>1</uint32>
-                    </chunk>
-                    <chunk class="CGameCtnZoneFrontier" id="001">
-                        <node ref="snow1tosnow2_frontier"/>
-                        <lookbackstr type="40">Snow1</lookbackstr>
-                        <lookbackstr type="40">Snow2</lookbackstr>
-                    </chunk>
-                </node> <!-- EO EL7 -->
-                <node class="CGameCtnZoneFlat"> <!-- EL8 -->
-                    <chunk class="CGameCtnZone" id="003">
-                        <uint32>9</uint32>
-                        <lookbackstr type="40">Snow3</lookbackstr> <!-- LBS 10 -->
-                        <lookbackstr type="40">Snow</lookbackstr>
-                        <uint32>0</uint32>
-                    </chunk>
-                    <chunk class="CGameCtnZoneFlat" id="001">
-                        <node ref="snow3_flat"/>
-                        <node ref="snow_clip"/>
-                        <node ref="road_wood"/>
-                        <node ref="pylon_wood"/>
-                    </chunk>
-                </node> <!-- EO EL8 -->
-                <node class="CGameCtnZoneFrontier"> <!-- EL9 -->
-                    <chunk class="CGameCtnZone" id="003">
-                        <uint32>9</uint32>
-                        <lookbackstr type="40">Snow2ToSnow3</lookbackstr> <!-- LBS 11 -->
-                        <lookbackstr type="40">Cliff</lookbackstr>
-                        <uint32>1</uint32>
-                    </chunk>
-                    <chunk class="CGameCtnZoneFrontier" id="001">
-                        <node ref="snow2tosnow3_frontier"/>
-                        <lookbackstr type="40">Snow2</lookbackstr>
-                        <lookbackstr type="40">Snow3</lookbackstr>
-                    </chunk>
-                </node> <!-- EO EL9 -->
-                <node class="CGameCtnZoneFlat"> <!-- EL10 -->
-                    <chunk class="CGameCtnZone" id="003">
-                        <uint32>0</uint32>
-                        <lookbackstr type="40">Ice0</lookbackstr> <!-- LBS 12 -->
-                        <lookbackstr type="40">Ice0</lookbackstr>
-                        <uint32>0</uint32>
-                    </chunk>
-                    <chunk class="CGameCtnZoneFlat" id="001">
-                        <node ref="ice0_flat"/>
-                        <node/>
-                        <node/>
-                        <node/>
-                    </chunk>
-                </node> <!-- EO EL10 -->
-                <node class="CGameCtnZoneFrontier"> <!-- EL11 -->
-                    <chunk class="CGameCtnZone" id="003">
-                        <uint32>0</uint32>
-                        <lookbackstr type="40">Ice0ToIce</lookbackstr> <!-- LBS 13 -->
-                        <lookbackstr type="40">Terraforming</lookbackstr> <!-- LBS 14 -->
-                        <uint32>1</uint32>
-                    </chunk>
-                    <chunk class="CGameCtnZoneFrontier" id="001">
-                        <node ref="ice0toice_frontier"/>
-                        <lookbackstr type="40">Ice</lookbackstr>
-                        <lookbackstr type="40">Ice0</lookbackstr>
-                    </chunk>
-                </node> <!-- EO EL11 -->
-            </node_list>
+            <list>
+                <element>
+                    <node class="CGameCtnZoneFlat"> <!-- EL1 -->
+                        <chunk class="CGameCtnZone" id="003">
+                            <uint32>0</uint32>
+                            <lookbackstr type="40">Snow</lookbackstr> <!-- LBS 2 -->
+                            <lookbackstr type="40">Snow</lookbackstr>
+                            <uint32>0</uint32>
+                        </chunk>
+                        <chunk class="CGameCtnZoneFlat" id="001">
+                            <node ref="snow_flat"/>
+                            <node ref="snow_clip"/>
+                            <node ref="road_wood"/>
+                            <node ref="pylon_wood"/>
+                        </chunk>
+                    </node> <!-- EO EL1 -->
+                </element>
+                <element>
+                    <node class="CGameCtnZoneFlat"> <!-- EL2 -->
+                        <chunk class="CGameCtnZone" id="003">
+                            <uint32>0</uint32>
+                            <lookbackstr type="40">Ice</lookbackstr> <!-- LBS 3 -->
+                            <lookbackstr type="40">Ice</lookbackstr>
+                            <uint32>0</uint32>
+                        </chunk>
+                        <chunk class="CGameCtnZoneFlat" id="001">
+                            <node ref="ice_flat"/>
+                            <node/>
+                            <node/>
+                            <node/>
+                        </chunk>
+                    </node> <!-- EO EL2 -->
+                </element>
+                <element>
+                    <node class="CGameCtnZoneFrontier"> <!-- EL3 -->
+                        <chunk class="CGameCtnZone" id="003">
+                            <uint32>0</uint32>
+                            <lookbackstr type="40">SnowToIce</lookbackstr> <!-- LBS 4 -->
+                            <lookbackstr type="40">SnowToIce</lookbackstr>
+                            <uint32>1</uint32>
+                        </chunk>
+                        <chunk class="CGameCtnZoneFrontier" id="001">
+                            <node ref="snowtoice_frontier"/>
+                            <lookbackstr type="40">Snow</lookbackstr>
+                            <lookbackstr type="40">Ice</lookbackstr>
+                        </chunk>
+                    </node> <!-- EO EL3 -->
+                </element>
+                <element>
+                    <node class="CGameCtnZoneFlat"> <!-- EL4 -->
+                        <chunk class="CGameCtnZone" id="003">
+                            <uint32>3</uint32>
+                            <lookbackstr type="40">Snow1</lookbackstr> <!-- LBS 5 -->
+                            <lookbackstr type="40">Snow</lookbackstr>
+                            <uint32>0</uint32>
+                        </chunk>
+                        <chunk class="CGameCtnZoneFlat" id="001">
+                            <node ref="snow1_flat"/>
+                            <node ref="snow_clip"/>
+                            <node ref="road_wood"/>
+                            <node ref="pylon_wood"/>
+                        </chunk>
+                    </node> <!-- EO EL4 -->
+                </element>
+                <element>
+                    <node class="CGameCtnZoneFrontier"> <!-- EL5 -->
+                        <chunk class="CGameCtnZone" id="003">
+                            <uint32>3</uint32>
+                            <lookbackstr type="40">SnowToSnow1</lookbackstr> <!-- LBS 6 -->
+                            <lookbackstr type="40">Cliff</lookbackstr> <!-- LBS 7 -->
+                            <uint32>1</uint32>
+                        </chunk>
+                        <chunk class="CGameCtnZoneFrontier" id="001">
+                            <node ref="snowtosnow1_frontier"/>
+                            <lookbackstr type="40">Snow</lookbackstr>
+                            <lookbackstr type="40">Snow1</lookbackstr>
+                        </chunk>
+                    </node> <!-- EO EL5 -->
+                </element>
+                <element>
+                    <node class="CGameCtnZoneFlat"> <!-- EL6 -->
+                        <chunk class="CGameCtnZone" id="003">
+                            <uint32>6</uint32>
+                            <lookbackstr type="40">Snow2</lookbackstr> <!-- LBS 8 -->
+                            <lookbackstr type="40">Snow</lookbackstr>
+                            <uint32>0</uint32>
+                        </chunk>
+                        <chunk class="CGameCtnZoneFlat" id="001">
+                            <node ref="snow2_flat"/>
+                            <node ref="snow_clip"/>
+                            <node ref="road_wood"/>
+                            <node ref="pylon_wood"/>
+                        </chunk>
+                    </node> <!-- EO EL6 -->
+                </element>
+                <element>
+                    <node class="CGameCtnZoneFrontier"> <!-- EL7 -->
+                        <chunk class="CGameCtnZone" id="003">
+                            <uint32>6</uint32>
+                            <lookbackstr type="40">Snow1ToSnow2</lookbackstr> <!-- LBS 9 -->
+                            <lookbackstr type="40">Cliff</lookbackstr>
+                            <uint32>1</uint32>
+                        </chunk>
+                        <chunk class="CGameCtnZoneFrontier" id="001">
+                            <node ref="snow1tosnow2_frontier"/>
+                            <lookbackstr type="40">Snow1</lookbackstr>
+                            <lookbackstr type="40">Snow2</lookbackstr>
+                        </chunk>
+                    </node> <!-- EO EL7 -->
+                </element>
+                <element>
+                    <node class="CGameCtnZoneFlat"> <!-- EL8 -->
+                        <chunk class="CGameCtnZone" id="003">
+                            <uint32>9</uint32>
+                            <lookbackstr type="40">Snow3</lookbackstr> <!-- LBS 10 -->
+                            <lookbackstr type="40">Snow</lookbackstr>
+                            <uint32>0</uint32>
+                        </chunk>
+                        <chunk class="CGameCtnZoneFlat" id="001">
+                            <node ref="snow3_flat"/>
+                            <node ref="snow_clip"/>
+                            <node ref="road_wood"/>
+                            <node ref="pylon_wood"/>
+                        </chunk>
+                    </node> <!-- EO EL8 -->
+                </element>
+                <element>
+                    <node class="CGameCtnZoneFrontier"> <!-- EL9 -->
+                        <chunk class="CGameCtnZone" id="003">
+                            <uint32>9</uint32>
+                            <lookbackstr type="40">Snow2ToSnow3</lookbackstr> <!-- LBS 11 -->
+                            <lookbackstr type="40">Cliff</lookbackstr>
+                            <uint32>1</uint32>
+                        </chunk>
+                        <chunk class="CGameCtnZoneFrontier" id="001">
+                            <node ref="snow2tosnow3_frontier"/>
+                            <lookbackstr type="40">Snow2</lookbackstr>
+                            <lookbackstr type="40">Snow3</lookbackstr>
+                        </chunk>
+                    </node> <!-- EO EL9 -->
+                </element>
+                <element>
+                    <node class="CGameCtnZoneFlat"> <!-- EL10 -->
+                        <chunk class="CGameCtnZone" id="003">
+                            <uint32>0</uint32>
+                            <lookbackstr type="40">Ice0</lookbackstr> <!-- LBS 12 -->
+                            <lookbackstr type="40">Ice0</lookbackstr>
+                            <uint32>0</uint32>
+                        </chunk>
+                        <chunk class="CGameCtnZoneFlat" id="001">
+                            <node ref="ice0_flat"/>
+                            <node/>
+                            <node/>
+                            <node/>
+                        </chunk>
+                    </node> <!-- EO EL10 -->
+                </element>
+                <element>
+                    <node class="CGameCtnZoneFrontier"> <!-- EL11 -->
+                        <chunk class="CGameCtnZone" id="003">
+                            <uint32>0</uint32>
+                            <lookbackstr type="40">Ice0ToIce</lookbackstr> <!-- LBS 13 -->
+                            <lookbackstr type="40">Terraforming</lookbackstr> <!-- LBS 14 -->
+                            <uint32>1</uint32>
+                        </chunk>
+                        <chunk class="CGameCtnZoneFrontier" id="001">
+                            <node ref="ice0toice_frontier"/>
+                            <lookbackstr type="40">Ice</lookbackstr>
+                            <lookbackstr type="40">Ice0</lookbackstr>
+                        </chunk>
+                    </node> <!-- EO EL11 -->
+                </element>
+            </list>
             <uint32>2</uint32>
             <uint32>0</uint32>
             <float>32</float> <!-- Cell size -->

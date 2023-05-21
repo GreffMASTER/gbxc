@@ -71,6 +71,10 @@ def _validate_head_chunk(chunk: ET.Element) -> int:
     i = 0
     for tag in chunk:
         i += 1
+        if tag.tag == 'node':
+            print(f'XML Error: a head <chunk> cannot contain any <node>s!'
+                  f'(tag no. {i}, class "{class_id}", chunk "{chunk_id}")')
+            return 1
         if tag.tag not in data_types:
             print(f'XML Error: unknown data type tag <{tag.tag}>!'
                   f'(tag no. {i}, class "{class_id}", chunk "{chunk_id}")')
@@ -220,12 +224,17 @@ def _validate_chunk(chunk: ET.Element) -> int:
             if _validate_node(tag) == 1:
                 print(f'In <chunk> class "{class_id}", id "{chunk_id}"')
                 return 1
-        elif tag.tag == 'node_list':
-            for node in tag:
-                if node.tag != 'node':
-                    print('XML Error: <node_list> must only contain <node> child tags!')
+        elif tag.tag == 'list':
+            for element in tag:
+                if element.tag != 'element':
+                    print('XML Error: <list> must only contain <element> child tags!')
                     print(f'In <chunk> class "{class_id}", id "{chunk_id}"')
                     return 1
+                for sub_element in element:
+                    if sub_element.tag == 'chunk':
+                        print('XML Error: <element> tag cannot contain <chunk> child tags!')
+                        print(f'In <chunk> class "{class_id}", id "{chunk_id}"')
+                        return 1
         else:
             if tag.tag not in data_types:
                 print(f'XML Error: unknown data type tag <{tag.tag}>! (tag no. {i}, class "{class_id}")')

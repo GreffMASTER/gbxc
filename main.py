@@ -6,7 +6,7 @@ import gbx_xml as gbx_xml_tools
 from gbx import xml_to_gbx
 import argparse
 
-VERSION_STR = 'a1.1'
+VERSION_STR = 'a1.2'
 
 
 def is_valid_file(parser, arg):
@@ -31,6 +31,9 @@ arg_parser.add_argument(dest='xml_file',
 arg_parser.add_argument('-d', '--dir', dest='dir',
                         help='the directory where the output file will be saved'
                         )
+arg_parser.add_argument('-c', '--checksum', dest='do_checksum', action='store_true',
+                        help='whether the program should do a md5 checksum on the compiled file'
+                        )
 
 
 def main() -> int:
@@ -52,18 +55,19 @@ def main() -> int:
 
     print(f'Successfully compiled to "{gbx_path}"!')
 
-    with open(gbx_path, 'rb') as fb:
-        gbx_data = fb.read()
-        new_md5 = hashlib.md5(gbx_data).digest().hex()
-        fb.close()
-        print(f'{new_md5}')
-        exp_md5 = gbx.getroot().get('md5')
-        if exp_md5:
-            if new_md5 == exp_md5:
-                print('CHECKSUM: OK')
-            else:
-                print(f'CHECKSUM: FAIL, expected checksum is incorrect!\n'
-                      f'Expected "{exp_md5}", got "{new_md5}".')
+    if argv.do_checksum:
+        with open(gbx_path, 'rb') as fb:
+            gbx_data = fb.read()
+            new_md5 = hashlib.md5(gbx_data).digest().hex()
+            fb.close()
+            print(f'{new_md5}')
+            exp_md5 = gbx.getroot().get('md5')
+            if exp_md5:
+                if new_md5 == exp_md5:
+                    print('CHECKSUM: OK')
+                else:
+                    print(f'CHECKSUM: FAIL, expected checksum is incorrect!\n'
+                          f'Expected "{exp_md5}", got "{new_md5}".')
     return 0
 
 

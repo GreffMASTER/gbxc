@@ -210,26 +210,27 @@ def write_node(body_data: BinaryIO, xml_node):
     return 0
 
 
-def write_node_list(body_data: BinaryIO, lst):
+def write_list(body_data: BinaryIO, lst):
     count = 0
-    for _element in lst:
+    for element in lst:
         count += 1
-    body_data.write(pack('<I', count))  # write number of nodes
-    for node in lst:
-        if write_node(body_data, node) == 1:
-            return 1
+    body_data.write(pack('<I', count))  # write number of elements
+    for element in lst:
+        for c_element in element:
+            if write_chunk_element(body_data, c_element) == 1:
+                return 1
 
 
 def write_chunk_element(body_data, element):
     if element.tag == 'node':
         if write_node(body_data, element) == 1:
             return 1
-    elif element.tag == 'node_list':
-        return write_node_list(body_data, element)
+    elif element.tag == 'list':
+        return write_list(body_data, element)
     elif element.tag == 'chunk':
         return write_chunk(body_data, element)
     else:
-        res = data_types[element.tag](body_data, element.text, element.attrib)
+        res = data_types[element.tag](body_data, element.text, element.attrib, element)
         if res == 1:
             return 1
     return 0

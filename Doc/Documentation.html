@@ -29,7 +29,7 @@
 	</head>
 	<body>
 		<img class="banner" src="res/gbxc_banner.png" alt="gbxc banner" />
-		<p>Version Alpha 1.1</p>
+		<p>Version Alpha 1.2</p>
 		<br />
 		<h1 style="margin: 10px">User Manual</h1>
 		<h4 style="margin-left: 14px">GreffMASTER, 2023</h4>
@@ -54,17 +54,17 @@
 		<div id="cmd" class="chapter">
 			<h1>Command Line Arguments</h1>
 			<br />
-			<p><b>Usage:</b> gbxc [-h] [-d DIR] file.xml</p>
-
+			<p><b>Usage:</b> gbxc [-h] [-d DIR] [-c] file.xml</p>
+            <br />
 			<p>positional arguments:</p>
 			<p>file.xml - xml input file that will be "compiled" to gbx</p>
-			<p></p>
+			<br />
 			<p>options:</p>
 			<p>-h, --help - show this help message and exit</p>
 			<p>-d DIR, --dir DIR - the directory where the output file will be saved</p>
+            <p>-c, --checksum - whether the program should do a md5 checksum on the compiled file</p>
 			<br />
-			<p><b>Example:</b> gbxc -d out Alpine.TMCollection.xml</p>
-			<br />
+			<p><b>Example:</b> <code>gbxc -d out Alpine.TMCollection.xml</code></p>
 			<p>Will produce "Alpine.TMCollection.Gbx" in the "out" directory. (out/Alpine.TMCollection.Gbx)</p>
 		</div>
 		<br />
@@ -97,14 +97,14 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;<tag>/body</tag><br/>
                 <tag>/gbx</tag>
             </div>
+            <br/>
+            <h3><tag>reference_table</tag></h3>
+            <br/>
+            <p>The <tag>reference_table</tag> tag uses one attribute:</p>
+            <p>"ancestor" - ancestor level, how back does it go in the directory tree from the current file.</p>
+            <br/>
+            <h2>TODO finish documentation</h2>
 		</div>
-		<br/>
-        <h3><tag>reference_table</tag></h3>
-        <br/>
-        <p>The <tag>reference_table</tag> tag uses one attribute:</p>
-        <p>"ancestor" - ancestor level, how back does it go in the directory tree from the current file.</p>
-        <br/>
-        <h2>TODO finish documentation</h2>
 		<div id="data_t" class="chapter">
 			<h1>Data Types</h1>
 			<br />
@@ -139,15 +139,25 @@
 				<li>
 					<b><tag>lookbackstr</tag></b> - a lookback string. A special type of string that can remember previously used strings. <br />
 					<b>Required attributes: "type"</b> - a type of the lookback string, can either be "40" or "80". <br />
-					<b>Example: <tag>str</tag>Test<tag>/str</tag></b>
+					<b>Example: <tag>lookbackstr type="40"</tag>Test<tag>/lookbackstr</tag></b>
 				</li>
 				<li>
 					<b><tag>raw</tag></b> - raw bytes in utf-8 form. <br /><b>Example: <tag>raw</tag>RawTest<tag>/raw</tag></b>
 				</li>
-				<li>
-					<b><tag>b64</tag></b> - a Base64 encoded data. <br /><b
-						>Example: <tag>b64</tag>iVBORw0KGgoAAAANSUhEUgAAAAUA AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO 9TXL0Y4OHwAAAABJRU5ErkJggg==<tag>/b64</tag></b
-					>
+                <li>
+					<b><tag>hex</tag></b> - raw bytes in hex form. <br /><b>Example: <tag>hex</tag>01DECAFA<tag>/hex</tag></b>
+				</li>
+                <li>
+					<b><tag>flags</tag></b> - a special type for bit flags. <br />
+                    <b>Required attributes: "bytes"</b> - how many bytes the flags take in the file. <br />
+                    The <tag>flags</tag> tag uses child <tag>flag</tag> tags to determine which bits to set. <br />
+                    A <tag>flag</tag> tag uses a single attribute, <b>bit</b> and it determines which bit to set. <br />
+                    <b>Example: <br />
+                    <tag>flags bytes="4"</tag><br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;<tag>flag bit="1"</tag><br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;<tag>flag bit="3"</tag><br />
+                    <tag>/flags</tag></b><br />
+                    that will return as "05000000" in hex.
 				</li>
 			</ul>
 		</div>
