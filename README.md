@@ -9,8 +9,10 @@ file.xml - xml input file that will be "compiled" to gbx
   
 options:  
 -h, --help - show this help message and exit  
--d DIR, --dir DIR - the directory where the output file will be saved  
--c, --checksum     whether the program should do a md5 checksum on the compiled file  
+-d DIR, --dir DIR           - the directory where the output file will be saved  
+-l LOGFILE, --log LOGFILE   - log file path  
+-c, --checksum              - whether the program should do a md5 checksum on the compiled file  
+-v, --verbose               - show additional information when compiling  
   
 ## Documentation
 Check the documentation [here](https://github.com/GreffMASTER/gbxc/tree/main/Doc) as well as the sample files [here](https://github.com/GreffMASTER/gbxc/tree/main/Samples/TM1.0/GameData).
