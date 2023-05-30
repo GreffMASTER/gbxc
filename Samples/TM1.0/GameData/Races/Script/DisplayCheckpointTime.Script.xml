@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <gbx version="6" unknown="R" class="CMwCmdBlockMain" complvl="1" md5="ab7ddffaf7c2d2315594e9e7c0e5361b">
-    <head>
-    </head>
-    <reference_table ancestor="0">
-    </reference_table>
     <body>
         <chunk class="CMwCmdBlock" id="004">
             <list>
@@ -12,9 +8,9 @@
                         <chunk class="CMwCmdAffectIdent" id="000">
                             <str>Entry</str>
                             <node class="CMwCmdExpClassParam">
-                                <chunk class="CMwCmdExpClass" id="000"></chunk>
-                                <chunk class="CControlEntry" id="000"></chunk>
-                                <chunk class="CMwCmdExpClassParam" id="001">
+                                <chunk class="CMwCmdExpClass" id="000">
+                                    <gbxclass complvl="1" id="000">CControlEntry</gbxclass>
+                                    <gbxclass complvl="1" id="001">CMwCmdExpClassParam</gbxclass>
                                     <uint32>0</uint32>
                                     <uint32>1</uint32>
                                     <node/>
@@ -27,9 +23,9 @@
                                     <uint32>0</uint32>
                                     <uint32>1</uint32>
                                     <str>OverlayDeltaTime</str>
+                                    <gbxclass complvl="1" id="000">CScene</gbxclass>
+                                    <gbxclass complvl="1" id="002">CTrackManiaRace</gbxclass>
                                 </chunk>
-                                <chunk class="CScene" id="000"></chunk>
-                                <chunk class="CTrackManiaRace" id="002"></chunk>
                             </node>
                             <bool>0</bool> <!-- execute only once -->
                         </chunk>
@@ -53,33 +49,38 @@
                             </node>
                             <node class="CMwCmdBlock"> <!-- can't be null -->
                                 <chunk class="CMwCmdBlock" id="004">
-                                    <uint32>2</uint32> <!-- count -->
-                                    <node class="CMwCmdCall">
-                                        <chunk class="CMwCmdCall" id="001">
-                                            <uint32>0</uint32>
-                                            <uint32>0</uint32>
-                                            <str>Entry</str>
-                                            <node/>
-                                            <uint32>0</uint32>
-                                            <uint32>1</uint32>
-                                            <uint32>1</uint32>
-                                            <uint32>0</uint32>
-                                        </chunk>
-                                        <chunk class="CSceneMobil" id="004"></chunk>
-                                    </node>
-                                    <node class="CMwCmdCall">
-                                        <chunk class="CMwCmdCall" id="001">
-                                            <uint32>0</uint32>
-                                            <uint32>0</uint32>
-                                            <str>Entry</str>
-                                            <node/>
-                                            <uint32>0</uint32>
-                                            <uint32>1</uint32>
-                                            <uint32>1</uint32>
-                                            <uint32>0</uint32>
-                                        </chunk>
-                                        <chunk class="CControlBase" id="00F"></chunk>
-                                    </node>
+                                    <list>
+                                        <element>
+                                            <node class="CMwCmdCall">
+                                                <chunk class="CMwCmdCall" id="001">
+                                                    <uint32>0</uint32>
+                                                    <uint32>0</uint32>
+                                                    <str>Entry</str>
+                                                    <node/>
+                                                    <uint32>0</uint32>
+                                                    <uint32>1</uint32>
+                                                    <uint32>1</uint32>
+                                                    <uint32>0</uint32>
+                                                </chunk>
+                                                <chunk class="CSceneMobil" id="004"></chunk>
+                                            </node>
+                                        </element>
+                                        <element>
+                                            <node class="CMwCmdCall">
+                                                <chunk class="CMwCmdCall" id="001">
+                                                    <uint32>0</uint32>
+                                                    <uint32>0</uint32>
+                                                    <str>Entry</str>
+                                                    <node/>
+                                                    <uint32>0</uint32>
+                                                    <uint32>1</uint32>
+                                                    <uint32>1</uint32>
+                                                    <uint32>0</uint32>
+                                                </chunk>
+                                                <chunk class="CControlBase" id="00F"></chunk>
+                                            </node>
+                                        </element>
+                                    </list>
                                     <uint32>0</uint32>
                                     <uint32>0</uint32>
                                 </chunk>
