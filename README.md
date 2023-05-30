@@ -2,7 +2,7 @@
 Compile XML files to GBX.  
 This tool was created in order to replace the manual labor of hex editing the GBX files directly.  
 Usage:  
-`gbxc [-h] [-d DIR] file.xml`  
+`gbxc [-h] [-d DIR] [-l LOGFILE] [-c] [-v] file.xml`  
   
 positional arguments:  
 file.xml - xml input file that will be "compiled" to gbx  
