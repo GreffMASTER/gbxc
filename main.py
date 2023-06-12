@@ -10,7 +10,7 @@ import argparse
 import logging
 
 
-VERSION_STR = 'a1.3'
+VERSION_STR = 'a1.4'
 
 
 def is_valid_file(parser, arg):
@@ -32,8 +32,11 @@ arg_parser.add_argument(dest='xml_file',
                         help='xml input file that will be "compiled" to gbx',
                         metavar='file.xml',
                         type=lambda x: is_valid_file(arg_parser, x))
+arg_parser.add_argument('-o', '--out', dest='out',
+                        help='output path'
+                        )
 arg_parser.add_argument('-d', '--dir', dest='dir',
-                        help='the directory where the output file will be saved'
+                        help='the directory where the output file will be saved (only without -o)'
                         )
 arg_parser.add_argument('-l', '--log', dest='logfile',
                         help='log file path'
@@ -50,8 +53,11 @@ def main() -> None:
     argv = arg_parser.parse_args()
     xml_path = argv.xml_file
     gbx_path = f'{xml_path[:-4]}.Gbx'
-    if argv.dir:
-        gbx_path = os.path.join(argv.dir, gbx_path)
+    if argv.out:
+        gbx_path = argv.out
+    else:
+        if argv.dir:
+            gbx_path = os.path.join(argv.dir, gbx_path)
 
     loglevel = logging.WARNING
     logfile = None

@@ -127,43 +127,25 @@ def _validate_node(node: ET.Element):
     node_counter.increment()
 
     if 'link' in node.attrib:
-        # TODO node linking with reference table
-        # needs reference table update with file awareness (ancestor level and stuff)
-
         link_path = file_path_x.parents[0].joinpath(node.get('link'))
         if not link_path.exists():
             logging.error(f'XML Error: Linking error! File "{link_path}" does not exist!')
             raise ValidationError
 
-        if str(link_path) == str(file_path_x):
-            logging.error(f'XML Error: Linking error! Infinite recursion found in "{link_path}"!')
+        try:
+            link_xml = ET.parse(link_path)
+        except ET.ParseError as e:
+            logging.error(f'XML Error: Linking error! In file "{link_path}"!')
+            logging.error(e.msg)
             raise ValidationError
-
-        link_xml = ET.parse(link_path)
         try:
             validate_gbx_xml(link_xml, str(link_path))
         except ValidationError:
             logging.error(f'XML Error: Linking error! In file "{link_path}"!')
             raise ValidationError
-        '''
-
-        link_class = link_xml.getroot().get('class')
-        print(link_class)
-        link_reference_table = link_xml.findall('reference_table')[0]
-        for i in link_reference_table.getchildren():
-            reference_table.append(link_reference_table)
-        reference_table.append(link_reference_table.getchildren())
-        for i in reference_table.iter():
-            print(i)
-
-        print(link_reference_table)
-        link_body = link_xml.findall('body')[0]
-        link_body.tag = 'node'
-        link_node = ET.Element('node')
-        link_node.attrib['class'] = link_class
-        link_node.append(link_body)
-        return 0
-        '''
+        except RecursionError:
+            logging.error(f'XML Error: Infinite recursion detected! In file "{file_path_x}"!')
+            raise ValidationError
         return
 
     if 'class' in node.attrib:

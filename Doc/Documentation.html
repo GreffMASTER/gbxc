@@ -24,12 +24,14 @@
                 color: white;
                 margin: 5px;
                 padding: 5px;
+                min-width: 60px;
+                width: auto;
             }
 		</style>
 	</head>
 	<body>
 		<img class="banner" src="res/gbxc_banner.png" alt="gbxc banner" />
-		<p>Version Alpha 1.2</p>
+		<p>Version Alpha 1.4</p>
 		<br />
 		<h1 style="margin: 10px">User Manual</h1>
 		<h4 style="margin-left: 14px">GreffMASTER, 2023</h4>
@@ -54,15 +56,18 @@
 		<div id="cmd" class="chapter">
 			<h1>Command Line Arguments</h1>
 			<br />
-			<p><b>Usage:</b> gbxc [-h] [-d DIR] [-c] file.xml</p>
+			<p><b>Usage:</b> gbxc [-h] [-o OUT] [-d DIR] [-l LOGFILE] [-c] [-v] file.xml</p>
             <br />
 			<p>positional arguments:</p>
 			<p>file.xml - xml input file that will be "compiled" to gbx</p>
 			<br />
 			<p>options:</p>
 			<p>-h, --help - show this help message and exit</p>
-			<p>-d DIR, --dir DIR - the directory where the output file will be saved</p>
+			<p>-o OUT, --out OUT - output path</p>
+			<p>-d DIR, --dir DIR - the directory where the output file will be saved (only without -o)</p>
+			<p>-l LOGFILE, --log LOGFILE - log file path</p>
             <p>-c, --checksum - whether the program should do a md5 checksum on the compiled file</p>
+			<p>-v, --verbose - show additional information when compiling</p>
 			<br />
 			<p><b>Example:</b> <code>gbxc -d out Alpine.TMCollection.xml</code></p>
 			<p>Will produce "Alpine.TMCollection.Gbx" in the "out" directory. (out/Alpine.TMCollection.Gbx)</p>
@@ -102,8 +107,37 @@
             <br/>
             <p>The <tag>reference_table</tag> tag uses one attribute:</p>
             <p>"ancestor" - ancestor level, how back does it go in the directory tree from the current file.</p>
-            <br/>
-            <h2>TODO finish documentation</h2>
+            <p>Thr <tag>reference_table</tag> contains child <tag>file</tag> and <tag>dir</tag> tags.</p>
+			<p>If there are files that are referenced in the root directory, they <b>MUST</b> be placed before any <tag>dir</tag> tags.</p>
+			<br/>
+			<h4><tag>dir</tag></h4>
+			<p>The <tag>dir</tag> tag uses one attribute:</p>
+			<p>"name" - name of the directory.</p>
+			<p>It can contain child <tag>dir</tag> tags to make nested directories.</p>
+			<br/>
+			<h4><tag>file</tag></h4>
+			<p>The <tag>flag</tag> tag uses five attributes:</p>
+			<p>"flags" - flags of the file. If set to "1", it loads the file from a path. If set to "5", it loads a resource file from a given index.</p>
+			<p>"resindex" - resource index (only if flags="5").</p>
+			<p>"name" - name of the file (only if flags="1").</p>
+			<p>"usefile" - whether it should only load the body of the file, or the entire thing with magic and header and etc.</p>
+			<p>"refname" - node reference name that will be used later in the body.</p>
+			<p>It can contain child <tag>dir</tag> tags to make nested directories.</p>
+			<br/>
+            <b>Example:</b>
+			<div class="code">
+				<tag>reference_table ancestor="1"</tag><br/>
+				&nbsp;&nbsp;&nbsp;&nbsp;<tag>dir name="Media"</tag><br/>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tag>dir name="Texture"</tag><br/>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tag>file flags="1" name="IconEnvSnow.Texture.gbx" usefile="1" refname="icon_env_snow"/</tag><br/>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tag>/dir</tag><br/>
+				&nbsp;&nbsp;&nbsp;&nbsp;<tag>/dir</tag><br/>
+				<tag>/reference_table</tag>
+			</div>
+			<p>To later add the referenced file in the body, use the "ref" attribute inside the <tag>node</tag> tag.
+			<div class="code">
+				<tag>node ref="icon_env_snow"/</tag>
+			</div>
 		</div>
 		<div id="data_t" class="chapter">
 			<h1>Data Types</h1>
@@ -113,50 +147,115 @@
 			<br />
 			<ul>
 				<li>
-					<b><tag>bool</tag></b> - a 32 bit unsigned integer that can either be a 0 or a 1. <br /><b>Example: <tag>bool</tag>1<tag>/bool</tag></b>
+					<b><tag>bool</tag></b> - a 32-bit unsigned integer that can either be a 0 or a 1. <br />
+					<b>Example:</b>
+					<div class="code">
+						<tag>bool</tag>1<tag>/bool</tag>
+					</div>
 				</li>
 				<li>
-					<b><tag>uint8</tag>/<tag>byte</tag></b> - an 8 bit unsigned integer. <br /><b>Example: <tag>uint8</tag>196<tag>/uint8</tag></b>
+					<b><tag>skip</tag></b> - writes "PIKS", used for skippable body chunks.<br/>
+					<b>Example:</b>
+					<div class="code">
+						<tag>skip/</tag>
+					</div>
 				</li>
 				<li>
-					<b><tag>uint16</tag></b> - a 16 bit unsigned integer. <br /><b>Example: <tag>uint16</tag>1337<tag>/uint16</tag></b>
+					<b><tag>uint8</tag>/<tag>int8</tag></b> - a 8-bit unsigned/signed integer. <br />
+					<b>Example:</b>
+					<div class="code">
+						<tag>uint8</tag>196<tag>/uint8</tag>
+					</div>
 				</li>
 				<li>
-					<b><tag>uint32</tag></b> - a 32 bit unsigned integer. <br /><b>Example: <tag>uint32</tag>3043010<tag>/uint32</tag></b>
+					<b><tag>uint16</tag>/<tag>int16</tag></b> - a 16-bit unsigned/signed integer. <br />
+					<b>Example:</b>
+					<div class="code">
+						<tag>uint16</tag>1337<tag>/uint16</tag>
+					</div>
 				</li>
 				<li>
-					<b><tag>float</tag></b> - a 32 bit floating point number. <br /><b>Example: <tag>float</tag>3.14<tag>/float</tag></b>
+					<b><tag>uint32</tag>/<tag>int32</tag></b> - a 32-bit unsigned/signed integer. <br />
+					<b>Example:</b>
+					<div class="code">
+						<tag>uint32</tag>3043010<tag>/uint32</tag>
+					</div>
 				</li>
 				<li>
-					<b><tag>vec2</tag></b> - two 32 bit floating point numbers separated by a space. <br /><b>Example: <tag>vec2</tag>3.14 -2.52<tag>/vec</tag></b>
+					<b><tag>float</tag></b> - a 32-bit floating point number. <br />
+					<b>Example:</b>
+					<div class="code">
+						<tag>float</tag>3.14<tag>/float</tag>
+					</div>
 				</li>
 				<li>
-					<b><tag>vec3</tag></b> - three 32 bit floating point numbers separated by a space. <br /><b>Example: <tag>vec3</tag>3.14 -2.52 1.0<tag>/vec3</tag></b>
+					<b><tag>vec2</tag></b> - two 32-bit floating point numbers separated by a space. <br />
+					<b>Example:</b>
+					<div class="code">
+						<tag>vec2</tag>3.14 -2.52<tag>/vec</tag>
+					</div>
 				</li>
 				<li>
-					<b><tag>str</tag></b> - a regular string of characters, adds the string length. <br /><b>Example: <tag>str</tag>Test<tag>/str</tag></b>
+					<b><tag>vec3</tag></b> - three 32-bit floating point numbers separated by a space. <br />
+					<b>Example:</b>
+					<div class="code">
+						<tag>vec3</tag>3.14 -2.52 1.0<tag>/vec3</tag>
+					</div>
+				</li>
+				<li>
+					<b><tag>color</tag></b> - basically vec3. <br />
+					<b>Example:</b>
+					<div class="code">
+						<tag>color</tag>1.0 1.0 1.0<tag>/color</tag>
+					</div>
+				</li>
+				<li>
+					<b><tag>vec4</tag></b> - four 32-bit floating point numbers separated by a space. <br />
+					<b>Example:</b>
+					<div class="code">
+						<tag>vec4</tag>3.14 -2.52 1.0 0.0<tag>/vec4</tag>
+					</div>
+				</li>
+				<li>
+					<b><tag>str</tag></b> - a regular string of characters, adds the string length. <br />
+					<b>Example:</b>
+					<div class="code">
+						<tag>str</tag>Test<tag>/str</tag>
+					</div>
 				</li>
 				<li>
 					<b><tag>lookbackstr</tag></b> - a lookback string. A special type of string that can remember previously used strings. <br />
 					<b>Required attributes: "type"</b> - a type of the lookback string, can either be "40" or "80". <br />
-					<b>Example: <tag>lookbackstr type="40"</tag>Test<tag>/lookbackstr</tag></b>
+					<b>Example:</b>
+					<div class="code">
+						<tag>lookbackstr type="40"</tag>Test<tag>/lookbackstr</tag>
+					</div>
 				</li>
 				<li>
-					<b><tag>raw</tag></b> - raw bytes in utf-8 form. <br /><b>Example: <tag>raw</tag>RawTest<tag>/raw</tag></b>
+					<b><tag>raw</tag></b> - raw bytes in utf-8 form. <br /><b>Example:</b>
+					<div class="code">
+						<tag>raw</tag>RawTest<tag>/raw</tag>
+					</div>
 				</li>
                 <li>
-					<b><tag>hex</tag></b> - raw bytes in hex form. <br /><b>Example: <tag>hex</tag>01DECAFA<tag>/hex</tag></b>
+					<b><tag>hex</tag></b> - raw bytes in hex form. <br /><b>Example:</b>
+					<div class="code">
+						<tag>hex</tag>01DECAFA<tag>/hex</tag>
+					</div>
 				</li>
                 <li>
 					<b><tag>flags</tag></b> - a special type for bit flags. <br />
                     <b>Required attributes: "bytes"</b> - how many bytes the flags take in the file. <br />
                     The <tag>flags</tag> tag uses child <tag>flag</tag> tags to determine which bits to set. <br />
                     A <tag>flag</tag> tag uses a single attribute, <b>bit</b> and it determines which bit to set. <br />
-                    <b>Example: <br />
-                    <tag>flags bytes="4"</tag><br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;<tag>flag bit="1"</tag><br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;<tag>flag bit="3"</tag><br />
-                    <tag>/flags</tag></b><br />
+                    <b>Example:</b>
+					<div class="code">
+						<tag>flags bytes="4"</tag><br />
+						&nbsp;&nbsp;&nbsp;&nbsp;<tag>flag bit="1"/</tag><br />
+						&nbsp;&nbsp;&nbsp;&nbsp;<tag>flag bit="3"/</tag><br />
+						<tag>/flags</tag>
+					</div>
+					<br />
                     that will return as "05000000" in hex.
 				</li>
 			</ul>

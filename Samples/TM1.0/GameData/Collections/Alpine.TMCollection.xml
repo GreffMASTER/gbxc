@@ -2,7 +2,7 @@
 <gbx version="6" unknown="R" class="CGameCtnCollection" complvl="1" md5="e5a6a0a9b438d6c3b0f99c283dfc2afb">
     <head>
         <chunk class="CGameCtnCollection" id="001">
-            <byte>2</byte> <!-- Version -->
+            <uint8>2</uint8> <!-- Version -->
             <lookbackstr type="40">Alpine</lookbackstr>
             <bool>0</bool> <!-- Need unlock -->
             <str>Alpine\Media\Texture\IconEnvSnow.Texture.gbx</str> <!-- Env icon path -->
@@ -242,7 +242,7 @@
             <uint32>2</uint32>
         </chunk>
         <chunk class="CGameCtnCollection" id="00C">
-            <uint32>1</uint32>
+            <uint32>1</uint32> <!-- Index -->
             <uint32>0</uint32>
         </chunk>
         <chunk class="CGameCtnCollection" id="00D">

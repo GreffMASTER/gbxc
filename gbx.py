@@ -48,7 +48,7 @@ def write_head_data(gbx_head: ET.Element) -> int:
             try:
                 data_types[data_type.tag](chunk_data, data_type.text, data_type.attrib)
             except GBXWriteError:
-                print(f'In chunk no. {i}, class "{class_id}", data tag no. {j}')
+                logging.error(f'In chunk no. {i}, class "{class_id}", data tag no. {j}')
                 raise GBXWriteError
 
         chunk_data.seek(0)
@@ -178,7 +178,7 @@ def write_node(body_data: BinaryIO, xml_node: ET.Element):
             res = set_nodeid_to_node(node_ref_id)
             body_data.write(pack('<I', res))
         except GBXWriteError:
-            print(f'Error: failed to find node of id "{node_ref_id}"!')
+            logging.error(f'Error: failed to find node of id "{node_ref_id}"!')
             raise GBXWriteError
     elif link_ref:
         path_history.insert(link_recursion, file_path_x)
@@ -279,7 +279,7 @@ def write_chunk(body_data: BinaryIO, chunk):
         try:
             write_chunk_element(body_data, data_type)
         except GBXWriteError:
-            print(f'In chunk no. {i}, class "{class_id}"')
+            logging.error(f'In chunk no. {i}, class "{class_id}"')
             raise GBXWriteError
 
 
