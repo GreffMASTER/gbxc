@@ -213,8 +213,11 @@ def __write_lookbackstr(file_w: BinaryIO, value: str, params: dict, _element: ET
         file_w.write(pack('<I', index | 0x80000000))
     elif typ == '40':
         file_w.write(pack('<I', index | 0x40000000))
+    elif typ == '0':
+        file_w.write(pack('<I', int(value)))
+        return
     else:
-        logging.error(f'Data type tag error: unknown type "{typ}" in <lookbackstr> tag! (must be 40 or 80)')
+        logging.error(f'Data type tag error: unknown type "{typ}" in <lookbackstr> tag! (must be 0, 40 or 80)')
         raise GBXWriteError
     if index == 0:
         lookback.lookback_strings.append(value)
