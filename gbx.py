@@ -173,14 +173,15 @@ def write_node(body_data: BinaryIO, xml_node: ET.Element):
 
     node_ref_id = xml_node.get('ref')
     link_ref = xml_node.get('link')
-    if node_ref_id:
+    headless = xml_node.get('headless')
+    if node_ref_id and not headless:
         try:
             res = set_nodeid_to_node(node_ref_id)
             body_data.write(pack('<I', res))
         except GBXWriteError:
             logging.error(f'Error: failed to find node of id "{node_ref_id}"!')
             raise GBXWriteError
-    elif link_ref:
+    elif link_ref and not headless:
         path_history.insert(link_recursion, file_path_x)
         link_recursion += 1
         file_path_x = file_path_x.parents[0].joinpath(xml_node.get('link'))
@@ -204,26 +205,35 @@ def write_node(body_data: BinaryIO, xml_node: ET.Element):
         link_recursion -= 1
         file_path_x = path_history[link_recursion]
     else:
-        class_id = xml_node.get('class')
-        if class_id:
-            node_counter.increment()
-            xml_node.attrib['nodeid'] = str(node_counter)
-            if 'idless' not in xml_node.attrib:
-                body_data.write(pack('<I', int(node_counter)))
+        if not headless:
+            class_id = xml_node.get('class')
+            if class_id:
+                node_counter.increment()
+                xml_node.attrib['nodeid'] = str(node_counter)
+                if 'idless' not in xml_node.attrib:
+                    body_data.write(pack('<I', int(node_counter)))
 
-            if class_id[0] == 'C':
-                body_data.write(pack('<I', int(gbx_classes.get_dict().get(class_id), 16)))
+                if class_id[0] == 'C':
+                    body_data.write(pack('<I', int(gbx_classes.get_dict().get(class_id), 16)))
+                else:
+                    body_data.write(pack('<I', int(class_id, 16)))
+
+                for chunk in xml_node:
+                    try:
+                        write_chunk(body_data, chunk)
+                    except GBXWriteError:
+                        raise GBXWriteError
+                body_data.write(pack('<I', 0xFACADE01))
             else:
-                body_data.write(pack('<I', int(class_id, 16)))
-
+                body_data.write(pack('<I', 0xFFFFFFFF))
+        else:
+            node_counter.increment()
             for chunk in xml_node:
                 try:
                     write_chunk(body_data, chunk)
                 except GBXWriteError:
                     raise GBXWriteError
             body_data.write(pack('<I', 0xFACADE01))
-        else:
-            body_data.write(pack('<I', 0xFFFFFFFF))
 
 
 def write_list(body_data: BinaryIO, lst):
