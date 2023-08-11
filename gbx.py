@@ -227,7 +227,7 @@ def write_node(body_data: BinaryIO, xml_node: ET.Element):
             else:
                 body_data.write(pack('<I', 0xFFFFFFFF))
         else:
-            node_counter.increment()
+
             for chunk in xml_node:
                 try:
                     write_chunk(body_data, chunk)
