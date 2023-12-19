@@ -1,10 +1,17 @@
+import io
 import logging
+import struct
 from struct import pack
 from struct import error as packerr
 from typing import BinaryIO
+
+import PIL.ImageFile
+
 from gbxclasses import GBXClasses
 import xml.etree.ElementTree as ET
 from gbxerrors import GBXWriteError
+from PIL import Image, ImageOps
+import utils
 
 
 class LookBackStrHolder:
@@ -15,6 +22,23 @@ class LookBackStrHolder:
 
 lookback = LookBackStrHolder()
 gbx_classes = GBXClasses()
+conditions: utils.Conditions = utils.Conditions()
+
+
+def write_uint16(wf, value: int) -> None:
+    wf.write(struct.pack('<H', value))
+
+
+def write_int32(wf, value: int) -> int:
+    wf.write(struct.pack('<i', value))
+
+
+def read_uint16(rf) -> int:
+    return struct.unpack('<H', rf.read(2))[0]
+
+
+def read_int32(rf) -> int:
+    return struct.unpack('<i', rf.read(4))[0]
 
 
 def reset_lookback():
@@ -22,12 +46,10 @@ def reset_lookback():
     lookback.lookback_strings = []
 
 
-def __write_skip(file_w: BinaryIO, _value: str, _params=None, _element: ET.Element = None):
-    file_w.write(b'PIKS')
-
-
 def __write_raw(file_w: BinaryIO, value: str, _params=None, _element: ET.Element = None):
     try:
+        if _params.get('condition'):
+            conditions.set_condition(_params.get('condition'), value)
         value = bytes(value, 'utf-8')
         file_w.write(value)
     except ValueError:
@@ -37,6 +59,8 @@ def __write_raw(file_w: BinaryIO, value: str, _params=None, _element: ET.Element
 
 def __write_hex(file_w: BinaryIO, value: str, _params=None, _element: ET.Element = None):
     try:
+        if _params.get('condition'):
+            conditions.set_condition(_params.get('condition'), value)
         hex_bytes = bytes.fromhex(value)
         file_w.write(hex_bytes)
     except ValueError:
@@ -45,7 +69,10 @@ def __write_hex(file_w: BinaryIO, value: str, _params=None, _element: ET.Element
 
 
 def __write_bool(file_w: BinaryIO, value: str, _params=None, _element: ET.Element = None):
+    global conditions
     try:
+        if _params.get('condition'):
+            conditions.set_condition(_params.get('condition'), value)
         value = int(value)
         if value > 0:
             file_w.write(pack('<I', 1))
@@ -57,7 +84,10 @@ def __write_bool(file_w: BinaryIO, value: str, _params=None, _element: ET.Elemen
 
 
 def __write_uint8(file_w: BinaryIO, value: str, _params=None, _element: ET.Element = None):
+    global conditions
     try:
+        if _params.get('condition'):
+            conditions.set_condition(_params.get('condition'), value)
         value = int(value)
         file_w.write(pack('<B', value))
     except ValueError or packerr:
@@ -66,7 +96,10 @@ def __write_uint8(file_w: BinaryIO, value: str, _params=None, _element: ET.Eleme
 
 
 def __write_int8(file_w: BinaryIO, value: str, _params=None, _element: ET.Element = None):
+    global conditions
     try:
+        if _params.get('condition'):
+            conditions.set_condition(_params.get('condition'), value)
         value = int(value)
         file_w.write(pack('<b', value))
     except ValueError or packerr:
@@ -76,6 +109,8 @@ def __write_int8(file_w: BinaryIO, value: str, _params=None, _element: ET.Elemen
 
 def __write_uint16(file_w: BinaryIO, value: str, _params=None, _element: ET.Element = None):
     try:
+        if _params.get('condition'):
+            conditions.set_condition(_params.get('condition'), value)
         value = int(value)
         file_w.write(pack('<H', value))
     except ValueError or packerr:
@@ -85,6 +120,8 @@ def __write_uint16(file_w: BinaryIO, value: str, _params=None, _element: ET.Elem
 
 def __write_int16(file_w: BinaryIO, value: str, _params=None, _element: ET.Element = None):
     try:
+        if _params.get('condition'):
+            conditions.set_condition(_params.get('condition'), value)
         value = int(value)
         file_w.write(pack('<h', value))
     except ValueError or packerr:
@@ -94,6 +131,8 @@ def __write_int16(file_w: BinaryIO, value: str, _params=None, _element: ET.Eleme
 
 def __write_uint32(file_w: BinaryIO, value: str, _params=None, _element: ET.Element = None):
     try:
+        if _params.get('condition'):
+            conditions.set_condition(_params.get('condition'), value)
         value = int(value)
         file_w.write(pack('<I', value))
     except ValueError or packerr:
@@ -103,6 +142,8 @@ def __write_uint32(file_w: BinaryIO, value: str, _params=None, _element: ET.Elem
 
 def __write_int32(file_w: BinaryIO, value: str, _params=None, _element: ET.Element = None):
     try:
+        if _params.get('condition'):
+            conditions.set_condition(_params.get('condition'), value)
         value = int(value)
         file_w.write(pack('<i', value))
     except ValueError or packerr:
@@ -113,6 +154,8 @@ def __write_int32(file_w: BinaryIO, value: str, _params=None, _element: ET.Eleme
 def __write_float(file_w: BinaryIO, value: str, _params=None, _element: ET.Element = None):
     value = value.replace(',', '.')
     try:
+        if _params.get('condition'):
+            conditions.set_condition(_params.get('condition'), value)
         value = float(value)
         file_w.write(pack('<f', value))
     except ValueError or packerr:
@@ -176,6 +219,8 @@ def __write_str(file_w: BinaryIO, value: str, _params: dict, _element: ET.Elemen
         file_w.write(pack('<I', 0))
         return
     try:
+        if _params.get('condition'):
+            conditions.set_condition(_params.get('condition'), value)
         file_w.write(pack('<I', len(value)))
         value = bytes(value, 'utf-8')
         file_w.write(value)
@@ -209,12 +254,22 @@ def __write_lookbackstr(file_w: BinaryIO, value: str, params: dict, _element: ET
         logging.error('Data type tag error: missing "type" attribute in <lookbackstr> tag!')
         raise GBXWriteError
 
+    try:
+        if params.get('condition'):
+            conditions.set_condition(params.get('condition'), value)
+    except:
+        raise
+
     if typ == '80':
         file_w.write(pack('<I', index | 0x80000000))
     elif typ == '40':
         file_w.write(pack('<I', index | 0x40000000))
+    elif typ == '0':
+        file_w.write(pack('<I', int(value)))
+        lookback.lookback_strings.append(value)
+        return
     else:
-        logging.error(f'Data type tag error: unknown type "{typ}" in <lookbackstr> tag! (must be 40 or 80)')
+        logging.error(f'Data type tag error: unknown type "{typ}" in <lookbackstr> tag! (must be 0, 40 or 80)')
         raise GBXWriteError
     if index == 0:
         lookback.lookback_strings.append(value)
@@ -304,8 +359,30 @@ def __write_gbxclass(file_w: BinaryIO, value: str, params: dict, _element: ET.El
         raise GBXWriteError
 
 
+def __write_icon(file_w: BinaryIO, value: str, params: dict, element: ET.Element = None):
+    path = params.get('link')
+    if not path:
+        logging.error(f'Data type tag error: missing "link" attribute!')
+        raise GBXWriteError
+    try:
+        icon_img = Image.open(path)
+        icon_img = ImageOps.flip(icon_img)
+        write_uint16(file_w, icon_img.width)
+        write_uint16(file_w, icon_img.height)
+        for y in range(icon_img.height):
+            for x in range(icon_img.width):
+                rgba = icon_img.getpixel((x, y))
+                if len(rgba) < 4:
+                    file_w.write(struct.pack('<BBBB', rgba[2], rgba[1], rgba[0], 255))
+                else:
+                    file_w.write(struct.pack('<BBBB', rgba[2], rgba[1], rgba[0], rgba[3]))
+        icon_img.close()
+    except Exception as e:
+        logging.error(f'Icon error! {e}')
+        raise GBXWriteError
+
+
 data_types = {
-    'skip': __write_skip,
     'raw': __write_raw,
     'hex': __write_hex,
     'bool': __write_bool,
@@ -323,5 +400,6 @@ data_types = {
     'str': __write_str,
     'lookbackstr': __write_lookbackstr,
     'flags': __write_flags,
-    'gbxclass': __write_gbxclass
+    'gbxclass': __write_gbxclass,
+    'icon': __write_icon
 }

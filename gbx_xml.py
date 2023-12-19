@@ -147,34 +147,48 @@ def _validate_node(node: ET.Element):
             logging.error(f'XML Error: Infinite recursion detected! In file "{file_path_x}"!')
             raise ValidationError
         return
+    if 'headless' not in node.attrib:
+        if 'class' in node.attrib:
+            # Validate class id
+            class_id = node.get('class')
+            if class_id[0] == 'C':  # Is a named class
+                if class_id not in gbx_classes.get_dict():
+                    logging.error(f'XML Error: "class" attribute ("{class_id}")'
+                                  f'not found in GBX class dictionary!\n'
+                                  f'Please use hex value instead.')
+                    raise ValidationError
+            else:  # Not a named class (hex value)
+                try:
+                    _validate_class_id(class_id)
+                except ValidationError:
+                    raise ValidationError
 
-    if 'class' in node.attrib:
-        # Validate class id
-        class_id = node.get('class')
-        if class_id[0] == 'C':  # Is a named class
-            if class_id not in gbx_classes.get_dict():
-                logging.error(f'XML Error: "class" attribute ("{class_id}")'
-                              f'not found in GBX class dictionary!\n'
-                              f'Please use hex value instead.')
-                raise ValidationError
-        else:  # Not a named class (hex value)
-            try:
-                _validate_class_id(class_id)
-            except ValidationError:
-                raise ValidationError
-
+            # Validate chunks inside the node
+            i = 0
+            for chunk in node:
+                i += 1
+                if chunk.tag != 'chunk':
+                    logging.error(f'XML Error: <node> tag must only contain <chunk> child tags!'
+                                  f'In <node> no. {i} "{class_id}"')
+                    raise ValidationError
+                try:
+                    _validate_chunk(chunk)
+                except ValidationError:
+                    logging.error(f'In <node> no. {i} "{class_id}"')
+                    raise ValidationError
+    else:
         # Validate chunks inside the node
         i = 0
         for chunk in node:
             i += 1
             if chunk.tag != 'chunk':
                 logging.error(f'XML Error: <node> tag must only contain <chunk> child tags!'
-                              f'In <node> no. {i} "{class_id}"')
+                              f'In <node> no. {i}')
                 raise ValidationError
             try:
                 _validate_chunk(chunk)
             except ValidationError:
-                logging.error(f'In <node> no. {i} "{class_id}"')
+                logging.error(f'In <node> no. {i}')
                 raise ValidationError
     logging.info('<node> valid')
 
@@ -207,6 +221,8 @@ def _validate_chunk_element(element: ET.Element):
                 except ValidationError:
                     raise ValidationError
         logging.info('<list> valid')
+    elif element.tag == 'switch':
+        pass
     else:
         if element.tag not in data_types:
             logging.error(f'XML Error: unknown tag <{element.tag}>!')
