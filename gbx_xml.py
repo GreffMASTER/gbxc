@@ -221,6 +221,8 @@ def _validate_chunk_element(element: ET.Element):
                 except ValidationError:
                     raise ValidationError
         logging.info('<list> valid')
+    elif element.tag == 'switch':
+        pass
     else:
         if element.tag not in data_types:
             logging.error(f'XML Error: unknown tag <{element.tag}>!')

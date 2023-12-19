@@ -2,6 +2,21 @@ import os
 from typing import io
 
 
+class Conditions:
+    conditions: dict = {}
+
+    def set_condition(self, name: str, value: str):
+        self.conditions[name] = value
+
+    def get_condition(self, name: str) -> str or None:
+        return self.conditions.get(name)
+
+    def has_condition(self, name: str):
+        if name in self.conditions:
+            return True
+        return False
+
+
 class Counter:
     """
     A general purpose counter class. It can increment or decrement
