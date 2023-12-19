@@ -18,6 +18,7 @@ gbx_classes = GBXClasses()
 gbx_file: BinaryIO
 node_counter = utils.Counter()
 directory_counter = utils.Counter()
+node_pool = utils.GlobalNodePool()
 
 # Globals
 gbx_reftable: ET.Element
@@ -162,79 +163,89 @@ def set_nodeid_to_node(in_ref_id: str) -> int:
                 else:
                     node_counter.increment()
                     file.attrib['nodeid'] = str(node_counter)
+                    node_pool.addNode(file, int(node_counter))
                     return int(node_counter)
 
-    for node in gbx_body.iter('node'):
-        refname = node.get('refname')
-        if refname and refname == in_ref_id:
-            if 'nodeid' in node.attrib:
-                return int(node.get('nodeid'))
-    # Nothing found, that's an error
-    raise GBXWriteError
+    nodeid = node_pool.getNodeIndexByRefName(in_ref_id)
+    if nodeid:
+        return nodeid
+    else:
+        raise GBXWriteError
 
 
 def write_node(body_data: BinaryIO, xml_node: ET.Element):
-    global file_path_x
-    global path_history
-    global link_recursion
-
+    changed = False
     node_ref_id = xml_node.get('ref')
     link_ref = xml_node.get('link')
     headless = xml_node.get('headless')
-    if node_ref_id and not headless:
+
+    if node_ref_id and not headless:  # Node reference
         try:
             res = set_nodeid_to_node(node_ref_id)
             body_data.write(pack('<I', res))
         except GBXWriteError:
             logging.error(f'Error: failed to find node of id "{node_ref_id}"!')
             raise GBXWriteError
-    elif link_ref and not headless:
-        path_history.insert(link_recursion, file_path_x)
-        link_recursion += 1
-        file_path_x = file_path_x.parents[0].joinpath(xml_node.get('link'))
-        link_gbx = ET.parse(file_path_x)
+    elif link_ref and not headless:  # Uses a separate file (link)
+        full_path = pathlib.Path(xml_node.get('link'))
+        link_dir = full_path.parent
+        if len(link_dir.parents) > 0:
+            os.chdir(link_dir)
+            changed = True
+        file_name = full_path.name
+
+        link_gbx = ET.parse(file_name)
         link_body = link_gbx.findall('body')[0]
 
         class_id = link_gbx.getroot().get('class')
+
         node_counter.increment()
+        node_pool.addNode(xml_node, node_counter.get_value())
         xml_node.attrib['nodeid'] = str(node_counter)
         body_data.write(pack('<I', int(node_counter)))
+
         if class_id[0] == 'C':  # Every class name starts with a 'C' (ex. CPlugTree)
             body_data.write(pack('<I', int(gbx_classes.get_dict().get(class_id), 16)))
         else:                   # Use hex value instead
             body_data.write(pack('<I', int(class_id, 16)))
+
+        # Write chunks
         for chunk in link_body:
             try:
                 write_chunk(body_data, chunk)
             except GBXWriteError:
                 raise GBXWriteError
+        # Write terminator
         body_data.write(pack('<I', 0xFACADE01))
-        link_recursion -= 1
-        file_path_x = path_history[link_recursion]
+
+        if changed:
+            os.chdir('..')
     else:
         if not headless:
             class_id = xml_node.get('class')
             if class_id:
+                # Has id
                 if 'idless' not in xml_node.attrib:
                     node_counter.increment()
-                xml_node.attrib['nodeid'] = str(node_counter)
-                if 'idless' not in xml_node.attrib:
+                    node_pool.addNode(xml_node, node_counter.get_value())
+                    xml_node.attrib['nodeid'] = str(node_counter)
                     body_data.write(pack('<I', int(node_counter)))
-
+                # Write class id
                 if class_id[0] == 'C':
                     body_data.write(pack('<I', int(gbx_classes.get_dict().get(class_id), 16)))
                 else:
                     body_data.write(pack('<I', int(class_id, 16)))
-
+                # Write chunks
                 for chunk in xml_node:
                     try:
                         write_chunk(body_data, chunk)
                     except GBXWriteError:
                         raise GBXWriteError
+                # Write terminator
                 body_data.write(pack('<I', 0xFACADE01))
-            else:
+            else:  # Empty node
                 body_data.write(pack('<I', 0xFFFFFFFF))
-        else:
+        else:   # Is headless (no node id)
             class_id = xml_node.get('class')
             if class_id:
                 if class_id[0] == 'C':
@@ -246,6 +257,7 @@ def write_node(body_data: BinaryIO, xml_node: ET.Element):
                     write_chunk(body_data, chunk)
                 except GBXWriteError:
                     raise GBXWriteError
+            # Write terminator
             body_data.write(pack('<I', 0xFACADE01))
 
 

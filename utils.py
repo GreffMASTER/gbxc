@@ -1,5 +1,21 @@
 import os
 from typing import io
+import xml.etree.ElementTree as ET
+
+
+class GlobalNodePool:
+    def __init__(self):
+        self.node_pool: dict = {}
+
+    def addNode(self, node: ET.Element, index: int):
+        self.node_pool[index] = node
+
+    def getNodeIndexByRefName(self, name: str):
+        for index, node in self.node_pool.items():
+            refname = node.get('refname')
+            if refname == name:
+                return int(index)
+        return None
 
 
 class Conditions:

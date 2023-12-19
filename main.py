@@ -10,7 +10,7 @@ import argparse
 import logging
 
 
-VERSION_STR = 'a1.6'
+VERSION_STR = 'a1.6.1'
 
 
 def is_valid_file(parser, arg):
@@ -76,12 +76,13 @@ def main() -> None:
     logging.info(f'Logging level set to {loglevel}')
     print(f'Parsing "{xml_path}"...')
     gbx_tree: ET.ElementTree
+    og_cwd = os.getcwd()
     try:
         gbx_tree = ET.parse(xml_path)
     except xml.etree.ElementTree.ParseError as e:
         logging.error(f'Failed to parse XML file! ({e.code}, {e.position})')
         sys.exit(f'Failed to parse XML file! (code: {e.code}, pos: {e.position})')
-
+    os.chdir(og_cwd)
     try:
         gbx_xml_tools.validate_gbx_xml(gbx_tree, xml_path)
     except ValidationError:

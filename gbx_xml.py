@@ -1,3 +1,4 @@
+import os
 import xml.etree.ElementTree as ET
 from datatypes import data_types
 from gbxclasses import GBXClasses
@@ -125,27 +126,37 @@ def _validate_node(node: ET.Element):
     global reference_table
     global body
     node_counter.increment()
+    changed = False
 
     if 'link' in node.attrib:
-        link_path = file_path_x.parents[0].joinpath(node.get('link'))
-        if not link_path.exists():
-            logging.error(f'XML Error: Linking error! File "{link_path}" does not exist!')
-            raise ValidationError
-
+        full_path = pathlib.Path(node.get('link'))
+        link_dir = full_path.parent
+        if len(link_dir.parents) > 0:
+            os.chdir(link_dir)
+            changed = True
+        file_name = full_path.name
         try:
-            link_xml = ET.parse(link_path)
+            f = open(file_name, 'r')
+            f.close()
+        except IOError:
+            logging.error(f'XML Error: Linking error! File "{node.get("link")}" does not exist!')
+            raise ValidationError
+        try:
+            link_xml = ET.parse(file_name)
         except ET.ParseError as e:
-            logging.error(f'XML Error: Linking error! In file "{link_path}"!')
+            logging.error(f'XML Error: Linking error! In file "{full_path}"!')
             logging.error(e.msg)
             raise ValidationError
         try:
-            validate_gbx_xml(link_xml, str(link_path))
+            validate_gbx_xml(link_xml, str(file_name))
         except ValidationError:
-            logging.error(f'XML Error: Linking error! In file "{link_path}"!')
+            logging.error(f'XML Error: Linking error! In file "{full_path }"!')
             raise ValidationError
         except RecursionError:
-            logging.error(f'XML Error: Infinite recursion detected! In file "{file_path_x}"!')
+            logging.error(f'XML Error: Infinite recursion detected! In file "{full_path }"!')
             raise ValidationError
+        if changed:
+            os.chdir('..')
         return
     if 'headless' not in node.attrib:
         if 'class' in node.attrib:
