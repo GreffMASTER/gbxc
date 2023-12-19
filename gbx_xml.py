@@ -126,14 +126,17 @@ def _validate_node(node: ET.Element):
     global reference_table
     global body
     node_counter.increment()
-    changed = False
+    changed = 0
 
     if 'link' in node.attrib:
         full_path = pathlib.Path(node.get('link'))
         link_dir = full_path.parent
+        for i in range(len(link_dir.parents)):
+            changed += 1
+
         if len(link_dir.parents) > 0:
             os.chdir(link_dir)
-            changed = True
+
         file_name = full_path.name
         try:
             f = open(file_name, 'r')
@@ -155,7 +158,7 @@ def _validate_node(node: ET.Element):
         except RecursionError:
             logging.error(f'XML Error: Infinite recursion detected! In file "{full_path }"!')
             raise ValidationError
-        if changed:
+        for i in range(changed):
             os.chdir('..')
         return
     if 'headless' not in node.attrib:

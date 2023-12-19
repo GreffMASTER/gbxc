@@ -174,7 +174,7 @@ def set_nodeid_to_node(in_ref_id: str) -> int:
 
 
 def write_node(body_data: BinaryIO, xml_node: ET.Element):
-    changed = False
+    changed = 0
     node_ref_id = xml_node.get('ref')
     link_ref = xml_node.get('link')
     headless = xml_node.get('headless')
@@ -189,9 +189,10 @@ def write_node(body_data: BinaryIO, xml_node: ET.Element):
     elif link_ref and not headless:  # Uses a separate file (link)
         full_path = pathlib.Path(xml_node.get('link'))
         link_dir = full_path.parent
+        for i in range(len(link_dir.parents)):
+            changed += 1
         if len(link_dir.parents) > 0:
             os.chdir(link_dir)
-            changed = True
         file_name = full_path.name
 
         link_gbx = ET.parse(file_name)
@@ -218,7 +219,7 @@ def write_node(body_data: BinaryIO, xml_node: ET.Element):
         # Write terminator
         body_data.write(pack('<I', 0xFACADE01))
 
-        if changed:
+        for i in range(changed):
             os.chdir('..')
     else:
         if not headless:
