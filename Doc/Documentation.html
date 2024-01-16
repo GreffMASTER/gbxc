@@ -31,10 +31,10 @@
 	</head>
 	<body>
 		<img class="banner" src="res/gbxc_banner.png" alt="gbxc banner" />
-		<p>Version Alpha 1.4</p>
+		<p>Version Alpha 1.6.2</p>
 		<br />
 		<h1 style="margin: 10px">User Manual</h1>
-		<h4 style="margin-left: 14px">GreffMASTER, 2023</h4>
+		<h4 style="margin-left: 14px">GreffMASTER, 2023 - 2024</h4>
 		<br />
 		<h1 style="margin: 10px">Table of contents</h1>
 		<ol>
@@ -116,7 +116,7 @@
 			<p>It can contain child <tag>dir</tag> tags to make nested directories.</p>
 			<br/>
 			<h4><tag>file</tag></h4>
-			<p>The <tag>flag</tag> tag uses five attributes:</p>
+			<p>The <tag>file</tag> tag uses five attributes:</p>
 			<p>"flags" - flags of the file. If set to "1", it loads the file from a path. If set to "5", it loads a resource file from a given index.</p>
 			<p>"resindex" - resource index (only if flags="5").</p>
 			<p>"name" - name of the file (only if flags="1").</p>
@@ -151,13 +151,6 @@
 					<b>Example:</b>
 					<div class="code">
 						<tag>bool</tag>1<tag>/bool</tag>
-					</div>
-				</li>
-				<li>
-					<b><tag>skip</tag></b> - writes "PIKS", used for skippable body chunks.<br/>
-					<b>Example:</b>
-					<div class="code">
-						<tag>skip/</tag>
 					</div>
 				</li>
 				<li>
@@ -225,10 +218,14 @@
 				</li>
 				<li>
 					<b><tag>lookbackstr</tag></b> - a lookback string. A special type of string that can remember previously used strings. <br />
-					<b>Required attributes: "type"</b> - a type of the lookback string, can either be "40" or "80". <br />
-					<b>Example:</b>
+					Can be null. <br/>
+					<b>Required attributes: "type"</b> - a type of the lookback string, can either be "0" (number), "40" (regular string) or "80" (uid). <br />
+					<b>Examples:</b>
 					<div class="code">
 						<tag>lookbackstr type="40"</tag>Test<tag>/lookbackstr</tag>
+					</div>
+					<div class="code">
+						<tag>lookbackstr/</tag> <tag>!-- will write 0xFFFFFFFF --</tag>
 					</div>
 				</li>
 				<li>
@@ -256,7 +253,14 @@
 						<tag>/flags</tag>
 					</div>
 					<br />
-                    that will return as "05000000" in hex.
+                    That will write 0x00000005.
+				</li>
+				<li>
+					<b><tag>icon</tag></b> - construction collector icon. Opens the linked image and writes it as a compatible icon for CGameCtnCollector. <br /><b>Example:</b>
+					<div class="code">
+						<tag>icon link="block_icon.png" /</tag>
+					</div>
+					Use only in the CGameCtnCollectorIcon head chunk.<br/>
 				</li>
 			</ul>
 		</div>
