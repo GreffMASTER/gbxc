@@ -1,0 +1,218 @@
+<gbx version="6" unknown="R" class="24023000" complvl="1" md5="80b25c1031a0596872106c7d0d3da6c6">
+    <head>
+        <chunk class="2400A000" id="003">
+            <lookbackstr type="40">StadiumRoadMain</lookbackstr>
+            <lookbackstr type="40">Stadium</lookbackstr>
+            <lookbackstr type="40">Nadeo</lookbackstr>
+            <uint32>4</uint32><!--Version-->
+            <str>RoadMain/Main/</str><!--Page name-->
+            <lookbackstr />
+            <uint32>1</uint32><!--Production state (0-vis, 2-3-hidden)-->
+            <uint16>1</uint16><!--Index-->
+            <uint32>25600</uint32><!--Copper cost-->
+            <uint8>0</uint8>
+            <uint16>10</uint16>
+        </chunk>
+        <chunk class="2400A000" id="004">
+            <icon link="Icon.png" />
+        </chunk>
+    </head>
+    <reference_table ancestor="2">
+        <dir name="ConstructionBlockInfo">
+            <dir name="ConstructionBlockInfoClip">
+                <file flags="1" name="StadiumRoadMainClip.TMEDClip.Gbx" usefile="0" refname="2" />
+            </dir>
+            <dir name="ConstructionBlockInfoRoad"><!--StadiumRoadMain.TMEDRoad.Gbx-->
+            </dir>
+        </dir>
+        <dir name="Media">
+            <dir name="Solid">
+                <dir name="Road">
+                    <dir name="Main">
+                        <file flags="1" name="BaseGround.Solid.Gbx" usefile="0" refname="6" />
+                        <file flags="1" name="DeadendGround.Solid.Gbx" usefile="0" refname="9" />
+                        <file flags="1" name="CornerGround.Solid.Gbx" usefile="0" refname="12" />
+                        <file flags="1" name="StraightGround.Solid.Gbx" usefile="0" refname="15" />
+                        <file flags="1" name="StraightGroundA.Solid.Gbx" usefile="0" refname="18" />
+                        <file flags="1" name="StraightGroundB.Solid.Gbx" usefile="0" refname="21" />
+                        <file flags="1" name="StraightGroundC.Solid.Gbx" usefile="0" refname="24" />
+                        <file flags="1" name="TShapedGround.Solid.Gbx" usefile="0" refname="27" />
+                        <file flags="1" name="CrossGround.Solid.Gbx" usefile="0" refname="30" />
+                        <file flags="1" name="BaseAir.Solid.Gbx" usefile="0" refname="33" />
+                        <file flags="1" name="DeadendAir.Solid.Gbx" usefile="0" refname="36" />
+                        <file flags="1" name="CornerAir.Solid.Gbx" usefile="0" refname="39" />
+                        <file flags="1" name="StraightAir.Solid.Gbx" usefile="0" refname="42" />
+                        <file flags="1" name="TShapedAir.Solid.Gbx" usefile="0" refname="45" />
+                        <file flags="1" name="CrossAir.Solid.Gbx" usefile="0" refname="48" />
+                    </dir>
+                </dir>
+            </dir>
+        </dir>
+    </reference_table>
+    <body>
+        <chunk class="2400A000" id="002">
+            <lookbackstr type="40">StadiumRoadMain</lookbackstr>
+            <lookbackstr type="40">Stadium</lookbackstr>
+            <lookbackstr type="40">Nadeo</lookbackstr>
+        </chunk>
+        <chunk class="2400A000" id="006">
+            <uint32>0</uint32><!--Skin Mode (0-none, 1-text, 2-image)-->
+        </chunk>
+        <chunk class="2400A000" id="007">
+            <bool>0</bool>
+            <bool>1</bool>
+            <uint32>1</uint32><!--Index-->
+            <uint32>0</uint32><!--Block Count-->
+            <uint32>100</uint32><!--Copper Cost-->
+            <uint32>10</uint32><!--?-->
+        </chunk>
+        <chunk class="2400A000" id="009">
+            <str>RoadMain/Main/</str><!--Page Name-->
+            <bool>0</bool><!--Has Icon Fid-->
+            <lookbackstr />
+        </chunk>
+        <chunk class="24005000" id="005">
+            <lookbackstr type="40">StadiumRoadMain</lookbackstr>
+            <uint32>0</uint32><!--X Width (In cells)-->
+            <uint32>0</uint32><!--Y Height (In cells)-->
+            <uint32>0</uint32><!--Z Length (In cells)-->
+            <bool>0</bool>
+            <uint32>0</uint32><!--Random Rotation (0-none, 2-enable)-->
+            <uint32>0</uint32>
+            <node /><!--Pillar block-->
+            <list><!--Ground Cells-->
+                <element>
+                    <node refname="1" link="1.CGameCtnBlockUnitInfo.xml" />
+                </element>
+            </list>
+            <list><!--Air Cells-->
+                <element>
+                    <node refname="3" link="3.CGameCtnBlockUnitInfo.xml" />
+                </element>
+            </list>
+            <list><!--Ground Mobils-->
+                <element>
+                    <list>
+                        <element>
+                            <node refname="4" link="4.CSceneMobil.xml" />
+                        </element>
+                    </list>
+                </element>
+                <element>
+                    <list>
+                        <element>
+                            <node refname="7" link="7.CSceneMobil.xml" />
+                        </element>
+                    </list>
+                </element>
+                <element>
+                    <list>
+                        <element>
+                            <node refname="10" link="10.CSceneMobil.xml" />
+                        </element>
+                    </list>
+                </element>
+                <element>
+                    <list>
+                        <element>
+                            <node refname="13" link="13.CSceneMobil.xml" />
+                        </element>
+                        <element>
+                            <node refname="16" link="16.CSceneMobil.xml" />
+                        </element>
+                        <element>
+                            <node refname="19" link="19.CSceneMobil.xml" />
+                        </element>
+                        <element>
+                            <node refname="22" link="22.CSceneMobil.xml" />
+                        </element>
+                    </list>
+                </element>
+                <element>
+                    <list>
+                        <element>
+                            <node refname="25" link="25.CSceneMobil.xml" />
+                        </element>
+                    </list>
+                </element>
+                <element>
+                    <list>
+                        <element>
+                            <node refname="28" link="28.CSceneMobil.xml" />
+                        </element>
+                    </list>
+                </element>
+            </list>
+            <list><!--Air Mobils-->
+                <element>
+                    <list>
+                        <element>
+                            <node refname="31" link="31.CSceneMobil.xml" />
+                        </element>
+                    </list>
+                </element>
+                <element>
+                    <list>
+                        <element>
+                            <node refname="34" link="34.CSceneMobil.xml" />
+                        </element>
+                    </list>
+                </element>
+                <element>
+                    <list>
+                        <element>
+                            <node refname="37" link="37.CSceneMobil.xml" />
+                        </element>
+                    </list>
+                </element>
+                <element>
+                    <list>
+                        <element>
+                            <node refname="40" link="40.CSceneMobil.xml" />
+                        </element>
+                    </list>
+                </element>
+                <element>
+                    <list>
+                        <element>
+                            <node refname="43" link="43.CSceneMobil.xml" />
+                        </element>
+                    </list>
+                </element>
+                <element>
+                    <list>
+                        <element>
+                            <node refname="46" link="46.CSceneMobil.xml" />
+                        </element>
+                    </list>
+                </element>
+            </list>
+            <flags bytes="9" />
+        </chunk>
+        <chunk class="24005000" id="009">
+            <bool>0</bool>
+        </chunk>
+        <chunk class="24005000" id="00B">
+            <uint32>3</uint32>
+            <node /><!--Editor Helper Mobil-->
+            <node /><!--Editor Helper Mobil-->
+            <node /><!--Editor Helper Mobil-->
+        </chunk>
+        <chunk class="24005000" id="00C"><!--Spawn position-->
+            <vec3>1.0 0.0 0.0</vec3>
+            <vec3>0.0 1.0 0.0</vec3>
+            <vec3>0.0 0.0 1.0</vec3>
+            <vec3>16.0 1.7000000476837158 11.199999809265137</vec3><!--Respawn position-->
+            <vec3>1.0 0.0 0.0</vec3>
+            <vec3>0.0 1.0 0.0</vec3>
+            <vec3>0.0 0.0 1.0</vec3>
+            <vec3>16.0 1.7000000476837158 11.199999809265137</vec3>
+        </chunk>
+        <chunk class="24005000" id="00D">
+            <bool>0</bool><!--Something with replacing ?-->
+        </chunk>
+        <chunk class="24023000" id="000">
+            <node /><!--Slope-->
+        </chunk>
+    </body>
+</gbx>

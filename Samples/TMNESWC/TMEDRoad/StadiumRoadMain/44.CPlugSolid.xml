@@ -1,0 +1,49 @@
+<gbx version="6" unknown="R" class="09005000" complvl="1">
+    <body>
+        <chunk class="09005000" id="000">
+            <int32>4</int32>
+        </chunk>
+        <chunk class="09005000" id="00C">
+            <bool>0</bool>
+            <bool>0</bool>
+            <bool>1</bool>
+            <bool>0</bool>
+            <bool>0</bool>
+            <bool>0</bool>
+            <bool>1</bool>
+            <bool>1</bool>
+            <bool>1</bool>
+            <bool>0</bool>
+            <float>50.0</float>
+            <int32>10000</int32>
+            <float>0.009999999776482582</float>
+            <float>5.0</float>
+            <float>5.0</float>
+            <float>0.009999999776482582</float>
+            <int32>30</int32>
+            <int32>300</int32>
+        </chunk>
+        <chunk class="09005000" id="00D">
+            <bool>1</bool>
+            <bool>1</bool>
+            <node ref="45" />
+        </chunk>
+        <chunk class="09005000" id="00E">
+            <float>1.0</float>
+            <float>0.0</float>
+            <float>0.0</float>
+            <float>0.0</float>
+            <vec3>1.0 0.0 0.0</vec3>
+            <vec3>0.0 1.0 0.0</vec3>
+            <vec3>0.0 0.0 1.0</vec3>
+            <vec3>0.10000000149011612 0.30000001192092896 0.30000001192092896</vec3>
+        </chunk>
+        <chunk class="09005000" id="00F">
+            <float>0.0</float>
+            <float>0.0</float>
+        </chunk>
+        <chunk class="09005000" id="010">
+            <node />
+        </chunk>
+    </body>
+</gbx>

@@ -1,0 +1,43 @@
+<gbx version="6" unknown="R" class="24006000" complvl="1">
+    <body>
+        <chunk class="24006000" id="000"><!--Pylon Flags-->
+            <flags bytes="4" />
+            <bool>1</bool><!--Can pylons generate over it-->
+            <uint32>604004352</uint32>
+            <uint32>0</uint32><!--Cell X offset-->
+            <uint32>0</uint32><!--Cell Y offset-->
+            <uint32>0</uint32><!--Cell Z offset-->
+            <uint32>4</uint32>
+            <node ref="2" /><!--North Clip Ref-->
+            <node ref="2" /><!--East Clip Ref-->
+            <node ref="2" /><!--South Clip Ref-->
+            <node ref="2" /><!--West Clip Ref-->
+        </chunk>
+        <chunk class="24006000" id="001">
+            <lookbackstr type="40">Grass</lookbackstr>
+            <uint32>5</uint32><!--Frontier type (0-none, 5-cliff-->
+            <uint32>0</uint32><!--Frontier direction-->
+        </chunk>
+        <chunk skip="1" class="24006000" id="002">
+            <bool>0</bool><!--Is underground-->
+        </chunk>
+        <chunk class="24006000" id="003">
+            <lookbackstr />
+            <lookbackstr />
+            <uint32>0</uint32>
+            <uint32>17256804</uint32>
+        </chunk>
+        <chunk class="24006000" id="004"><!--Accept pylons-->
+            <flags bytes="4">
+                <flag bit="1" />
+                <flag bit="2" />
+                <flag bit="3" />
+                <flag bit="4" />
+                <flag bit="5" />
+                <flag bit="6" />
+                <flag bit="7" />
+                <flag bit="8" />
+            </flags>
+        </chunk>
+    </body>
+</gbx>

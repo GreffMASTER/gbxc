@@ -1,0 +1,57 @@
+<gbx version="6" unknown="R" class="0A011000" complvl="1">
+    <body>
+        <chunk class="0A005000" id="001">
+            <lookbackstr />
+        </chunk>
+        <chunk class="0A005000" id="003">
+            <node />
+        </chunk>
+        <chunk class="0A005000" id="004">
+            <int32>0</int32>
+        </chunk>
+        <chunk class="0A011000" id="003">
+            <int32>0</int32>
+        </chunk>
+        <chunk class="0A011000" id="004">
+            <node />
+        </chunk>
+        <chunk class="0A011000" id="005">
+            <node headless="1">
+                <chunk class="06003000" id="001">
+                    <node refname="29" link="29.CPlugSolid.xml" />
+                </chunk>
+                <chunk class="06003000" id="011">
+                    <flags bytes="10">
+                        <flag bit="9" />
+                        <flag bit="16" />
+                        <flag bit="20" />
+                        <flag bit="24" />
+                        <flag bit="25" />
+                        <flag bit="28" />
+                        <flag bit="29" />
+                        <flag bit="34" />
+                        <flag bit="47" />
+                        <flag bit="48" />
+                        <flag bit="49" />
+                        <flag bit="53" />
+                        <flag bit="54" />
+                        <flag bit="55" />
+                        <flag bit="56" />
+                        <flag bit="57" />
+                        <flag bit="58" />
+                        <flag bit="59" />
+                        <flag bit="60" />
+                        <flag bit="61" />
+                        <flag bit="62" />
+                        <flag bit="63" />
+                        <flag bit="64" />
+                        <flag bit="65" />
+                    </flags>
+                </chunk>
+            </node>
+        </chunk>
+        <chunk class="0A011000" id="006">
+            <node />
+        </chunk>
+    </body>
+</gbx>

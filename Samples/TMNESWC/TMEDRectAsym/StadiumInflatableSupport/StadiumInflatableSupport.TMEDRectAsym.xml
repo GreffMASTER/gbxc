@@ -1,0 +1,204 @@
+<gbx version="6" unknown="R" class="24064000" complvl="1" md5="a2acc2df196ecc1e6080f2ec2ba4aff5">
+    <head>
+        <chunk class="2400A000" id="003">
+            <lookbackstr type="40">StadiumInflatableSupport</lookbackstr>
+            <lookbackstr type="40">Stadium</lookbackstr>
+            <lookbackstr type="40">Nadeo</lookbackstr>
+            <uint32>4</uint32><!--Version-->
+            <str>Tube/Inflat/</str><!--Page name-->
+            <lookbackstr />
+            <uint32>1</uint32><!--Production state (0-vis, 2-3-hidden)-->
+            <uint16>100</uint16><!--Index-->
+            <uint32>25600</uint32><!--Copper cost-->
+            <uint8>0</uint8>
+            <uint16>10</uint16>
+        </chunk>
+        <chunk class="2400A000" id="004">
+            <icon link="Icon.png" />
+        </chunk>
+        <chunk class="03031000" id="000">
+            <uint8>2</uint8><!--Version-->
+            <str>Stadium\Inflatable\</str><!--Skin folder-->
+            <str />
+            <uint32>0</uint32>
+            <uint8>1</uint8>
+            <uint32>151146496</uint32><!--CPlug type class id-->
+            <str>Image</str><!--Name-->
+            <str>Stadium\Media\Texture\Image\StadiumInflatableD.dds</str><!--Replace texture path-->
+            <str /><!--Alternative skin folder (?)-->
+        </chunk>
+    </head>
+    <reference_table ancestor="2">
+        <dir name="ConstructionBlockInfo">
+            <dir name="ConstructionBlockInfoRectAsym">
+                <file flags="1" name="StadiumInflatablePillar.TMEDRectAsym.Gbx" usefile="0" refname="1" />
+            </dir>
+        </dir>
+        <dir name="Media">
+            <dir name="Solid">
+                <dir name="Inflatable">
+                    <file flags="1" name="CrossAir.Solid.Gbx" usefile="0" refname="5" />
+                    <file flags="1" name="TShapedAir.Solid.Gbx" usefile="0" refname="8" />
+                    <file flags="1" name="CornerAir.Solid.Gbx" usefile="0" refname="17" />
+                </dir>
+            </dir>
+        </dir>
+    </reference_table>
+    <body>
+        <chunk class="2400A000" id="002">
+            <lookbackstr type="40">StadiumInflatableSupport</lookbackstr>
+            <lookbackstr type="40">Stadium</lookbackstr>
+            <lookbackstr type="40">Nadeo</lookbackstr>
+        </chunk>
+        <chunk class="2400A000" id="006">
+            <uint32>0</uint32><!--Skin Mode (0-none, 1-text, 2-image)-->
+        </chunk>
+        <chunk class="2400A000" id="007">
+            <bool>0</bool>
+            <bool>1</bool>
+            <uint32>100</uint32><!--Index-->
+            <uint32>0</uint32><!--Block Count-->
+            <uint32>100</uint32><!--Copper Cost-->
+            <uint32>10</uint32><!--?-->
+        </chunk>
+        <chunk class="2400A000" id="009">
+            <str>Tube/Inflat/</str><!--Page Name-->
+            <bool>0</bool><!--Has Icon Fid-->
+            <lookbackstr />
+        </chunk>
+        <chunk class="24005000" id="005">
+            <lookbackstr type="40">StadiumInflatableSupport</lookbackstr>
+            <uint32>0</uint32><!--X Width (In cells)-->
+            <uint32>0</uint32><!--Y Height (In cells)-->
+            <uint32>0</uint32><!--Z Length (In cells)-->
+            <bool>0</bool>
+            <uint32>0</uint32><!--Random Rotation (0-none, 2-enable)-->
+            <uint32>0</uint32>
+            <node ref="1" /><!--Pillar block-->
+            <list><!--Ground Cells-->
+            </list>
+            <list><!--Air Cells-->
+                <element>
+                    <node refname="2" link="2.CGameCtnBlockUnitInfo.xml" />
+                </element>
+            </list>
+            <list><!--Ground Mobils-->
+                <element>
+                    <list />
+                </element>
+                <element>
+                    <list />
+                </element>
+                <element>
+                    <list />
+                </element>
+                <element>
+                    <list />
+                </element>
+                <element>
+                    <list />
+                </element>
+                <element>
+                    <list />
+                </element>
+                <element>
+                    <list />
+                </element>
+                <element>
+                    <list />
+                </element>
+                <element>
+                    <list />
+                </element>
+            </list>
+            <list><!--Air Mobils-->
+                <element>
+                    <list>
+                        <element>
+                            <node refname="3" link="3.CSceneMobil.xml" />
+                        </element>
+                    </list>
+                </element>
+                <element>
+                    <list>
+                        <element>
+                            <node refname="6" link="6.CSceneMobil.xml" />
+                        </element>
+                    </list>
+                </element>
+                <element>
+                    <list>
+                        <element>
+                            <node refname="9" link="9.CSceneMobil.xml" />
+                        </element>
+                    </list>
+                </element>
+                <element>
+                    <list>
+                        <element>
+                            <node refname="11" link="11.CSceneMobil.xml" />
+                        </element>
+                    </list>
+                </element>
+                <element>
+                    <list>
+                        <element>
+                            <node refname="13" link="13.CSceneMobil.xml" />
+                        </element>
+                    </list>
+                </element>
+                <element>
+                    <list>
+                        <element>
+                            <node refname="15" link="15.CSceneMobil.xml" />
+                        </element>
+                    </list>
+                </element>
+                <element>
+                    <list>
+                        <element>
+                            <node refname="18" link="18.CSceneMobil.xml" />
+                        </element>
+                    </list>
+                </element>
+                <element>
+                    <list>
+                        <element>
+                            <node refname="20" link="20.CSceneMobil.xml" />
+                        </element>
+                    </list>
+                </element>
+                <element>
+                    <list>
+                        <element>
+                            <node refname="22" link="22.CSceneMobil.xml" />
+                        </element>
+                    </list>
+                </element>
+            </list>
+            <flags bytes="9" />
+        </chunk>
+        <chunk class="24005000" id="009">
+            <bool>0</bool>
+        </chunk>
+        <chunk class="24005000" id="00B">
+            <uint32>3</uint32>
+            <node /><!--Editor Helper Mobil-->
+            <node /><!--Editor Helper Mobil-->
+            <node /><!--Editor Helper Mobil-->
+        </chunk>
+        <chunk class="24005000" id="00C"><!--Spawn position-->
+            <vec3>1.0 0.0 0.0</vec3>
+            <vec3>0.0 1.0 0.0</vec3>
+            <vec3>0.0 0.0 1.0</vec3>
+            <vec3>16.0 8.5 11.199999809265137</vec3><!--Respawn position-->
+            <vec3>1.0 0.0 0.0</vec3>
+            <vec3>0.0 1.0 0.0</vec3>
+            <vec3>0.0 0.0 1.0</vec3>
+            <vec3>16.0 8.5 11.199999809265137</vec3>
+        </chunk>
+        <chunk class="24005000" id="00D">
+            <bool>0</bool><!--Something with replacing ?-->
+        </chunk>
+    </body>
+</gbx>

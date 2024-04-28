@@ -1,0 +1,124 @@
+<gbx version="6" unknown="R" class="24022000" complvl="1" md5="4698c86c6da7fcabfc6785ef33bd3c3c">
+    <head>
+        <chunk class="2400A000" id="003">
+            <lookbackstr type="40">StadiumRamp</lookbackstr>
+            <lookbackstr type="40">Stadium</lookbackstr>
+            <lookbackstr type="40">Nadeo</lookbackstr>
+            <uint32>4</uint32><!--Version-->
+            <str>RoadMain/Ramps/</str><!--Page name-->
+            <lookbackstr />
+            <uint32>1</uint32><!--Production state (0-vis, 2-3-hidden)-->
+            <uint16>22</uint16><!--Index-->
+            <uint32>25600</uint32><!--Copper cost-->
+            <uint8>0</uint8>
+            <uint16>10</uint16>
+        </chunk>
+        <chunk class="2400A000" id="004">
+            <icon link="Icon.png" />
+        </chunk>
+    </head>
+    <reference_table ancestor="2">
+        <dir name="ConstructionBlockInfo">
+            <dir name="ConstructionBlockInfoClassic">
+                <!--StadiumRamp.TMEDClassic.Gbx-->
+            </dir>
+            <dir name="ConstructionBlockInfoClip">
+                <file flags="1" name="StadiumRoadMainClip.TMEDClip.Gbx" usefile="0" refname="2" />
+            </dir>
+        </dir>
+        <dir name="Media">
+            <dir name="Solid">
+                <dir name="Ramp">
+                    <file flags="1" name="Ground.Solid.Gbx" usefile="0" refname="6" />
+                    <file flags="1" name="Air.Solid.Gbx" usefile="0" refname="9" />
+                </dir>
+            </dir>
+        </dir>
+    </reference_table>
+    <body>
+        <chunk class="2400A000" id="002">
+            <lookbackstr type="40">StadiumRamp</lookbackstr>
+            <lookbackstr type="40">Stadium</lookbackstr>
+            <lookbackstr type="40">Nadeo</lookbackstr>
+        </chunk>
+        <chunk class="2400A000" id="006">
+            <uint32>0</uint32><!--Skin Mode (0-none, 1-text, 2-image)-->
+        </chunk>
+        <chunk class="2400A000" id="007">
+            <bool>0</bool>
+            <bool>1</bool>
+            <uint32>22</uint32><!--Index-->
+            <uint32>0</uint32><!--Block Count-->
+            <uint32>100</uint32><!--Copper Cost-->
+            <uint32>10</uint32><!--?-->
+        </chunk>
+        <chunk class="2400A000" id="009">
+            <str>RoadMain/Ramps/</str><!--Page Name-->
+            <bool>0</bool><!--Has Icon Fid-->
+            <lookbackstr />
+        </chunk>
+        <chunk class="24005000" id="005">
+            <lookbackstr type="40">StadiumRamp</lookbackstr>
+            <uint32>0</uint32><!--X Width (In cells)-->
+            <uint32>0</uint32><!--Y Height (In cells)-->
+            <uint32>0</uint32><!--Z Length (In cells)-->
+            <bool>0</bool>
+            <uint32>0</uint32><!--Random Rotation (0-none, 2-enable)-->
+            <uint32>0</uint32>
+            <node /><!--Pillar block-->
+            <list><!--Ground Cells-->
+                <element>
+                    <node refname="1" link="1.CGameCtnBlockUnitInfo.xml" />
+                </element>
+            </list>
+            <list><!--Air Cells-->
+                <element>
+                    <node refname="3" link="3.CGameCtnBlockUnitInfo.xml" />
+                </element>
+            </list>
+            <list><!--Ground Mobils-->
+                <element>
+                    <list>
+                        <element>
+                            <node refname="4" link="4.CSceneMobil.xml" />
+                        </element>
+                    </list>
+                </element>
+            </list>
+            <list><!--Air Mobils-->
+                <element>
+                    <list>
+                        <element>
+                            <node refname="7" link="7.CSceneMobil.xml" />
+                        </element>
+                    </list>
+                </element>
+            </list>
+            <flags bytes="9" />
+        </chunk>
+        <chunk class="24005000" id="009">
+            <bool>0</bool>
+        </chunk>
+        <chunk class="24005000" id="00B">
+            <uint32>3</uint32>
+            <node /><!--Editor Helper Mobil ground-->
+            <node /><!--Editor Helper Mobil air-->
+            <node /><!--Editor Helper Mobil arrow-->
+        </chunk>
+        <chunk class="24005000" id="00C">
+            <!--spawn position ground-->
+            <vec3>1.0 0.0 0.0</vec3>
+            <vec3>0.0 1.0 0.0</vec3>
+            <vec3>0.0 0.0 1.0</vec3>
+            <vec3>16.0 1.7000000476837158 2.0</vec3>
+            <!--spawn position air-->
+            <vec3>1.0 0.0 0.0</vec3>
+            <vec3>0.0 1.0 0.0</vec3>
+            <vec3>0.0 0.0 1.0</vec3>
+            <vec3>16.0 1.7000000476837158 2.0</vec3>
+        </chunk>
+        <chunk class="24005000" id="00D">
+            <bool>0</bool><!--Something with replacing ?-->
+        </chunk>
+    </body>
+</gbx>
