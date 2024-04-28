@@ -10,7 +10,7 @@ import argparse
 import logging
 
 
-VERSION_STR = 'a1.6.2'
+VERSION_STR = 'a1.6.3'
 
 
 def is_valid_file(parser, arg):

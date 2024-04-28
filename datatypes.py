@@ -340,11 +340,11 @@ def __write_flags(file_w: BinaryIO, _value: str, params: dict, element: ET.Eleme
 def __write_gbxclass(file_w: BinaryIO, value: str, params: dict, _element: ET.Element = None):
     comp_lvl = params.get('complvl')
     class_id = params.get('id')
-
-    try:
-        gbx_classes.set_comp_lvl(int(comp_lvl))
-    except ValueError:
-        pass
+    if comp_lvl:
+        try:
+            gbx_classes.set_comp_lvl(int(comp_lvl))
+        except ValueError:
+            pass
 
     if value in gbx_classes.get_dict():
         full_class_id = gbx_classes.get_dict().get(value)

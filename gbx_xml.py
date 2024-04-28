@@ -297,6 +297,9 @@ def validate_gbx_xml(gbx_xml: ET.ElementTree, file_path: str):
     file_path_x = pathlib.Path(file_path)
     gbx = gbx_xml
 
+    og_dir = os.getcwd()
+    os.chdir(file_path_x.parent)
+
     gbx_tag = gbx_xml.getroot()
     if gbx_tag and gbx_tag.tag != 'gbx':
         logging.error('XML Error: the xml file does not contain the <gbx> root tag!')
@@ -381,4 +384,5 @@ def validate_gbx_xml(gbx_xml: ET.ElementTree, file_path: str):
             logging.error(f'In <chunk> no. {i} in <body>')
             raise ValidationError
 
+    os.chdir(og_dir)
     logging.info('XML Validation passed!')
