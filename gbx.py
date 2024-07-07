@@ -6,6 +6,7 @@ import struct
 from struct import pack
 import xml.etree.ElementTree as ET
 from typing import BinaryIO
+from pathlib import Path
 
 import datatypes
 import utils
@@ -265,6 +266,7 @@ def write_list(body_data: BinaryIO, lst):
 
 
 def write_chunk_element(body_data, element):
+    # "Special" elements
     if element.tag == 'node':
         try:
             write_node(body_data, element)
@@ -293,11 +295,12 @@ def write_chunk_element(body_data, element):
                 if case_value == condition_val:
                     for case_element in case_tag:
                         write_chunk_element(body_data, case_element)
+    # Regular value tags (uint32, str, etc.)
     else:
         try:
             data_types[element.tag](body_data, element.text, element.attrib, element)
         except GBXWriteError:
-            raise GBXWriteError
+            raise
 
 
 def write_chunk(body_data: BinaryIO, chunk):
@@ -307,6 +310,8 @@ def write_chunk(body_data: BinaryIO, chunk):
 
     class_id = chunk.get('class')
     chunk_id = chunk.get('id')
+    link_ref = chunk.get('link')
+
     if class_id[0] == 'C':  # named class
         full_class_id = f'{gbx_classes.get_dict().get(class_id)[:-3]}{chunk_id}'
         body_data.write(pack('<I', int(full_class_id, 16)))
@@ -385,10 +390,12 @@ def xml_to_gbx(xml_path: str, path: str, gbx: ET.Element):
     else:
         gbx_file.write(pack('<i', int(class_id, 16)))
 
-    og_dir = os.getcwd()
+    og_dir = os.path.abspath(os.getcwd())
     os.chdir(file_path_x.parent)
 
     # Write head
+    if int(gbx.get('version')) <= 5:
+        datatypes.lookback.version = 2
     if int(gbx.get('version')) >= 6:
         head_tag = gbx.find('head')
         if head_tag:
@@ -424,9 +431,10 @@ def xml_to_gbx(xml_path: str, path: str, gbx: ET.Element):
 
     # No issues, ready to write to file
 
+    os.chdir(og_dir)
+    Path(os.path.dirname(path)).mkdir(parents=True, exist_ok=True)
     out_file = open(path, 'wb', 0)
     out_file.write(gbx_data)
     out_file.close()
 
-    os.chdir(og_dir)
     return 0

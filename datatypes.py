@@ -230,19 +230,22 @@ def __write_str(file_w: BinaryIO, value: str, _params: dict, _element: ET.Elemen
 
 
 def __write_lookbackstr(file_w: BinaryIO, value: str, params: dict, _element: ET.Element = None):
+    index = 0
     if params is None:
         params = {}
     if not lookback.has_been_used:
         file_w.write(pack('<I', lookback.version))
-        lookback.has_been_used = True
+        if lookback.version >= 3:
+            lookback.has_been_used = True
     if not value and 'zero' not in params:
         file_w.write(pack('<I', 0xFFFFFFFF))
         return
     if 'zero' in params:
         value = ''
+    if 'index' in params and lookback.version == 2:
+        index = int(params.get('index'))
 
     count = 0
-    index = 0
     for lookbackstr in lookback.lookback_strings:
         count += 1
         if lookbackstr == value:
@@ -261,9 +264,15 @@ def __write_lookbackstr(file_w: BinaryIO, value: str, params: dict, _element: ET
         raise
 
     if typ == '80':
-        file_w.write(pack('<I', index | 0x80000000))
+        if lookback.version == 2:
+            file_w.write(pack('<I', (index << 8) | 0x80000080))
+        else:
+            file_w.write(pack('<I', index | 0x80000000))
     elif typ == '40':
-        file_w.write(pack('<I', index | 0x40000000))
+        if lookback.version == 2:
+            file_w.write(pack('<I', (index << 8) | 0x40000040))
+        else:
+            file_w.write(pack('<I', index | 0x40000000))
     elif typ == '0':
         file_w.write(pack('<I', int(value)))
         lookback.lookback_strings.append(value)
@@ -271,7 +280,7 @@ def __write_lookbackstr(file_w: BinaryIO, value: str, params: dict, _element: ET
     else:
         logging.error(f'Data type tag error: unknown type "{typ}" in <lookbackstr> tag! (must be 0, 40 or 80)')
         raise GBXWriteError
-    if index == 0:
+    if index == 0 or lookback.version == 2:
         lookback.lookback_strings.append(value)
         file_w.write(pack('<I', len(value)))
         try:
