@@ -408,6 +408,7 @@ data_types = {
     'color': __write_vec3,
     'str': __write_str,
     'lookbackstr': __write_lookbackstr,
+    'id': __write_lookbackstr,
     'flags': __write_flags,
     'gbxclass': __write_gbxclass,
     'icon': __write_icon
