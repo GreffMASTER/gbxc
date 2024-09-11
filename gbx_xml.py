@@ -128,6 +128,9 @@ def _validate_node(node: ET.Element):
     node_counter.increment()
     changed = 0
 
+    if 'custom' in node.attrib:
+        return  # hacks, hacks, hacks
+
     if 'link' in node.attrib:
         full_path = pathlib.Path(node.get('link'))
         link_dir = full_path.parent

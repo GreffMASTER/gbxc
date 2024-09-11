@@ -180,6 +180,23 @@ def write_node(body_data: BinaryIO, xml_node: ET.Element):
     node_ref_id = xml_node.get('ref')
     link_ref = xml_node.get('link')
     headless = xml_node.get('headless')
+    custom = xml_node.get('custom')
+
+    if custom:  # hacks, hacks, hacks
+        class_id = xml_node.get('class')
+        node_counter.increment()
+        node_pool.addNode(xml_node, node_counter.get_value())
+        xml_node.attrib['nodeid'] = str(node_counter)
+        # Write node ref id
+        body_data.write(pack('<I', int(node_counter)))
+
+        if class_id[0] == 'C':  # every class name starts with a 'C'
+            body_data.write(pack('<I', int(gbx_classes.get_dict().get(class_id), 16)))
+        else:  # otherwise it's a hex value
+            body_data.write(pack('<I', int(class_id, 16)))
+
+        write_chunk(body_data, xml_node, True)
+        return
 
     if node_ref_id:  # Node reference
         try:
@@ -303,7 +320,7 @@ def write_chunk_element(body_data, element):
             raise
 
 
-def write_chunk(body_data: BinaryIO, chunk):
+def write_chunk(body_data: BinaryIO, chunk, custom = False):
     global gbx_reftable
 
     chunk_bin = io.BytesIO()
@@ -312,12 +329,13 @@ def write_chunk(body_data: BinaryIO, chunk):
     chunk_id = chunk.get('id')
     link_ref = chunk.get('link')
 
-    if class_id[0] == 'C':  # named class
-        full_class_id = f'{gbx_classes.get_dict().get(class_id)[:-3]}{chunk_id}'
-        body_data.write(pack('<I', int(full_class_id, 16)))
-    else:  # not a named class
-        full_class_id = f'{class_id[:-3]}{chunk_id}'
-        body_data.write(pack('<I', int(full_class_id, 16)))
+    if not custom:
+        if class_id[0] == 'C':  # named class
+            full_class_id = f'{gbx_classes.get_dict().get(class_id)[:-3]}{chunk_id}'
+            body_data.write(pack('<I', int(full_class_id, 16)))
+        else:  # not a named class
+            full_class_id = f'{class_id[:-3]}{chunk_id}'
+            body_data.write(pack('<I', int(full_class_id, 16)))
 
     for i, data_type in enumerate(chunk):  # Iterate over chunks
         try:
