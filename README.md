@@ -1,4 +1,5 @@
 # GBX Compiler (gbxc)
+![gbxc](https://github.com/GreffMASTER/gbxc/actions/workflows/python-app.yml/badge.svg)  
 Compile XML files to GBX.  
 This tool was created in order to replace the manual labor of hex editing the GBX files directly.  
 Usage:  
