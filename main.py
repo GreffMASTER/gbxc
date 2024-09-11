@@ -1,13 +1,13 @@
 import os
 import sys
 import hashlib
-import xml.etree.ElementTree
 import xml.etree.ElementTree as ET
 import gbx_xml as gbx_xml_tools
 from gbx import xml_to_gbx
 from gbxerrors import ValidationError, GBXWriteError
 import argparse
 import logging
+import time
 
 
 VERSION_STR = 'a1.7.0'
@@ -71,7 +71,7 @@ def main() -> None:
         format='%(asctime)s (%(levelname)s) %(message)s',
         filename=logfile
     )
-
+    start_time = time.time()
     print(f'-------GBXC v.{VERSION_STR}-------')
     logging.info(f'Logging level set to {loglevel}')
     print(f'Parsing "{xml_path}"...')
@@ -79,7 +79,7 @@ def main() -> None:
     og_cwd = os.getcwd()
     try:
         gbx_tree = ET.parse(xml_path)
-    except xml.etree.ElementTree.ParseError as e:
+    except ET.ParseError as e:
         logging.error(f'Failed to parse XML file! ({e.code}, {e.position})')
         sys.exit(f'Failed to parse XML file! (code: {e.code}, pos: {e.position})')
     os.chdir(og_cwd)
@@ -97,6 +97,9 @@ def main() -> None:
 
     print(f'Successfully compiled to "{gbx_path}"!')
     logging.info(f'Successfully compiled to "{gbx_path}"!')
+    elapsed_time = time.time() - start_time
+    print(f'Elapsed time: {elapsed_time}')
+    logging.info(f'Elapsed time: {elapsed_time}')
 
     if argv.do_checksum:
         with open(gbx_path, 'rb') as fb:

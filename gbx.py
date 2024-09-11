@@ -31,6 +31,7 @@ version = 6
 
 
 def write_head_data(gbx_head: ET.Element) -> int:
+    reset_lookback()
     head_data = io.BytesIO()
     collapsed_chunk_data = io.BytesIO()
     head_data.write(pack('<I', len(gbx_head)))  # Number of chunks in head
@@ -83,6 +84,7 @@ def write_dir(ref_tab_data: io.BytesIO, ref_file_data: io.BytesIO, direct: ET.El
     for element in direct:
         if element.tag == 'dir':
             directory_counter.increment()
+            element.set('dir_id', str(directory_counter))
             ref_tab_data.write(pack('<I', len(element.get('name'))))
             ref_tab_data.write(bytes(element.get('name'), 'utf-8'))
             sub_dirs = 0
@@ -91,8 +93,14 @@ def write_dir(ref_tab_data: io.BytesIO, ref_file_data: io.BytesIO, direct: ET.El
                     sub_dirs += 1
             ref_tab_data.write(pack('<I', sub_dirs))
             write_dir(ref_tab_data, ref_file_data, element)
+
+
+def set_file_nodes(direct: ET.Element, dir_id):
+    for element in direct:
+        if element.tag == 'dir':
+            set_file_nodes(element, element.get('dir_id'))
         elif element.tag == 'file':
-            element.attrib['dirindex'] = str(directory_counter)
+            element.attrib['dirindex'] = dir_id
 
 
 def write_ref_table() -> bytes:
@@ -104,7 +112,7 @@ def write_ref_table() -> bytes:
     for file in gbx_reftable.iter('file'):  # Get used file count
         if 'nodeid' in file.attrib:
             filecount += 1
-    ref_tab_data.write(pack('<I', filecount))
+    ref_tab_data.write(pack('<I', filecount))  # write ex node count
 
     if filecount == 0:  # No files
         ref_tab_data.seek(0)
@@ -122,12 +130,13 @@ def write_ref_table() -> bytes:
     ref_tab_data.write(pack('<I', sub_dirs))
 
     write_dir(ref_tab_data, ref_file_data, gbx_reftable)  # Write all directories
+    set_file_nodes(gbx_reftable, '0')
 
     files = []
     for file in gbx_reftable.iter('file'):
         if 'nodeid' in file.attrib:
             files.append(file)
-    files.sort(key=lambda x: int(x.get('nodeid')))
+    files.sort(key=lambda x: int(x.get('nodeid')))  # write the files in order as they are used in the body
 
     for file in files:
         flags = int(file.get('flags'))
@@ -155,6 +164,8 @@ def write_ref_table() -> bytes:
 
 
 def set_nodeid_to_node(in_ref_id: str) -> int:
+    """ This function goes through every <file> the entire <reference_table>
+    and sets the correct node id if file with a given reference id exists """
     global gbx_reftable
     if gbx_reftable:
         for file in gbx_reftable.iter('file'):
