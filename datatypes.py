@@ -222,7 +222,7 @@ def __write_str(file_w: BinaryIO, value: str, _params: dict, _element: ET.Elemen
         if _params.get('condition'):
             conditions.set_condition(_params.get('condition'), value)
         file_w.write(pack('<I', len(value)))
-        value = bytes(value, 'utf-8')
+        value = bytes(value, utils.encoding)
         file_w.write(value)
     except ValueError or packerr:
         logging.error(f'Data type tag error: incorrect text value "{value}" in <str> tag!')
@@ -284,7 +284,7 @@ def __write_lookbackstr(file_w: BinaryIO, value: str, params: dict, _element: ET
         lookback.lookback_strings.append(value)
         file_w.write(pack('<I', len(value)))
         try:
-            value = bytes(value, 'utf-8')
+            value = bytes(value, utils.encoding)
         except ValueError:
             logging.error(f'Data type tag error: incorrect text value "{value}" in <lookbackstr> tag!')
             raise GBXWriteError

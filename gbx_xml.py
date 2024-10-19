@@ -288,8 +288,8 @@ def validate_gbx_xml(gbx_xml: ET.ElementTree, file_path: str):
     Validates the GBX XML file. If an error occurred, 1 is returned.
     Otherwise, returns 0.
 
-    :param gbx_xml:
-    :param file_path:
+    :param gbx_xml: ET.ElementTree
+    :param file_path: str
     :return:
     """
     logging.info(f'Validating XML file "{file_path}"')
@@ -311,6 +311,14 @@ def validate_gbx_xml(gbx_xml: ET.ElementTree, file_path: str):
     for req_attrib in REQUIRED_ATTRIB_LIST:
         if req_attrib not in gbx_tag.attrib:
             logging.error(f'XML Error: missing required "{req_attrib}" attribute in <gbx> tag!')
+            raise ValidationError
+
+    encoding = gbx_tag.get('encoding')
+    if not encoding:
+        logging.warning('XML Warning: missing \"encoding\" attribute. Using \"ascii\" as default...')
+    else:
+        if encoding != 'ascii' and encoding != 'cp1251':
+            logging.error(f'XML Error: \"encoding\" attribute can only be either \"ascii\" or \"cp1251\"')
             raise ValidationError
 
     # Check if "gbx" tag has one and only one "body" tag

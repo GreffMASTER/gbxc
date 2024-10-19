@@ -2,6 +2,8 @@ import os
 from typing import io
 import xml.etree.ElementTree as ET
 
+encoding = 'ascii'
+
 
 class GlobalNodePool:
     def __init__(self):

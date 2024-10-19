@@ -405,6 +405,9 @@ def xml_to_gbx(xml_path: str, path: str, gbx: ET.Element):
         comp_lvl = int(gbx.get('complvl'))
         gbx_classes.set_comp_lvl(comp_lvl)
 
+    if 'encoding' in gbx.attrib:
+        utils.encoding = gbx.get('encoding')
+
     gbx_file = io.BytesIO()  # Make a file buffer before writing to file
     gbx_file.write(b'GBX')
     version = int(gbx.get('version'))
