@@ -24,9 +24,7 @@ node_pool = utils.GlobalNodePool()
 # Globals
 gbx_reftable: ET.Element
 gbx_body: ET.Element
-file_path_x: pathlib.Path
-path_history: list = []
-link_recursion: int = 0
+file_path_xml: pathlib.Path
 version = 6
 
 
@@ -139,7 +137,9 @@ def write_ref_table() -> bytes:
     files.sort(key=lambda x: int(x.get('nodeid')))  # write the files in order as they are used in the body
 
     for file in files:
-        flags = int(file.get('flags'))
+        flags = 1
+        if file.get('resindex'):
+            flags = 5
         ref_file_data.write(pack('<I', flags))
         if flags & 4 == 0:
             ref_file_data.write(pack('<I', len(file.get('name'))))
@@ -163,7 +163,7 @@ def write_ref_table() -> bytes:
     return ref_tab_data_bytes
 
 
-def set_nodeid_to_node(in_ref_id: str) -> int:
+def set_nodeid_to_node(in_ref_id: str, is_fid: bool = False) -> int:
     """ This function goes through every <file> the entire <reference_table>
     and sets the correct node id if file with a given reference id exists """
     global gbx_reftable
@@ -175,6 +175,11 @@ def set_nodeid_to_node(in_ref_id: str) -> int:
                 else:
                     node_counter.increment()
                     file.attrib['nodeid'] = str(node_counter)
+                    if not file.get('usefile'):
+                        file.attrib['usefile'] = '0'
+                        # if not specified, set default value to 0 (compatibility with older xmls that don't use fids)
+                    if is_fid:
+                        file.attrib['usefile'] = '1'
                     node_pool.addNode(file, int(node_counter))
                     return int(node_counter)
 
@@ -183,6 +188,24 @@ def set_nodeid_to_node(in_ref_id: str) -> int:
         return nodeid
     else:
         raise GBXWriteError
+
+
+def set_nodeid_to_file(in_ref_id: str) -> int:
+    """ This function goes through every <file> the entire <reference_table>
+    and sets the correct node id if file with a given reference id exists """
+    global gbx_reftable
+    if gbx_reftable:
+        for file in gbx_reftable.iter('file'):
+            if file.get('refname') == in_ref_id:
+                if 'nodeid' in file.attrib:
+                    return int(file.get('nodeid'))
+                else:
+                    node_counter.increment()
+                    file.attrib['nodeid'] = str(node_counter)
+                    file.attrib['usefile'] = '1'
+                    node_pool.addNode(file, int(node_counter))
+                    return int(node_counter)
+    raise GBXWriteError
 
 
 def write_node(body_data: BinaryIO, xml_node: ET.Element):
@@ -280,6 +303,18 @@ def write_node(body_data: BinaryIO, xml_node: ET.Element):
             body_data.write(pack('<I', 0xFFFFFFFF))
 
 
+def write_fid(body_data: BinaryIO, xml_node: ET.Element):
+    node_ref_id = xml_node.get('ref')
+    if not node_ref_id:
+        raise GBXWriteError('<fid> tag requires \"ref\" attribute!')
+    try:
+        res = set_nodeid_to_file(node_ref_id)
+        body_data.write(pack('<I', res))
+    except GBXWriteError:
+        logging.error(f'Error: failed to find file of id "{node_ref_id}"!')
+        raise GBXWriteError
+
+
 def write_list(body_data: BinaryIO, lst):
     count = 0
     for _element in lst:
@@ -295,9 +330,14 @@ def write_list(body_data: BinaryIO, lst):
 
 def write_chunk_element(body_data, element):
     # "Special" elements
-    if element.tag == 'node':
+    if element.tag == 'node' or element.tag == 'nod':
         try:
             write_node(body_data, element)
+        except GBXWriteError:
+            raise GBXWriteError
+    elif element.tag == 'fid':
+        try:
+            write_fid(body_data, element)
         except GBXWriteError:
             raise GBXWriteError
     elif element.tag == 'list':
@@ -390,10 +430,10 @@ def xml_to_gbx(xml_path: str, path: str, gbx: ET.Element):
     global gbx_file
     global gbx_reftable
     global gbx_body
-    global file_path_x
+    global file_path_xml
     global version
 
-    file_path_x = pathlib.Path(xml_path)
+    file_path_xml = pathlib.Path(xml_path)
 
     # Create missing directories in output path
     try:
@@ -423,7 +463,7 @@ def xml_to_gbx(xml_path: str, path: str, gbx: ET.Element):
         gbx_file.write(pack('<i', int(class_id, 16)))
 
     og_dir = os.path.abspath(os.getcwd())
-    os.chdir(file_path_x.parent)
+    os.chdir(file_path_xml.parent)
 
     # Write head
     if int(gbx.get('version')) <= 5:

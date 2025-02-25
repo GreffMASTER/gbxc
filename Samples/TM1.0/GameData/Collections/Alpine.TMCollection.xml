@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<!-- Updated version for gbxc a1.7.1 -->
 <gbx version="6" unknown="R" class="CGameCtnCollection" complvl="1" md5="e5a6a0a9b438d6c3b0f99c283dfc2afb">
     <head>
         <chunk class="CGameCtnCollection" id="001">
             <uint8>2</uint8> <!-- Version -->
-            <lookbackstr type="40">Alpine</lookbackstr>
+            <id type="40">Alpine</id>
             <bool>0</bool> <!-- Need unlock -->
             <str>Alpine\Media\Texture\IconEnvSnow.Texture.gbx</str> <!-- Env icon path -->
             <str></str> <!-- Collection icon path -->
@@ -14,37 +15,37 @@
         <dir name="Collections"></dir>
         <dir name="Alpine">
             <dir name="ConstructionDecoration">
-                <file flags="1" name="AlpineBase32x32.TMDecoration.Gbx" usefile="0" refname="alpine_base"/>
+                <file name="AlpineBase32x32.TMDecoration.Gbx" refname="alpine_base"/>
             </dir>
             <dir name="Media">
                 <dir name="Texture">
-                    <file flags="1" name="IconEnvSnow.Texture.gbx" usefile="1" refname="icon_env_snow"/>
+                    <file name="IconEnvSnow.Texture.gbx" refname="icon_env_snow"/>
                 </dir>
             </dir>
             <dir name="ConstructionBlockInfo">
                 <dir name="ConstructionBlockInfoFlat">
-                    <file flags="1" name="Snow.TMEDFlat.Gbx" usefile="0" refname="snow_flat"/>
-                    <file flags="1" name="Ice.TMEDFlat.Gbx" usefile="0" refname="ice_flat"/>
-                    <file flags="1" name="Snow1.TMEDFlat.Gbx" usefile="0" refname="snow1_flat"/>
-                    <file flags="1" name="Snow2.TMEDFlat.Gbx" usefile="0" refname="snow2_flat"/>
-                    <file flags="1" name="Snow3.TMEDFlat.Gbx" usefile="0" refname="snow3_flat"/>
-                    <file flags="1" name="Ice0.TMEDFlat.Gbx" usefile="0" refname="ice0_flat"/>
+                    <file name="Snow.TMEDFlat.Gbx" refname="snow_flat"/>
+                    <file name="Ice.TMEDFlat.Gbx" refname="ice_flat"/>
+                    <file name="Snow1.TMEDFlat.Gbx" refname="snow1_flat"/>
+                    <file name="Snow2.TMEDFlat.Gbx" refname="snow2_flat"/>
+                    <file name="Snow3.TMEDFlat.Gbx" refname="snow3_flat"/>
+                    <file name="Ice0.TMEDFlat.Gbx" refname="ice0_flat"/>
                 </dir>
                 <dir name="ConstructionBlockInfoClip">
-                    <file flags="1" name="AlpineSnowClip.TMEDClip.Gbx" usefile="0" refname="snow_clip"/>
+                    <file name="AlpineSnowClip.TMEDClip.Gbx" refname="snow_clip"/>
                 </dir>
                 <dir name="ConstructionBlockInfoRoad">
-                    <file flags="1" name="AlpineRoadWood.TMEDRoad.Gbx" usefile="0" refname="road_wood"/>
+                    <file name="AlpineRoadWood.TMEDRoad.Gbx" refname="road_wood"/>
                 </dir>
                 <dir name="ConstructionBlockInfoPylon">
-                    <file flags="1" name="AlpinePylonWood.TMEDPylon.Gbx" usefile="0" refname="pylon_wood"/>
+                    <file name="AlpinePylonWood.TMEDPylon.Gbx" refname="pylon_wood"/>
                 </dir>
                 <dir name="ConstructionBlockInfoFrontier">
-                    <file flags="1" name="SnowToIce.TMEDFrontier.Gbx" usefile="0" refname="snowtoice_frontier"/>
-                    <file flags="1" name="SnowToSnow1.TMEDFrontier.Gbx" usefile="0" refname="snowtosnow1_frontier"/>
-                    <file flags="1" name="Snow1ToSnow2.TMEDFrontier.Gbx" usefile="0" refname="snow1tosnow2_frontier"/>
-                    <file flags="1" name="Snow2ToSnow3.TMEDFrontier.Gbx" usefile="0" refname="snow2tosnow3_frontier"/>
-                    <file flags="1" name="Ice0ToIce.TMEDFrontier.Gbx" usefile="0" refname="ice0toice_frontier"/>
+                    <file name="SnowToIce.TMEDFrontier.Gbx" refname="snowtoice_frontier"/>
+                    <file name="SnowToSnow1.TMEDFrontier.Gbx" refname="snowtosnow1_frontier"/>
+                    <file name="Snow1ToSnow2.TMEDFrontier.Gbx" refname="snow1tosnow2_frontier"/>
+                    <file name="Snow2ToSnow3.TMEDFrontier.Gbx" refname="snow2tosnow3_frontier"/>
+                    <file name="Ice0ToIce.TMEDFrontier.Gbx" refname="ice0toice_frontier"/>
                 </dir>
             </dir>
         </dir>
@@ -54,15 +55,15 @@
             <node ref="alpine_base"/>
         </chunk>
         <chunk class="CGameCtnCollection" id="009">
-            <lookbackstr type="40">Alpine</lookbackstr> <!-- LBS 1 -->
+            <id type="40">Alpine</id> <!-- LBS 1 -->
             <uint32>10</uint32>
             <list>
                 <element>
                     <node class="CGameCtnZoneFlat"> <!-- EL1 -->
                         <chunk class="CGameCtnZone" id="003">
                             <uint32>0</uint32>
-                            <lookbackstr type="40">Snow</lookbackstr> <!-- LBS 2 -->
-                            <lookbackstr type="40">Snow</lookbackstr>
+                            <id type="40">Snow</id> <!-- LBS 2 -->
+                            <id type="40">Snow</id>
                             <uint32>0</uint32>
                         </chunk>
                         <chunk class="CGameCtnZoneFlat" id="001">
@@ -77,8 +78,8 @@
                     <node class="CGameCtnZoneFlat"> <!-- EL2 -->
                         <chunk class="CGameCtnZone" id="003">
                             <uint32>0</uint32>
-                            <lookbackstr type="40">Ice</lookbackstr> <!-- LBS 3 -->
-                            <lookbackstr type="40">Ice</lookbackstr>
+                            <id type="40">Ice</id> <!-- LBS 3 -->
+                            <id type="40">Ice</id>
                             <uint32>0</uint32>
                         </chunk>
                         <chunk class="CGameCtnZoneFlat" id="001">
@@ -93,14 +94,14 @@
                     <node class="CGameCtnZoneFrontier"> <!-- EL3 -->
                         <chunk class="CGameCtnZone" id="003">
                             <uint32>0</uint32>
-                            <lookbackstr type="40">SnowToIce</lookbackstr> <!-- LBS 4 -->
-                            <lookbackstr type="40">SnowToIce</lookbackstr>
+                            <id type="40">SnowToIce</id> <!-- LBS 4 -->
+                            <id type="40">SnowToIce</id>
                             <uint32>1</uint32>
                         </chunk>
                         <chunk class="CGameCtnZoneFrontier" id="001">
                             <node ref="snowtoice_frontier"/>
-                            <lookbackstr type="40">Snow</lookbackstr>
-                            <lookbackstr type="40">Ice</lookbackstr>
+                            <id type="40">Snow</id>
+                            <id type="40">Ice</id>
                         </chunk>
                     </node> <!-- EO EL3 -->
                 </element>
@@ -108,8 +109,8 @@
                     <node class="CGameCtnZoneFlat"> <!-- EL4 -->
                         <chunk class="CGameCtnZone" id="003">
                             <uint32>3</uint32>
-                            <lookbackstr type="40">Snow1</lookbackstr> <!-- LBS 5 -->
-                            <lookbackstr type="40">Snow</lookbackstr>
+                            <id type="40">Snow1</id> <!-- LBS 5 -->
+                            <id type="40">Snow</id>
                             <uint32>0</uint32>
                         </chunk>
                         <chunk class="CGameCtnZoneFlat" id="001">
@@ -124,14 +125,14 @@
                     <node class="CGameCtnZoneFrontier"> <!-- EL5 -->
                         <chunk class="CGameCtnZone" id="003">
                             <uint32>3</uint32>
-                            <lookbackstr type="40">SnowToSnow1</lookbackstr> <!-- LBS 6 -->
-                            <lookbackstr type="40">Cliff</lookbackstr> <!-- LBS 7 -->
+                            <id type="40">SnowToSnow1</id> <!-- LBS 6 -->
+                            <id type="40">Cliff</id> <!-- LBS 7 -->
                             <uint32>1</uint32>
                         </chunk>
                         <chunk class="CGameCtnZoneFrontier" id="001">
                             <node ref="snowtosnow1_frontier"/>
-                            <lookbackstr type="40">Snow</lookbackstr>
-                            <lookbackstr type="40">Snow1</lookbackstr>
+                            <id type="40">Snow</id>
+                            <id type="40">Snow1</id>
                         </chunk>
                     </node> <!-- EO EL5 -->
                 </element>
@@ -139,8 +140,8 @@
                     <node class="CGameCtnZoneFlat"> <!-- EL6 -->
                         <chunk class="CGameCtnZone" id="003">
                             <uint32>6</uint32>
-                            <lookbackstr type="40">Snow2</lookbackstr> <!-- LBS 8 -->
-                            <lookbackstr type="40">Snow</lookbackstr>
+                            <id type="40">Snow2</id> <!-- LBS 8 -->
+                            <id type="40">Snow</id>
                             <uint32>0</uint32>
                         </chunk>
                         <chunk class="CGameCtnZoneFlat" id="001">
@@ -155,14 +156,14 @@
                     <node class="CGameCtnZoneFrontier"> <!-- EL7 -->
                         <chunk class="CGameCtnZone" id="003">
                             <uint32>6</uint32>
-                            <lookbackstr type="40">Snow1ToSnow2</lookbackstr> <!-- LBS 9 -->
-                            <lookbackstr type="40">Cliff</lookbackstr>
+                            <id type="40">Snow1ToSnow2</id> <!-- LBS 9 -->
+                            <id type="40">Cliff</id>
                             <uint32>1</uint32>
                         </chunk>
                         <chunk class="CGameCtnZoneFrontier" id="001">
                             <node ref="snow1tosnow2_frontier"/>
-                            <lookbackstr type="40">Snow1</lookbackstr>
-                            <lookbackstr type="40">Snow2</lookbackstr>
+                            <id type="40">Snow1</id>
+                            <id type="40">Snow2</id>
                         </chunk>
                     </node> <!-- EO EL7 -->
                 </element>
@@ -170,8 +171,8 @@
                     <node class="CGameCtnZoneFlat"> <!-- EL8 -->
                         <chunk class="CGameCtnZone" id="003">
                             <uint32>9</uint32>
-                            <lookbackstr type="40">Snow3</lookbackstr> <!-- LBS 10 -->
-                            <lookbackstr type="40">Snow</lookbackstr>
+                            <id type="40">Snow3</id> <!-- LBS 10 -->
+                            <id type="40">Snow</id>
                             <uint32>0</uint32>
                         </chunk>
                         <chunk class="CGameCtnZoneFlat" id="001">
@@ -186,14 +187,14 @@
                     <node class="CGameCtnZoneFrontier"> <!-- EL9 -->
                         <chunk class="CGameCtnZone" id="003">
                             <uint32>9</uint32>
-                            <lookbackstr type="40">Snow2ToSnow3</lookbackstr> <!-- LBS 11 -->
-                            <lookbackstr type="40">Cliff</lookbackstr>
+                            <id type="40">Snow2ToSnow3</id> <!-- LBS 11 -->
+                            <id type="40">Cliff</id>
                             <uint32>1</uint32>
                         </chunk>
                         <chunk class="CGameCtnZoneFrontier" id="001">
                             <node ref="snow2tosnow3_frontier"/>
-                            <lookbackstr type="40">Snow2</lookbackstr>
-                            <lookbackstr type="40">Snow3</lookbackstr>
+                            <id type="40">Snow2</id>
+                            <id type="40">Snow3</id>
                         </chunk>
                     </node> <!-- EO EL9 -->
                 </element>
@@ -201,8 +202,8 @@
                     <node class="CGameCtnZoneFlat"> <!-- EL10 -->
                         <chunk class="CGameCtnZone" id="003">
                             <uint32>0</uint32>
-                            <lookbackstr type="40">Ice0</lookbackstr> <!-- LBS 12 -->
-                            <lookbackstr type="40">Ice0</lookbackstr>
+                            <id type="40">Ice0</id> <!-- LBS 12 -->
+                            <id type="40">Ice0</id>
                             <uint32>0</uint32>
                         </chunk>
                         <chunk class="CGameCtnZoneFlat" id="001">
@@ -217,14 +218,14 @@
                     <node class="CGameCtnZoneFrontier"> <!-- EL11 -->
                         <chunk class="CGameCtnZone" id="003">
                             <uint32>0</uint32>
-                            <lookbackstr type="40">Ice0ToIce</lookbackstr> <!-- LBS 13 -->
-                            <lookbackstr type="40">Terraforming</lookbackstr> <!-- LBS 14 -->
+                            <id type="40">Ice0ToIce</id> <!-- LBS 13 -->
+                            <id type="40">Terraforming</id> <!-- LBS 14 -->
                             <uint32>1</uint32>
                         </chunk>
                         <chunk class="CGameCtnZoneFrontier" id="001">
                             <node ref="ice0toice_frontier"/>
-                            <lookbackstr type="40">Ice</lookbackstr>
-                            <lookbackstr type="40">Ice0</lookbackstr>
+                            <id type="40">Ice</id>
+                            <id type="40">Ice0</id>
                         </chunk>
                     </node> <!-- EO EL11 -->
                 </element>
@@ -234,9 +235,9 @@
             <float>32</float> <!-- Cell size -->
             <float>16</float> <!-- Cell height -->
             <!-- Vehicle meta -->
-            <lookbackstr type="40">SnowCar</lookbackstr>
-            <lookbackstr type="40">Vehicles</lookbackstr>
-            <lookbackstr type="40">Nadeo</lookbackstr>
+            <id type="40">SnowCar</id>
+            <id type="40">Vehicles</id>
+            <id type="40">Nadeo</id>
         </chunk>
         <chunk class="CGameCtnCollection" id="00B">
             <uint32>2</uint32>
@@ -247,7 +248,7 @@
         </chunk>
         <chunk class="CGameCtnCollection" id="00D">
             <bool>1</bool> <!-- Has env icon -->
-            <node ref="icon_env_snow"/>
+            <fid ref="icon_env_snow"/>
             <bool>0</bool> <!-- Has collection icon -->
         </chunk>
         <chunk class="CGameCtnCollection" id="00E">

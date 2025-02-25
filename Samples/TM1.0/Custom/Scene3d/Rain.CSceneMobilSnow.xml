@@ -1,0 +1,37 @@
+<gbx version="6" unknown="R" class="CSceneMobilSnow" complvl="1">
+    <body>
+        <chunk class="0A005000" id="001">
+            <lookbackstr type="40">Rain</lookbackstr>
+        </chunk>
+        <chunk class="0A005000" id="003">
+            <node />
+        </chunk>
+        <chunk class="0A005000" id="004">
+            <int32>0</int32>
+        </chunk>
+        <chunk class="0A011000" id="003">
+            <int32>0</int32>
+        </chunk>
+        <chunk class="0A011000" id="004">
+            <node />
+        </chunk>
+        <chunk class="0A011000" id="005">
+            <node headless="1">
+                <chunk class="06003000" id="001">
+                    <node link="Empty.CPlugSolid.xml" />
+                </chunk>
+                <chunk class="06003000" id="00E">
+                    <hex>00058800018001000000</hex>
+                </chunk>
+            </node>
+        </chunk>
+        <chunk class="0A011000" id="006">
+            <node />
+        </chunk>
+        <chunk class="CSceneMobilSnow" id="000">
+            <uint32>1</uint32> <!-- EditKind ("Snow", "Rain", "Suspension", "Kanji", "Pollen", "Stars") -->
+            <node ref="tex"/> <!-- EditBitmap (Texture) -->
+            <uint32>200</uint32> <!-- EditParticleCount -->
+        </chunk>
+    </body>
+</gbx>

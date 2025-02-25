@@ -1,0 +1,34 @@
+<gbx version="6" unknown="R" class="0904F000" complvl="1">
+	<body>
+		<chunk class="0904F000" id="006">
+			<int32>10</int32>
+			<list />
+		</chunk>
+		<chunk class="0904F000" id="00C">
+			<uint32>0</uint32>
+		</chunk>
+		<chunk class="0904F000" id="00D">
+			<lookbackstr />
+			<lookbackstr />
+		</chunk>
+		<chunk class="0904F000" id="011">
+			<node />
+		</chunk>
+		<chunk class="0904F000" id="015">
+			<flags bytes="4">
+				<flag bit="2" />
+				<flag bit="4" />
+				<flag bit="8" />
+				<flag bit="14" />
+				<flag bit="15" />
+				<flag bit="17" />
+			</flags>
+		</chunk>
+		<chunk class="0904F000" id="016">
+			<node refname="5" link="5/5.CPlugVisualIndexedTriangles.xml" />
+			<node ref="6" />
+			<node refname="7" link="7/7.CPlugSurfaceGeom.xml" />
+			<node />
+		</chunk>
+	</body>
+</gbx>

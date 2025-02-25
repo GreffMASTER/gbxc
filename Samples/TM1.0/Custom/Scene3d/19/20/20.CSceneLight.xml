@@ -1,0 +1,26 @@
+<gbx version="6" unknown="R" class="0A00B000" complvl="1">
+	<body>
+		<chunk class="0A005000" id="001">
+			<lookbackstr />
+		</chunk>
+		<chunk class="0A005000" id="003">
+			<node />
+		</chunk>
+		<chunk class="0A005000" id="004">
+			<int32>0</int32>
+		</chunk>
+		<chunk class="0A009000" id="000">
+			<bool>1</bool>
+		</chunk>
+		<chunk class="0A00B000" id="000">
+			<node headless="1">
+				<chunk class="0600C000" id="003">
+					<int32>1</int32>
+					<node refname="21" link="21/21.GxLightAmbient.xml" />
+					<node />
+					<node />
+				</chunk>
+			</node>
+		</chunk>
+	</body>
+</gbx>

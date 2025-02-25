@@ -1,0 +1,21 @@
+<gbx version="6" unknown="R" class="0A004000" complvl="1">
+	<body>
+		<chunk class="0A004000" id="000">
+			<int32>0</int32>
+			<node refname="9" link="9/9.CHmsZoneDynamic.xml" />
+		</chunk>
+		<chunk class="0A004000" id="001">
+			<vec3>1.0 0.0 0.0</vec3>
+			<vec3>0.0 1.0 0.0</vec3>
+			<vec3>0.0 0.0 1.0</vec3>
+			<vec3>0.0 0.0 0.0</vec3>
+		</chunk>
+		<chunk class="0A004000" id="002">
+			<lookbackstr type="40">Sector0</lookbackstr>
+		</chunk>
+		<chunk class="0A004000" id="004">
+			<vec3>525.8642578125 128.28106689453125 512.0</vec3>
+			<vec3>5150.23681640625 187.50003051757812 5170.80029296875</vec3>
+		</chunk>
+	</body>
+</gbx>

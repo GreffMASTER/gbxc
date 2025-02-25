@@ -1,11 +1,11 @@
 import os
-import xml.etree.ElementTree as ET
 from datatypes import data_types
 from gbxclasses import GBXClasses
 import utils
 import pathlib
 import logging
 from gbxerrors import ValidationError
+import xml.etree.ElementTree as ET
 
 
 REQUIRED_ATTRIB_LIST: list = ['version', 'unknown', 'class']
@@ -14,7 +14,24 @@ node_counter = utils.Counter()
 reference_table: ET.Element
 body: ET.Element
 gbx: ET.ElementTree
-file_path_x: pathlib.Path
+file_path_xml: pathlib.Path
+
+
+class XmlLineReader:
+    def __init__(self, xml_file) -> None:
+        self._iter = iter(xml_file)
+        self._current_line = -1
+
+    @property
+    def line(self):
+        return self._current_line
+
+    def read(self, *_):
+        try:
+            self._current_line += 1
+            return next(self._iter)
+        except:
+            return None
 
 
 def _validate_class_id(class_id: str):
@@ -84,24 +101,33 @@ def _validate_head_chunk(chunk: ET.Element):
 
 def _validate_ref_table_entry(entry: ET.Element):
     if entry.tag == 'file':
-        if 'flags' not in entry.attrib:
-            logging.error('XML Error: missing required "flags" attribute in <file>!')
-            raise ValidationError
-        flags = entry.get('flags')
+        # if 'flags' not in entry.attrib:
+        #     logging.error('XML Error: missing required "flags" attribute in <file>!')
+        #     raise ValidationError
+        # flags = entry.get('flags')
         name = ''
-        if flags == '1':
-            if 'name' not in entry.attrib:
-                logging.error(f'XML Error: missing required "name" attribute in <file> tag! (uses flags "{flags})"')
-                raise ValidationError
-            name = entry.get('name')
-        if flags == '5':
-            if 'resindex' not in entry.attrib:
-                logging.error(f'XML Error: missing required "resindex" attribute in <file> tag! (uses flags "{flags}"')
-                raise ValidationError
-            name = f'Resource {entry.get("resindex")}'
-        if 'usefile' not in entry.attrib:
-            logging.error(f'XML Error: missing required "usefile" attribute in <file> "{name}"')
+        # if flags == '1':
+        #     if 'name' not in entry.attrib:
+        #         logging.error(f'XML Error: missing required "name" attribute in <file> tag! (uses flags "{flags})"')
+        #        raise ValidationError
+        #     name = entry.get('name')
+        # if flags == '5':
+        #     if 'resindex' not in entry.attrib:
+        #         logging.error(f'XML Error: missing required "resindex" attribute in <file> tag! (uses flags "{flags}"')
+        #         raise ValidationError
+        #     name = f'Resource {entry.get("resindex")}'
+        # if 'usefile' not in entry.attrib:
+        #    logging.error(f'XML Error: missing required "usefile" attribute in <file> "{name}"')
+        #    raise ValidationError
+        if 'name' not in entry.attrib and 'resindex' not in entry.attrib:
+            logging.error(f'XML Error: <file> must have either "name" or "resindex" attribute.')
             raise ValidationError
+        if 'name' in entry.attrib and 'resindex' in entry.attrib:
+            logging.error(f'XML Error: <file> must have either "name" or "resindex" attribute, not both.')
+            raise ValidationError
+        name = entry.get('name')
+        if not name:
+            name = f'Resource {entry.get("resindex")}'
         if 'refname' not in entry.attrib:
             logging.error(f'XML Error: missing required "refname" attribute in <file> "{name}"')
             raise ValidationError
@@ -153,14 +179,16 @@ def _validate_node(node: ET.Element):
             logging.error(f'XML Error: Linking error! In file "{full_path}"!')
             logging.error(e.msg)
             raise ValidationError
+        # XML Parsed
         try:
             validate_gbx_xml(link_xml, str(file_name))
         except ValidationError:
             logging.error(f'XML Error: Linking error! In file "{full_path }"!')
             raise ValidationError
         except RecursionError:
-            logging.error(f'XML Error: Infinite recursion detected! In file "{full_path }"!')
+            logging.error(f'XML Error: Infinite recursion detected! In file "{full_path}"!')
             raise ValidationError
+        
         for i in range(changed):
             os.chdir('..')
         return
@@ -210,14 +238,26 @@ def _validate_node(node: ET.Element):
     logging.info('<node> valid')
 
 
+def _validate_fid(fid: ET.Element):
+    if 'ref' not in fid.attrib:
+        logging.error(f'XML Error: <fid> tag must have a "ref" attribute!')
+        raise ValidationError
+    logging.info('<fid> valid')
+
+
 def _validate_chunk_element(element: ET.Element):
     if element.tag == 'chunk':
         logging.error('XML Error: <chunk> tag cannot contain <chunk> child tags!')
         raise ValidationError
 
-    if element.tag == 'node':
+    if element.tag == 'node' or element.tag == 'nod':
         try:
             _validate_node(element)
+        except ValidationError:
+            raise ValidationError
+    elif element.tag == 'fid':
+        try:
+            _validate_fid(element)
         except ValidationError:
             raise ValidationError
     elif element.tag == 'list':
@@ -296,7 +336,7 @@ def validate_gbx_xml(gbx_xml: ET.ElementTree, file_path: str):
     global reference_table
     global body
     global gbx
-    global file_path_x
+    global file_path_xml
     file_path_x = pathlib.Path(file_path)
     gbx = gbx_xml
 
@@ -310,7 +350,8 @@ def validate_gbx_xml(gbx_xml: ET.ElementTree, file_path: str):
 
     for req_attrib in REQUIRED_ATTRIB_LIST:
         if req_attrib not in gbx_tag.attrib:
-            logging.error(f'XML Error: missing required "{req_attrib}" attribute in <gbx> tag!')
+            logging.error(f'XML Error: missing required "{req_attrib}" attribute in <gbx> tag!\n'
+                          f'In {file_path} @ line {gbx_tag.get("_line_num")}')
             raise ValidationError
 
     encoding = gbx_tag.get('encoding')

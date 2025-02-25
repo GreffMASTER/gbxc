@@ -1,0 +1,16 @@
+<gbx version="6" unknown="R" class="0A042000" complvl="1">
+	<body>
+		<chunk class="0A042000" id="000">
+			<lookbackstr type="40">Mood1</lookbackstr>
+			<int32>2</int32>
+			<node refname="20" link="20/20.CSceneLight.xml" />
+			<lookbackstr type="40">Sector0</lookbackstr>
+			<node refname="22" link="22/22.CSceneLight.xml" />
+			<lookbackstr type="40">Sector0</lookbackstr>
+			<vec3>1.0 0.0 0.0</vec3>
+			<vec3>0.0 0.0 -1.0</vec3>
+			<vec3>0.0 1.0 0.0</vec3>
+			<vec3>0.0 1.5 -0.5</vec3>
+		</chunk>
+	</body>
+</gbx>
