@@ -34,6 +34,28 @@ class XmlLineReader:
             return None
 
 
+def ParseXml(path: str) -> tuple[ET.ElementTree or None, str]:
+    """
+    Parses XML file and automatically assigns a line number to each element using "_line_num" attribute
+    """
+    gbx_tree: ET.ElementTree
+    gbx_elem: ET.Element = None
+    og_cwd = os.getcwd()
+    gbx_io = XmlLineReader(open(path, 'r'))
+    try:
+        for _, elem in ET.iterparse(gbx_io, ['start']):
+            elem: ET.Element
+            elem.set('_line_num', str(gbx_io.line + 1))
+            if gbx_elem is None:  # set first element to be the tree
+                gbx_elem = elem
+        gbx_tree = ET.ElementTree(gbx_elem)
+    except ET.ParseError as e:
+        logging.error(f'Failed to parse XML file! (code: {e.code}, pos: {e.position})')
+        return None, f'Failed to parse XML file! (code: {e.code}, pos: {e.position})'
+    os.chdir(og_cwd)
+    return gbx_tree, ""
+
+
 def _validate_class_id(class_id: str):
     if len(class_id) != 8:  # Class id must be 4 bytes (8 hex characters)
         logging.error(f'XML Error: "class" attribute ("{class_id}") must be 8 characters long!')
@@ -89,13 +111,13 @@ def _validate_head_chunk(chunk: ET.Element):
     i = 0
     for tag in chunk:
         i += 1
-        if tag.tag == 'node':
-            logging.error(f'XML Error: a head <chunk> cannot contain any <node>s!\n'
-                          f'(tag no. {i}, class "{class_id}", chunk "{chunk_id}")')
+        if tag.tag == 'node' or tag.tag == 'nod' or tag.tag == 'fid':
+            logging.error(f'XML Error: a head <chunk> cannot contain any <node>s or <fid>s!\n'
+                          f'(tag no. {i}, class "{class_id}", chunk "{chunk_id}") @ line {tag.get("_line_num")}')
             raise ValidationError
         if tag.tag not in data_types:
             logging.error(f'XML Error: unknown data type tag <{tag.tag}>!\n'
-                          f'(tag no. {i}, class "{class_id}", chunk "{chunk_id}")')
+                          f'(tag no. {i}, class "{class_id}", chunk "{chunk_id}") @ line {tag.get("_line_num")}')
             raise ValidationError
 
 
@@ -140,7 +162,7 @@ def _validate_ref_table_entry(entry: ET.Element):
                 _validate_ref_table_entry(directory)
             except ValidationError:
                 name = entry.get('name')
-                logging.error(f'In {name}')
+                logging.error(f'In {name} @ line {directory.get("_line_num")}')
                 raise ValidationError
     else:
         logging.error(f'XML Error: unknown <{entry.tag}> tag in reference table!')
@@ -173,17 +195,17 @@ def _validate_node(node: ET.Element):
         except IOError:
             logging.error(f'XML Error: Linking error! File "{node.get("link")}" does not exist!')
             raise ValidationError
-        try:
-            link_xml = ET.parse(file_name)
-        except ET.ParseError as e:
+        link_xml_res = ParseXml(file_name)
+        link_xml = link_xml_res[0]
+        if not link_xml:
             logging.error(f'XML Error: Linking error! In file "{full_path}"!')
-            logging.error(e.msg)
+            logging.error(link_xml_res[1])
             raise ValidationError
         # XML Parsed
         try:
             validate_gbx_xml(link_xml, str(file_name))
         except ValidationError:
-            logging.error(f'XML Error: Linking error! In file "{full_path }"!')
+            logging.error(f'XML Error: Linking error! In file "{full_path}"!')
             raise ValidationError
         except RecursionError:
             logging.error(f'XML Error: Infinite recursion detected! In file "{full_path}"!')
@@ -266,12 +288,13 @@ def _validate_chunk_element(element: ET.Element):
         for element in element:
             i += 1
             if element.tag != 'element':
-                logging.error('XML Error: <list> must only contain <element> child tags!')
+                logging.error('XML Error: <list> must only contain <element> child tags!'
+                              f'In <element> no {i} @ line {element.get("_line_num")}')
                 raise ValidationError
             for sub_element in element:
                 if sub_element.tag == 'chunk':
                     logging.error(f'XML Error: <element> tag cannot contain <chunk> child tags!'
-                                  f'In <element> no {i}')
+                                  f'In <element> no {i} @ line {sub_element.get("_line_num")}')
                     raise ValidationError
                 try:
                     _validate_chunk_element(sub_element)
@@ -279,10 +302,11 @@ def _validate_chunk_element(element: ET.Element):
                     raise ValidationError
         logging.info('<list> valid')
     elif element.tag == 'switch':
-        pass
+        pass  # TODO implement validation for switches (what did they do again?)
     else:
         if element.tag not in data_types:
-            logging.error(f'XML Error: unknown tag <{element.tag}>!')
+            logging.error(f'XML Error: unknown tag <{element.tag}>!'
+                          f'@ line {element.get("_line_num")}')
             raise ValidationError
 
 
@@ -294,14 +318,15 @@ def _validate_chunk(chunk: ET.Element):
 
     class_id = chunk.get('class')
     if 'id' not in chunk.attrib:
-        logging.error('XML Error: missing required "id" attribute in <chunk> tag!')
+        logging.error(f'XML Error: missing required "id" attribute in <chunk> tag!'
+                      f'@ line {chunk.get("_line_num")}')
         raise ValidationError
 
     chunk_id = chunk.get('id')
     if class_id[0] == 'C':  # Is a named class
         if class_id not in gbx_classes.get_dict():
             logging.error(f'XML Error: "class" attribute ("{class_id}") not found in GBX class dictionary!'
-                          f'Please use hex value instead.')
+                          f'Please use hex value instead. @ line {chunk.get("_line_num")}')
             raise ValidationError
     else:  # Not a named class (hex value)
         try:
@@ -318,7 +343,8 @@ def _validate_chunk(chunk: ET.Element):
         try:
             _validate_chunk_element(tag)
         except ValidationError:
-            logging.error(f'In <chunk> class "{class_id}", id "{chunk_id}"')
+            logging.error(f'In <chunk> class "{class_id}", id "{chunk_id}"'
+                          f'@ line {tag.get("_line_num")}')
             raise ValidationError
     logging.info('<chunk> valid')
 
@@ -356,7 +382,7 @@ def validate_gbx_xml(gbx_xml: ET.ElementTree, file_path: str):
 
     encoding = gbx_tag.get('encoding')
     if not encoding:
-        logging.warning('XML Warning: missing \"encoding\" attribute. Using \"ascii\" as default...')
+        logging.warning(f'XML Warning for \"{file_path}\": missing \"encoding\" attribute. Using \"ascii\" as default...')
     else:
         if encoding != 'ascii' and encoding != 'cp1251':
             logging.error(f'XML Error: \"encoding\" attribute can only be either \"ascii\" or \"cp1251\"')
@@ -394,7 +420,8 @@ def validate_gbx_xml(gbx_xml: ET.ElementTree, file_path: str):
     # If it has a reference table, validate it as well
     if ref_tag:
         if 'ancestor' not in ref_tag.attrib:
-            logging.error('XML Error: missing required "ancestor" attribute in <reference_table>!')
+            logging.error(f'XML Error: missing required "ancestor" attribute in <reference_table>!'
+                          f'In {file_path} @ line {ref_tag.get("_line_num")}')
             raise ValidationError
 
     # Validate head data
@@ -405,7 +432,8 @@ def validate_gbx_xml(gbx_xml: ET.ElementTree, file_path: str):
             try:
                 _validate_head_chunk(chunk)
             except ValidationError:
-                logging.error(f'Error in chunk no. {i} in <head>')
+                logging.error(f'Error in chunk no. {i} in <head>'
+                              f'In {file_path} @ line {chunk.get("_line_num")}')
                 raise ValidationError
 
     # Validate reference table
@@ -416,7 +444,8 @@ def validate_gbx_xml(gbx_xml: ET.ElementTree, file_path: str):
             try:
                 _validate_ref_table_entry(entry)
             except ValidationError:
-                logging.error(f'Error in entry no. {i} in <reference_table>')
+                logging.error(f'Error in entry no. {i} in <reference_table>'
+                              f'In {file_path} @ line {entry.get("_line_num")}')
                 raise ValidationError
         reference_table = ref_tag
 
@@ -427,13 +456,13 @@ def validate_gbx_xml(gbx_xml: ET.ElementTree, file_path: str):
         i += 1
         if chunk.tag != 'chunk':
             logging.error(f'XML Error: <body> tag must only contain <chunk> child tags! (element no. {i})'
-                          f'In <body>')
+                          f'In {file_path} @ line {chunk.get("_line_num")}')
             raise ValidationError
 
         try:
             _validate_chunk(chunk)
         except ValidationError:
-            logging.error(f'In <chunk> no. {i} in <body>')
+            logging.error(f'In {file_path} @ line {chunk.get("_line_num")}')
             raise ValidationError
 
     os.chdir(og_dir)

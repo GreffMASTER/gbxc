@@ -9,6 +9,7 @@ from typing import BinaryIO
 from pathlib import Path
 
 import datatypes
+import gbx_xml
 import utils
 from datatypes import data_types, reset_lookback
 from gbxerrors import GBXWriteError
@@ -249,9 +250,13 @@ def write_node(body_data: BinaryIO, xml_node: ET.Element):
             os.chdir(link_dir)
         file_name = full_path.name
 
-        link_gbx = ET.parse(file_name)
-        link_body = link_gbx.findall('body')[0]
+        link_gbx_res = gbx_xml.ParseXml(file_name)
+        link_gbx = link_gbx_res[0]
+        if not link_gbx:
+            logging.error(f'Parsing failed for writing (somehow): {link_gbx_res[1]}')
+            raise GBXWriteError
 
+        link_body = link_gbx.findall('body')[0]
         class_id = link_gbx.getroot().get('class')
 
         node_counter.increment()
@@ -270,6 +275,7 @@ def write_node(body_data: BinaryIO, xml_node: ET.Element):
             try:
                 write_chunk(body_data, chunk)
             except GBXWriteError:
+                logging.error(f'In file \"{file_name}\"')
                 raise
         # Write terminator
         body_data.write(pack('<I', 0xFACADE01))
@@ -325,6 +331,7 @@ def write_list(body_data: BinaryIO, lst):
             try:
                 write_chunk_element(body_data, c_element)
             except GBXWriteError:
+                logging.error(f'Error @ line {element.get("_line_num")}')
                 raise GBXWriteError
 
 
@@ -362,7 +369,11 @@ def write_chunk_element(body_data, element):
                     raise GBXWriteError('Error: <case> tag missing "value" attribute')
                 if case_value == condition_val:
                     for case_element in case_tag:
-                        write_chunk_element(body_data, case_element)
+                        try:
+                            write_chunk_element(body_data, case_element)
+                        except GBXWriteError:
+                            logging.error(f'Error @ line {element.get("_line_num")}')
+                            raise
     # Regular value tags (uint32, str, etc.)
     else:
         try:
@@ -393,6 +404,7 @@ def write_chunk(body_data: BinaryIO, chunk, custom = False):
             write_chunk_element(chunk_bin, data_type)
         except GBXWriteError:
             logging.error(f'In chunk no. {i}, class "{class_id}"')
+            logging.error(f'Error @ line {data_type.get("_line_num")}')
             raise GBXWriteError
 
     chunk_bin.seek(0)
@@ -484,6 +496,7 @@ def xml_to_gbx(xml_path: str, path: str, gbx: ET.Element):
     try:
         body_data = write_body_data()
     except GBXWriteError:
+        logging.error(f'In file \"{xml_path}\"')
         raise GBXWriteError
 
     if gbx_reftable:

@@ -77,21 +77,10 @@ def main() -> None:
     print(f'-------GBXC v.{VERSION_STR}-------')
     logging.info(f'Logging level set to {loglevel}')
     print(f'Parsing "{xml_path}"...')
-    gbx_tree: ET.ElementTree
-    gbx_elem: ET.Element = None
-    og_cwd = os.getcwd()
-    gbx_io = gbx_xml.XmlLineReader(open(xml_path, 'r'))
-    try:
-        for _, elem in ET.iterparse(gbx_io, ['start']):
-            elem: ET.Element
-            elem.set('_line_num', gbx_io.line+1)
-            if gbx_elem is None:
-                gbx_elem = elem
-        gbx_tree = ET.ElementTree(gbx_elem)
-    except ET.ParseError as e:
-        logging.error(f'Failed to parse XML file! ({e.code}, {e.position})')
-        sys.exit(f'Failed to parse XML file! (code: {e.code}, pos: {e.position})')
-    os.chdir(og_cwd)
+    gbx_parse_res = gbx_xml.ParseXml(xml_path)
+    gbx_tree: ET.ElementTree = gbx_parse_res[0]
+    if not gbx_tree:
+        sys.exit(gbx_parse_res[1])
     try:
         gbx_xml_tools.validate_gbx_xml(gbx_tree, xml_path)
     except ValidationError:
