@@ -12,7 +12,7 @@ import logging
 import time
 
 
-VERSION_STR = 'a1.7.1'
+VERSION_STR = 'b1.0.0'
 
 
 def is_valid_file(parser, arg):
