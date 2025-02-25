@@ -1,0 +1,45 @@
+<gbx version="6" unknown="R" class="0904F000" complvl="1">
+	<body>
+		<chunk class="0904F000" id="006">
+			<int32>10</int32>
+			<list>
+				<element>
+					<node refname="4" link="4/4.CPlugTree.xml" />
+				</element>
+			</list>
+		</chunk>
+		<chunk class="0904F000" id="00C">
+			<uint32>0</uint32>
+		</chunk>
+		<chunk class="0904F000" id="00D">
+			<lookbackstr type="40">SkyDome</lookbackstr>
+			<lookbackstr />
+		</chunk>
+		<chunk class="0904F000" id="011">
+			<node />
+		</chunk>
+		<chunk class="0904F000" id="015">
+			<flags bytes="4">
+				<flag bit="2" />
+				<flag bit="3" />
+				<flag bit="4" />
+				<flag bit="7" />
+				<flag bit="8" />
+				<flag bit="14" />
+				<flag bit="15" />
+				<flag bit="16" />
+				<flag bit="17" />
+			</flags>
+			<vec3>0.05000000074505806 0.0 0.0</vec3>
+			<vec3>0.0 0.0 -0.05000000074505806</vec3>
+			<vec3>0.0 0.05000000074505806 0.0</vec3>
+			<vec3>0.0 0.07240000367164612 0.0</vec3>
+		</chunk>
+		<chunk class="0904F000" id="016">
+			<node />
+			<node />
+			<node />
+			<node />
+		</chunk>
+	</body>
+</gbx>

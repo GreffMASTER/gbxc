@@ -1,0 +1,16 @@
+<gbx version="6" unknown="R" class="04005000" complvl="1">
+	<body>
+		<chunk class="04001000" id="008">
+			<float>0.34117600321769714</float>
+			<float>0.34117600321769714</float>
+			<float>0.34117600321769714</float>
+			<float>1.0</float>
+			<int32>13</int32>
+			<float>1.0</float>
+			<float>1.0</float>
+			<float>1.0</float>
+			<float>1.0</float>
+			<float>1.0</float>
+		</chunk>
+	</body>
+</gbx>

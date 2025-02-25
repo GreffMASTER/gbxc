@@ -1,0 +1,40 @@
+<gbx version="6" unknown="R" class="0A011000" complvl="1">
+	<body>
+		<chunk class="0A005000" id="001">
+			<lookbackstr type="40">Sky</lookbackstr>
+		</chunk>
+		<chunk class="0A005000" id="003">
+			<node />
+		</chunk>
+		<chunk class="0A005000" id="004">
+			<int32>0</int32>
+		</chunk>
+		<chunk class="0A011000" id="003">
+			<list />
+		</chunk>
+		<chunk class="0A011000" id="004">
+			<node />
+		</chunk>
+		<chunk class="0A011000" id="005">
+			<node headless="1">
+				<chunk class="06003000" id="001">
+					<node refname="2" link="2/2.CPlugSolid.xml" />
+				</chunk>
+				<chunk class="06003000" id="00E">
+					<flags bytes="8">
+						<flag bit="10" />
+						<flag bit="20" />
+						<flag bit="24" />
+						<flag bit="33" />
+						<flag bit="48" />
+						<flag bit="49" />
+					</flags>
+					<flags bytes="2" />
+				</chunk>
+			</node>
+		</chunk>
+		<chunk class="0A011000" id="006">
+			<node />
+		</chunk>
+	</body>
+</gbx>
