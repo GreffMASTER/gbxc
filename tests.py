@@ -78,7 +78,7 @@ def test_slope_tmo():
 
 def main():
     test_collection_tm1()
-    test_collection_tm1()
+    test_script_tm1()
     test_resindex_tm1()
     test_frontier_tmo()
     test_slope_tmo()
