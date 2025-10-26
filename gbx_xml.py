@@ -116,9 +116,10 @@ def _validate_head_chunk(chunk: ET.Element):
                           f'(tag no. {i}, class "{class_id}", chunk "{chunk_id}") @ line {tag.get("_line_num")}')
             raise ValidationError
         if tag.tag not in data_types:
-            logging.error(f'XML Error: unknown data type tag <{tag.tag}>!\n'
-                          f'(tag no. {i}, class "{class_id}", chunk "{chunk_id}") @ line {tag.get("_line_num")}')
-            raise ValidationError
+            if tag.tag != 'list':  # HAXXXX
+                logging.error(f'XML Error: unknown data type tag <{tag.tag}>!\n'
+                              f'(tag no. {i}, class "{class_id}", chunk "{chunk_id}") @ line {tag.get("_line_num")}')
+                raise ValidationError
 
 
 def _validate_ref_table_entry(entry: ET.Element):
@@ -261,9 +262,10 @@ def _validate_node(node: ET.Element):
 
 
 def _validate_fid(fid: ET.Element):
-    if 'ref' not in fid.attrib:
-        logging.error(f'XML Error: <fid> tag must have a "ref" attribute!')
-        raise ValidationError
+
+    # if 'ref' not in fid.attrib:
+    #    logging.error(f'XML Error: <fid> tag must have a "ref" attribute!')
+    #    raise ValidationError
     logging.info('<fid> valid')
 
 

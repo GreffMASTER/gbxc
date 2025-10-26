@@ -29,6 +29,50 @@ file_path_xml: pathlib.Path
 version = 6
 
 
+def write_list_head(chunk_data: BinaryIO, lst: ET.Element):
+    count = 0
+    for _element in lst:
+        count += 1
+
+    count_type_attrib = lst.get('count_type')
+    if not count_type_attrib:
+        if count > 4294967295:
+            logging.error(f'Error: list count exceeded uint32 size!')
+            raise GBXWriteError
+        chunk_data.write(pack('<I', count))  # write number of elements
+    else:
+        if count_type_attrib != 'none':
+            count_type = '<I'
+            if count_type_attrib == 'uint32':
+                count_type = '<I'
+                if count > 4294967295:
+                    logging.error(f'Error: list count exceeded uint32 size!')
+                    raise GBXWriteError
+            if count_type_attrib == 'uint16':
+                count_type = '<H'
+                if count > 65535:
+                    logging.error(f'Error: list count exceeded uint16 size!')
+                    raise GBXWriteError
+            if count_type_attrib == 'uint8':
+                count_type = '<B'
+                if count > 255:
+                    logging.error(f'Error: list count exceeded uint8 size!')
+                    raise GBXWriteError
+            chunk_data.write(pack(count_type, count))  # write number of elements
+    # write list data
+    for element in lst:
+        for data_type in element:
+            try:
+                data_types[data_type.tag](chunk_data, data_type.text, data_type.attrib, data_type)
+            except GBXWriteError:
+                logging.error(f'Error @ line {element.get("_line_num")}')
+                raise GBXWriteError
+            except KeyError:
+                logging.error(f'Invalid data type <{data_type.tag}> for user data <list>!')
+                logging.error(f'Error @ line {element.get("_line_num")}')
+                raise GBXWriteError
+
+
 def write_head_data(gbx_head: ET.Element) -> int:
     reset_lookback()
     head_data = io.BytesIO()
@@ -50,11 +94,18 @@ def write_head_data(gbx_head: ET.Element) -> int:
         j = 0
         for data_type in head_chunk:  # For each element in chunk
             j += 1
-            try:
-                data_types[data_type.tag](chunk_data, data_type.text, data_type.attrib, data_type)
-            except GBXWriteError:
-                logging.error(f'In chunk no. {i}, class "{class_id}", data tag no. {j}')
-                raise GBXWriteError
+            if data_type.tag == 'list':
+                try:
+                    write_list_head(chunk_data, data_type)
+                except GBXWriteError:
+                    logging.error(f'In chunk no. {i}, class "{class_id}", data tag no. {j}')
+                    raise GBXWriteError
+            else:
+                try:
+                    data_types[data_type.tag](chunk_data, data_type.text, data_type.attrib, data_type)
+                except GBXWriteError:
+                    logging.error(f'In chunk no. {i}, class "{class_id}", data tag no. {j}')
+                    raise GBXWriteError
 
         chunk_data.seek(0)
         chunk_data_bytes = chunk_data.read()  # Get chunk data in bytes
@@ -203,7 +254,6 @@ def set_nodeid_to_file(in_ref_id: str) -> int:
                 else:
                     node_counter.increment()
                     file.attrib['nodeid'] = str(node_counter)
-                    file.attrib['usefile'] = '1'
                     node_pool.addNode(file, int(node_counter))
                     return int(node_counter)
     raise GBXWriteError
@@ -312,7 +362,9 @@ def write_node(body_data: BinaryIO, xml_node: ET.Element):
 def write_fid(body_data: BinaryIO, xml_node: ET.Element):
     node_ref_id = xml_node.get('ref')
     if not node_ref_id:
-        raise GBXWriteError('<fid> tag requires \"ref\" attribute!')
+        body_data.write(pack('<I', 0xFFFFFFFF))
+        return
+
     try:
         res = set_nodeid_to_file(node_ref_id)
         body_data.write(pack('<I', res))
@@ -321,11 +373,36 @@ def write_fid(body_data: BinaryIO, xml_node: ET.Element):
         raise GBXWriteError
 
 
-def write_list(body_data: BinaryIO, lst):
+def write_list(body_data: BinaryIO, lst: ET.Element):
     count = 0
     for _element in lst:
         count += 1
-    body_data.write(pack('<I', count))  # write number of elements
+
+    count_type_attrib = lst.get('count_type')
+    if not count_type_attrib:
+        if count > 4294967295:
+            logging.error(f'Error: list count exceeded uint32 size!')
+            raise GBXWriteError
+        body_data.write(pack('<I', count))  # write number of elements
+    else:
+        if count_type_attrib != 'none':
+            count_type = '<I'
+            if count_type_attrib == 'uint32':
+                count_type = '<I'
+                if count > 4294967295:
+                    logging.error(f'Error: list count exceeded uint32 size!')
+                    raise GBXWriteError
+            if count_type_attrib == 'uint16':
+                count_type = '<H'
+                if count > 65535:
+                    logging.error(f'Error: list count exceeded uint16 size!')
+                    raise GBXWriteError
+            if count_type_attrib == 'uint8':
+                count_type = '<B'
+                if count > 255:
+                    logging.error(f'Error: list count exceeded uint8 size!')
+                    raise GBXWriteError
+            body_data.write(pack(count_type, count))  # write number of elements
     for element in lst:
         for c_element in element:
             try:
