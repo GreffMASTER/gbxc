@@ -78,13 +78,13 @@ def write_list_head(chunk_data: BinaryIO, lst: ET.Element):
 
 
 def write_head_data(gbx_head: ET.Element) -> int:
-    reset_lookback()
     head_data = io.BytesIO()
     collapsed_chunk_data = io.BytesIO()
     head_data.write(pack('<I', len(gbx_head)))  # Number of chunks in head
     i = 0
     for head_chunk in gbx_head:  # For each chunk in head
         i += 1
+        reset_lookback()
         chunk_data = io.BytesIO()  # Current chunk data
         class_id = head_chunk.get('class')
         chunk_id = head_chunk.get('id')
