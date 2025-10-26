@@ -62,15 +62,19 @@ def write_list_head(chunk_data: BinaryIO, lst: ET.Element):
     # write list data
     for element in lst:
         for data_type in element:
-            try:
-                data_types[data_type.tag](chunk_data, data_type.text, data_type.attrib, data_type)
-            except GBXWriteError:
-                logging.error(f'Error @ line {element.get("_line_num")}')
-                raise GBXWriteError
-            except KeyError:
-                logging.error(f'Invalid data type <{data_type.tag}> for user data <list>!')
-                logging.error(f'Error @ line {element.get("_line_num")}')
-                raise GBXWriteError
+            # custom data types
+            if data_type.tag == 'list':
+                write_list_head(chunk_data, data_type)
+            else:  # regular data types
+                try:
+                    data_types[data_type.tag](chunk_data, data_type.text, data_type.attrib, data_type)
+                except GBXWriteError:
+                    logging.error(f'Error @ line {element.get("_line_num")}')
+                    raise GBXWriteError
+                except KeyError:
+                    logging.error(f'Invalid data type <{data_type.tag}> for user data <list>!')
+                    logging.error(f'Error @ line {element.get("_line_num")}')
+                    raise GBXWriteError
 
 
 def write_head_data(gbx_head: ET.Element) -> int:
