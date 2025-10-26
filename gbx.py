@@ -244,8 +244,8 @@ def set_nodeid_to_node(in_ref_id: str, is_fid: bool = False) -> int:
 
 def set_nodeid_to_file(in_ref_id: str) -> int:
     """ This function goes through every <file> the entire <reference_table>
-    and sets the correct node id if file with a given reference id exists """
-    global gbx_reftable
+    and sets the correct node id if file with a given reference id exists
+    TODO rename this function as its only used in fids"""
     if gbx_reftable:
         for file in gbx_reftable.iter('file'):
             if file.get('refname') == in_ref_id:
@@ -255,6 +255,7 @@ def set_nodeid_to_file(in_ref_id: str) -> int:
                     node_counter.increment()
                     file.attrib['nodeid'] = str(node_counter)
                     node_pool.addNode(file, int(node_counter))
+                    file.attrib['usefile'] = '1'
                     return int(node_counter)
     raise GBXWriteError
 
