@@ -44,7 +44,7 @@ def reset_lookback():
 
 def __write_raw(file_w: BinaryIO, value: str, _params=None, _element: ET.Element = None):
     try:
-        value = bytes(value, 'utf-8')
+        value = bytes(value, utils.encoding)
         file_w.write(value)
     except ValueError:
         logging.error(f'Data type tag error: incorrect text value "{value}" in <raw> tag!')
