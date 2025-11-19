@@ -303,8 +303,6 @@ def _validate_chunk_element(element: ET.Element):
                 except ValidationError:
                     raise ValidationError
         logging.info('<list> valid')
-    elif element.tag == 'switch':
-        pass  # TODO implement validation for switches (what did they do again?)
     else:
         if element.tag not in data_types:
             logging.error(f'XML Error: unknown tag <{element.tag}>!'
@@ -384,7 +382,7 @@ def validate_gbx_xml(gbx_xml: ET.ElementTree, file_path: str):
 
     encoding = gbx_tag.get('encoding')
     if not encoding:
-        logging.warning(f'XML Warning for \"{file_path}\": missing \"encoding\" attribute. Using \"ascii\" as default...')
+        logging.info(f'XML Info for \"{file_path}\": missing \"encoding\" attribute. Using \"ascii\" as default...')
     else:
         if encoding != 'ascii' and encoding != 'cp1251':
             logging.error(f'XML Error: \"encoding\" attribute can only be either \"ascii\" or \"cp1251\"')

@@ -1,11 +1,8 @@
-import io
 import logging
 import struct
 from struct import pack
 from struct import error as packerr
 from typing import BinaryIO
-
-import PIL.ImageFile
 
 from gbxclasses import GBXClasses
 import xml.etree.ElementTree as ET
@@ -22,14 +19,13 @@ class LookBackStrHolder:
 
 lookback = LookBackStrHolder()
 gbx_classes = GBXClasses()
-conditions: utils.Conditions = utils.Conditions()
 
 
 def write_uint16(wf, value: int) -> None:
     wf.write(struct.pack('<H', value))
 
 
-def write_int32(wf, value: int) -> int:
+def write_int32(wf, value: int) -> None:
     wf.write(struct.pack('<i', value))
 
 
@@ -48,8 +44,6 @@ def reset_lookback():
 
 def __write_raw(file_w: BinaryIO, value: str, _params=None, _element: ET.Element = None):
     try:
-        if _params.get('condition'):
-            conditions.set_condition(_params.get('condition'), value)
         value = bytes(value, 'utf-8')
         file_w.write(value)
     except ValueError:
@@ -59,8 +53,6 @@ def __write_raw(file_w: BinaryIO, value: str, _params=None, _element: ET.Element
 
 def __write_hex(file_w: BinaryIO, value: str, _params=None, _element: ET.Element = None):
     try:
-        if _params.get('condition'):
-            conditions.set_condition(_params.get('condition'), value)
         hex_bytes = bytes.fromhex(value)
         file_w.write(hex_bytes)
     except ValueError:
@@ -69,10 +61,7 @@ def __write_hex(file_w: BinaryIO, value: str, _params=None, _element: ET.Element
 
 
 def __write_bool(file_w: BinaryIO, value: str, _params=None, _element: ET.Element = None):
-    global conditions
     try:
-        if _params.get('condition'):
-            conditions.set_condition(_params.get('condition'), value)
         value = int(value)
         if value > 0:
             file_w.write(pack('<I', 1))
@@ -84,10 +73,7 @@ def __write_bool(file_w: BinaryIO, value: str, _params=None, _element: ET.Elemen
 
 
 def __write_uint8(file_w: BinaryIO, value: str, _params=None, _element: ET.Element = None):
-    global conditions
     try:
-        if _params.get('condition'):
-            conditions.set_condition(_params.get('condition'), value)
         value = int(value)
         file_w.write(pack('<B', value))
     except ValueError or packerr:
@@ -96,10 +82,7 @@ def __write_uint8(file_w: BinaryIO, value: str, _params=None, _element: ET.Eleme
 
 
 def __write_int8(file_w: BinaryIO, value: str, _params=None, _element: ET.Element = None):
-    global conditions
     try:
-        if _params.get('condition'):
-            conditions.set_condition(_params.get('condition'), value)
         value = int(value)
         file_w.write(pack('<b', value))
     except ValueError or packerr:
@@ -109,8 +92,6 @@ def __write_int8(file_w: BinaryIO, value: str, _params=None, _element: ET.Elemen
 
 def __write_uint16(file_w: BinaryIO, value: str, _params=None, _element: ET.Element = None):
     try:
-        if _params.get('condition'):
-            conditions.set_condition(_params.get('condition'), value)
         value = int(value)
         file_w.write(pack('<H', value))
     except ValueError or packerr:
@@ -120,8 +101,6 @@ def __write_uint16(file_w: BinaryIO, value: str, _params=None, _element: ET.Elem
 
 def __write_int16(file_w: BinaryIO, value: str, _params=None, _element: ET.Element = None):
     try:
-        if _params.get('condition'):
-            conditions.set_condition(_params.get('condition'), value)
         value = int(value)
         file_w.write(pack('<h', value))
     except ValueError or packerr:
@@ -131,8 +110,6 @@ def __write_int16(file_w: BinaryIO, value: str, _params=None, _element: ET.Eleme
 
 def __write_uint32(file_w: BinaryIO, value: str, _params=None, _element: ET.Element = None):
     try:
-        if _params.get('condition'):
-            conditions.set_condition(_params.get('condition'), value)
         value = int(value)
         file_w.write(pack('<I', value))
     except ValueError or packerr:
@@ -142,8 +119,6 @@ def __write_uint32(file_w: BinaryIO, value: str, _params=None, _element: ET.Elem
 
 def __write_int32(file_w: BinaryIO, value: str, _params=None, _element: ET.Element = None):
     try:
-        if _params.get('condition'):
-            conditions.set_condition(_params.get('condition'), value)
         value = int(value)
         file_w.write(pack('<i', value))
     except ValueError or packerr:
@@ -154,8 +129,6 @@ def __write_int32(file_w: BinaryIO, value: str, _params=None, _element: ET.Eleme
 def __write_float(file_w: BinaryIO, value: str, _params=None, _element: ET.Element = None):
     value = value.replace(',', '.')
     try:
-        if _params.get('condition'):
-            conditions.set_condition(_params.get('condition'), value)
         value = float(value)
         file_w.write(pack('<f', value))
     except ValueError or packerr:
@@ -219,8 +192,6 @@ def __write_str(file_w: BinaryIO, value: str, _params: dict, _element: ET.Elemen
         file_w.write(pack('<I', 0))
         return
     try:
-        if _params.get('condition'):
-            conditions.set_condition(_params.get('condition'), value)
         file_w.write(pack('<I', len(value)))
         value = bytes(value, utils.encoding)
         file_w.write(value)
@@ -256,12 +227,6 @@ def __write_lookbackstr(file_w: BinaryIO, value: str, params: dict, _element: ET
     if not typ:
         logging.error('Data type tag error: missing "type" attribute in <lookbackstr> tag!')
         raise GBXWriteError
-
-    try:
-        if params.get('condition'):
-            conditions.set_condition(params.get('condition'), value)
-    except:
-        raise
 
     if typ == '80':
         if lookback.version == 2:
@@ -305,7 +270,8 @@ def __write_flags(file_w: BinaryIO, _value: str, params: dict, element: ET.Eleme
     try:
         flags_bytes = int(flags_bytes_str)
         if flags_bytes <= 0:
-            logging.error(f'Data type tag error: incorrect attribute value "{flags_bytes_str}" in <flags> tag! Must be >0.')
+            logging.error(f'Data type tag error: incorrect attribute value "{flags_bytes_str}"'
+                          f'in <flags> tag! Must be >0.')
             raise GBXWriteError
     except ValueError:
         logging.error(f'Data type tag error: incorrect attribute value "{flags_bytes_str}" in <flags> tag!')

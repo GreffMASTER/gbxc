@@ -220,8 +220,9 @@ def write_ref_table() -> bytes:
 
 
 def set_nodeid_to_node(in_ref_id: str, is_fid: bool = False) -> int:
-    """ This function goes through every <file> the entire <reference_table>
-    and sets the correct node id if file with a given reference id exists """
+    """ This function goes through every <file> in the <reference_table>
+    and sets the correct node id if file with a given reference id exists.
+    Alternatively, it tries to get previously used nodes in the body"""
     global gbx_reftable
     if gbx_reftable:
         for file in gbx_reftable.iter('file'):
@@ -238,18 +239,17 @@ def set_nodeid_to_node(in_ref_id: str, is_fid: bool = False) -> int:
                         file.attrib['usefile'] = '1'
                     node_pool.addNode(file, int(node_counter))
                     return int(node_counter)
-
-    nodeid = node_pool.getNodeIndexByRefName(in_ref_id)
-    if nodeid:
-        return nodeid
+    # Not an external reference, try local node pool
+    node_id = node_pool.getNodeIndexByRefName(in_ref_id)
+    if node_id:
+        return node_id
     else:
         raise GBXWriteError
 
 
-def set_nodeid_to_file(in_ref_id: str) -> int:
-    """ This function goes through every <file> the entire <reference_table>
-    and sets the correct node id if file with a given reference id exists
-    TODO rename this function as its only used in fids"""
+def set_fid_to_file(in_ref_id: str) -> int:
+    """ This function goes through every <file> in the <reference_table>
+    and sets the correct fid id if file with a given reference id exists """
     if gbx_reftable:
         for file in gbx_reftable.iter('file'):
             if file.get('refname') == in_ref_id:
@@ -261,6 +261,7 @@ def set_nodeid_to_file(in_ref_id: str) -> int:
                     node_pool.addNode(file, int(node_counter))
                     file.attrib['usefile'] = '1'
                     return int(node_counter)
+    # Fids can only use external references
     raise GBXWriteError
 
 
@@ -371,7 +372,7 @@ def write_fid(body_data: BinaryIO, xml_node: ET.Element):
         return
 
     try:
-        res = set_nodeid_to_file(node_ref_id)
+        res = set_fid_to_file(node_ref_id)
         body_data.write(pack('<I', res))
     except GBXWriteError:
         logging.error(f'Error: failed to find file of id "{node_ref_id}"!')
@@ -439,23 +440,6 @@ def write_chunk_element(body_data, element):
             write_chunk(body_data, element)
         except GBXWriteError:
             raise GBXWriteError
-    elif element.tag == 'switch':
-        condition = element.get('condition')
-        if not condition:
-            raise GBXWriteError('Error: <switch> tag missing "condition" attribute')
-        if datatypes.conditions.has_condition(condition):
-            condition_val = datatypes.conditions.get_condition(condition)
-            for case_tag in element:
-                case_value = case_tag.get('value')
-                if not case_value:
-                    raise GBXWriteError('Error: <case> tag missing "value" attribute')
-                if case_value == condition_val:
-                    for case_element in case_tag:
-                        try:
-                            write_chunk_element(body_data, case_element)
-                        except GBXWriteError:
-                            logging.error(f'Error @ line {element.get("_line_num")}')
-                            raise
     # Regular value tags (uint32, str, etc.)
     else:
         try:
