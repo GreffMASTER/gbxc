@@ -21,20 +21,24 @@
 			}
             .code {
                 background-color: #333333;
+				float: left;
                 color: white;
                 margin: 5px;
                 padding: 5px;
                 min-width: 60px;
                 width: auto;
             }
+			.break {
+				clear: both;
+			}
 		</style>
 	</head>
 	<body>
 		<img class="banner" src="res/gbxc_banner.png" alt="gbxc banner" />
-		<p>Version Alpha 1.6.2</p>
+		<p>Version Beta 1.0.1</p>
 		<br />
 		<h1 style="margin: 10px">User Manual</h1>
-		<h4 style="margin-left: 14px">GreffMASTER, 2023 - 2024</h4>
+		<h4 style="margin-left: 14px">GreffMASTER, 2023 - 2025</h4>
 		<br />
 		<h1 style="margin: 10px">Table of contents</h1>
 		<ol>
@@ -86,14 +90,16 @@
             <p>"class" - the main container class, can be either a class name, like "CGameCtnChallenge" or as a byte value, like "03043000".</p>
             <p>"complvl" - compatibility level, "0" for TMF+, "1" for earlier games.</p>
             <p>"md5" - optional md5 checksum, the compiler informs if the compiled GBX file has that exact sum.</p>
+			<p>"encoding" - optional string encoding option. Can be "ascii" (default) or "cp1251". This only takes effect when writing strings.</p>
             <br />
             <p>Inside the <tag>gbx</tag> tag, there are 3 main tags: <tag>reference_table</tag>, <tag>head</tag> and <tag>body</tag>.</p>
             <p>The <tag>reference_table</tag> and <tag>head</tag> tags are not required.</p>
             <br/>
             <p>Example empty XML file:</p>
+			<div class="break"></div>
             <div class="code">
                 <tag>?xml version="1.0" encoding="UTF-8" ?</tag><br/>
-                <tag>gbx version="6" unknown="R" class="CGameCtnCollection" complvl="1" md5="e5a6a0a9b438d6c3b0f99c283dfc2afb"</tag><br/>
+                <tag>gbx version="6" unknown="R" class="CGameCtnCollection" complvl="1" md5="e5a6a0a9b438d6c3b0f99c283dfc2afb" encoding="cp1251"</tag><br/>
                 &nbsp;&nbsp;&nbsp;&nbsp;<tag>reference_table ancestor="1"</tag><br/>
                 &nbsp;&nbsp;&nbsp;&nbsp;<tag>/reference_table</tag><br/>
                 &nbsp;&nbsp;&nbsp;&nbsp;<tag>head</tag><br/>
@@ -102,6 +108,7 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;<tag>/body</tag><br/>
                 <tag>/gbx</tag>
             </div>
+			<div class="break"></div>
             <br/>
             <h3><tag>reference_table</tag></h3>
             <br/>
@@ -125,6 +132,7 @@
 			<p>It can contain child <tag>dir</tag> tags to make nested directories.</p>
 			<br/>
             <b>Example:</b>
+			<div class="break"></div>
 			<div class="code">
 				<tag>reference_table ancestor="1"</tag><br/>
 				&nbsp;&nbsp;&nbsp;&nbsp;<tag>dir name="Media"</tag><br/>
@@ -134,10 +142,13 @@
 				&nbsp;&nbsp;&nbsp;&nbsp;<tag>/dir</tag><br/>
 				<tag>/reference_table</tag>
 			</div>
+			<div class="break"></div>
 			<p>To later add the referenced file in the body, use the "ref" attribute inside the <tag>node</tag> tag.
+			<div class="break"></div>
 			<div class="code">
 				<tag>node ref="icon_env_snow"/</tag>
 			</div>
+			<div class="break"></div>
 		</div>
 		<div id="data_t" class="chapter">
 			<h1>Data Types</h1>
@@ -149,96 +160,127 @@
 				<li>
 					<b><tag>bool</tag></b> - a 32-bit unsigned integer that can either be a 0 or a 1. <br />
 					<b>Example:</b>
+					<div class="break"></div>
 					<div class="code">
 						<tag>bool</tag>1<tag>/bool</tag>
 					</div>
+					<div class="break"></div>
 				</li>
 				<li>
 					<b><tag>uint8</tag>/<tag>int8</tag></b> - a 8-bit unsigned/signed integer. <br />
 					<b>Example:</b>
+					<div class="break"></div>
 					<div class="code">
 						<tag>uint8</tag>196<tag>/uint8</tag>
 					</div>
+					<div class="break"></div>
 				</li>
 				<li>
 					<b><tag>uint16</tag>/<tag>int16</tag></b> - a 16-bit unsigned/signed integer. <br />
 					<b>Example:</b>
+					<div class="break"></div>
 					<div class="code">
 						<tag>uint16</tag>1337<tag>/uint16</tag>
 					</div>
+					<div class="break"></div>
 				</li>
 				<li>
 					<b><tag>uint32</tag>/<tag>int32</tag></b> - a 32-bit unsigned/signed integer. <br />
 					<b>Example:</b>
+					<div class="break"></div>
 					<div class="code">
 						<tag>uint32</tag>3043010<tag>/uint32</tag>
 					</div>
+					<div class="break"></div>
 				</li>
 				<li>
 					<b><tag>float</tag></b> - a 32-bit floating point number. <br />
 					<b>Example:</b>
+					<div class="break"></div>
 					<div class="code">
 						<tag>float</tag>3.14<tag>/float</tag>
 					</div>
+					<div class="break"></div>
 				</li>
 				<li>
 					<b><tag>vec2</tag></b> - two 32-bit floating point numbers separated by a space. <br />
 					<b>Example:</b>
+					<div class="break"></div>
 					<div class="code">
 						<tag>vec2</tag>3.14 -2.52<tag>/vec</tag>
 					</div>
+					<div class="break"></div>
 				</li>
 				<li>
 					<b><tag>vec3</tag></b> - three 32-bit floating point numbers separated by a space. <br />
 					<b>Example:</b>
+					<div class="break"></div>
 					<div class="code">
 						<tag>vec3</tag>3.14 -2.52 1.0<tag>/vec3</tag>
 					</div>
+					<div class="break"></div>
 				</li>
 				<li>
 					<b><tag>color</tag></b> - basically vec3. <br />
 					<b>Example:</b>
+					<div class="break"></div>
 					<div class="code">
 						<tag>color</tag>1.0 1.0 1.0<tag>/color</tag>
 					</div>
+					<div class="break"></div>
 				</li>
 				<li>
 					<b><tag>vec4</tag></b> - four 32-bit floating point numbers separated by a space. <br />
 					<b>Example:</b>
+					<div class="break"></div>
 					<div class="code">
 						<tag>vec4</tag>3.14 -2.52 1.0 0.0<tag>/vec4</tag>
 					</div>
+					<div class="break"></div>
 				</li>
 				<li>
 					<b><tag>str</tag></b> - a regular string of characters, adds the string length. <br />
 					<b>Example:</b>
+					<div class="break"></div>
 					<div class="code">
 						<tag>str</tag>Test<tag>/str</tag>
 					</div>
+					<div class="break"></div>
 				</li>
 				<li>
-					<b><tag>lookbackstr</tag></b> - a lookback string. A special type of string that can remember previously used strings. <br />
+					<b><tag>lookbackstr</tag>/<tag>id</tag></b> - a lookback string. A special type of string that can remember previously used strings. <br />
 					Can be null. <br/>
 					<b>Required attributes: "type"</b> - a type of the lookback string, can either be "0" (number), "40" (regular string) or "80" (uid). <br />
 					<b>Examples:</b>
+					<div class="break"></div>
 					<div class="code">
 						<tag>lookbackstr type="40"</tag>Test<tag>/lookbackstr</tag>
 					</div>
+					<div class="break"></div>
 					<div class="code">
-						<tag>lookbackstr/</tag> <tag>!-- will write 0xFFFFFFFF --</tag>
+						<tag>id type="0"</tag>1337<tag>/id</tag>
 					</div>
+					<div class="break"></div>
+					<div class="code">
+						<tag>id/</tag> <tag>!-- will write 0xFFFFFFFF --</tag>
+					</div>
+					<div class="break"></div>
 				</li>
 				<li>
-					<b><tag>raw</tag></b> - raw bytes in utf-8 form. <br /><b>Example:</b>
+					<b><tag>raw</tag></b> - raw bytes in ascii/cp1251 form. <br /><b>Example:</b>
+					<div class="break"></div>
 					<div class="code">
 						<tag>raw</tag>RawTest<tag>/raw</tag>
 					</div>
+					<div class="break"></div>
 				</li>
                 <li>
 					<b><tag>hex</tag></b> - raw bytes in hex form. <br /><b>Example:</b>
+					<div class="break"></div>
 					<div class="code">
 						<tag>hex</tag>01DECAFA<tag>/hex</tag>
 					</div>
+					<div class="break"></div>
 				</li>
                 <li>
 					<b><tag>flags</tag></b> - a special type for bit flags. <br />
@@ -246,20 +288,32 @@
                     The <tag>flags</tag> tag uses child <tag>flag</tag> tags to determine which bits to set. <br />
                     A <tag>flag</tag> tag uses a single attribute, <b>bit</b> and it determines which bit to set. <br />
                     <b>Example:</b>
+					<div class="break"></div>
 					<div class="code">
 						<tag>flags bytes="4"</tag><br />
 						&nbsp;&nbsp;&nbsp;&nbsp;<tag>flag bit="1"/</tag><br />
 						&nbsp;&nbsp;&nbsp;&nbsp;<tag>flag bit="3"/</tag><br />
 						<tag>/flags</tag>
 					</div>
+					<div class="break"></div>
 					<br />
                     That will write 0x00000005.
 				</li>
 				<li>
+					<b><tag>gbxclass</tag></b> - writes class id of specified class name. <br /><b>Example:</b>
+					<div class="break"></div>
+					<div class="code">
+						<tag>gbxclass</tag>CPlugTree<tag>/gbxclass</tag> <tag>!-- will write 0x0904F000 --</tag>
+					</div>
+					<div class="break"></div>
+				</li>
+				<li>
 					<b><tag>icon</tag></b> - construction collector icon. Opens the linked image and writes it as a compatible icon for CGameCtnCollector. <br /><b>Example:</b>
+					<div class="break"></div>
 					<div class="code">
 						<tag>icon link="block_icon.png" /</tag>
 					</div>
+					<div class="break"></div>
 					Use only in the CGameCtnCollectorIcon head chunk.<br/>
 				</li>
 			</ul>
